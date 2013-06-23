@@ -7,6 +7,9 @@ public class AnimatedSprite : MonoBehaviour
     public Texture2D Atlas;
     public float FrameRate = 15.0f;
 
+    public float WalkSpeed = 3;
+    protected float FrameMod = 1;
+
     public int CurrentFrame = 0;
     public float TotalWidth;
     public float NextFrame = 0;
@@ -47,11 +50,23 @@ public class AnimatedSprite : MonoBehaviour
 
 	void Update ()
 	{
-	
+        if (Input.GetKey("right"))
+        {
+            transform.Translate(-WalkSpeed * Time.deltaTime, 0, 0);
+            FrameMod = 1.5f;
+        }
+        else if (Input.GetKey("left"))
+        {
+            transform.Translate(WalkSpeed * Time.deltaTime, 0, 0);
+            FrameMod = 0.75f;
+        }
+        else
+            FrameMod = 1;
 	}
 
     void LateUpdate()
     {
+        TimeBetweenFrames = 1.0f / (FrameRate * FrameMod);
         if (Time.time > NextFrame)
         {
             renderer.material.mainTextureOffset = new Vector2(CurrentFrame * Textures[0].width / TotalWidth, 0);
