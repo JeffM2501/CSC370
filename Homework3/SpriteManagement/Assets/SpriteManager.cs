@@ -79,17 +79,23 @@ public class SpriteManager : MonoBehaviour
 
         Vector2[] uvs = new Vector2[4];
 
-        Vector2 start = new Vector2((SingleSpriteDimensions.PixelWidth * currentRealFrame)/Texture.width, (Texture.height - (SingleSpriteDimensions.PixelHeight * currentRealFrame))/Texture.height);
-        Vector2 end = new Vector2((SingleSpriteDimensions.PixelWidth * (currentRealFrame + 1))/Texture.width, (Texture.height - (SingleSpriteDimensions.PixelHeight * (currentRealFrame + 1))/Texture.height));
+        float startX = SingleSpriteDimensions.PixelWidth * currentRealFrame;
+        startX /= (float)Texture.width;
 
-        uvs[0] = new Vector2(start.x,end.y);
-        uvs[1] = new Vector2(start.x,start.y);
-        uvs[2] = new Vector2(end.x,start.y);
-        uvs[3] = new Vector2(end.x,end.y);
+        float endX = SingleSpriteDimensions.PixelWidth * (currentRealFrame + 1);
+        endX /= (float)Texture.width;
+
+        float startY = 0;
+        float endY = 1;
+
+        uvs[0] = new Vector2(startX,startY);
+        uvs[1] = new Vector2(endX, endY);
+        uvs[2] = new Vector2(endX, startY);
+        uvs[3] = new Vector2(startX, endY);
 
         TheMesh.uv = uvs;
         CurrentFrame++;
-        if (CurrentFrame > CurrentAnimation.NumberOfFrames)
+        if (CurrentFrame >= CurrentAnimation.NumberOfFrames)
             CurrentFrame = 0;
     }
 
@@ -105,16 +111,21 @@ public class SpriteManager : MonoBehaviour
 
     void MoveAnim(float x, float z, string name)
     {
-        transform.Translate(x, z, 0);
+        float speed = 80.0f * Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            speed *= 2;
+
+        transform.Translate(x * speed, z * speed, 0);
         SetAnimation(name);
     }
 
 	void Update () 
 	{
         if (Input.GetKey(KeyCode.UpArrow))
-            MoveAnim(0, 1, "WALK_BACK");
+            MoveAnim(0, -1, "WALK_BACK");
         else if (Input.GetKey(KeyCode.DownArrow))
-            MoveAnim(0, -1, "WALK_FORWARD");
+            MoveAnim(0, 1, "WALK_FORWARD");
         else if (Input.GetKey(KeyCode.LeftArrow))
             MoveAnim(-1, 0, "WALK_LEFT");
         else if (Input.GetKey(KeyCode.RightArrow))
