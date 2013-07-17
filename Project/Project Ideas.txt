@@ -1,0 +1,36 @@
+3d screamers
+	Action speeder shooter game
+	Use plane world with objects
+	AI speeders drive and shoot you
+	Score based on kills
+	
+	Pros:
+		No animations, all physics
+		Assets complete or built with pro-builder
+		Textures can be reused from BZFlag.
+		Multi-player may be easy
+		It's what you know.
+		
+	Cons:
+		Simple.
+		AI may suck
+		
+Quest3D
+	Turn based dungeon crawler
+	Use grid based world made of Pro-builder objects
+	Sprite billboards for MOBs
+	Classes like Dreadmore
+	AI monsters
+	Quests
+	
+	Pros:
+		Can use assets from Mana world
+		Combat System from WMR
+		
+	Cons:
+		Need robust sprite system
+		Need XML system
+		Need dynamic colouring
+		More complex game system
+		Must have story
+		
