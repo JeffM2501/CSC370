@@ -5,10 +5,9 @@ public class HideSouths : MonoBehaviour
 {
     GameObject HiddenObject = null;
 
-    static Color Hidden = new Color(1, 1, 1, 0);
-
     public GameObject TargetObject;
 
+    public Vector3 TargetCenterOffset = new Vector3(0, 0.5f, 0);
 
 	void Start ()
 	{
@@ -25,7 +24,7 @@ public class HideSouths : MonoBehaviour
         
         HiddenObject = null;
 
-        Ray ray = new Ray(Camera.mainCamera.transform.position,TargetObject.transform.position - Camera.mainCamera.transform.position);
+        Ray ray = new Ray(Camera.mainCamera.transform.position + TargetCenterOffset, TargetObject.transform.position - Camera.mainCamera.transform.position);
       //  Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
 
    

@@ -1,35 +1,45 @@
 fileFormatVersion: 2
-guid: 5c270b5c2fba1fc408937c7c7b8bdc44
+guid: 67cec1a13acb8ce469e71f152d234530
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: Floor
-    100002: HiddenWall
-    100004: HiddenWall2
-    100006: //RootNode
-    100008: Wall1
-    100010: Wall2
-    400000: Floor
-    400002: HiddenWall
-    400004: HiddenWall2
-    400006: //RootNode
-    400008: Wall1
-    400010: Wall2
-    2300000: Floor
-    2300002: HiddenWall
-    2300004: HiddenWall2
-    2300006: Wall1
-    2300008: Wall2
-    3300000: Floor
-    3300002: HiddenWall
-    3300004: HiddenWall2
-    3300006: Wall1
-    3300008: Wall2
-    4300000: Floor
-    4300002: HiddenWall
-    4300004: HiddenWall2
-    4300006: Wall1
-    4300008: Wall2
+    100000: DoorFrame
+    100002: EastWall
+    100004: Floor
+    100006: NorthWall
+    100008: SouthWall
+    100010: //RootNode
+    100012: WestWall1
+    100014: WestWall3
+    400000: DoorFrame
+    400002: EastWall
+    400004: Floor
+    400006: NorthWall
+    400008: SouthWall
+    400010: //RootNode
+    400012: WestWall1
+    400014: WestWall3
+    2300000: DoorFrame
+    2300002: EastWall
+    2300004: Floor
+    2300006: NorthWall
+    2300008: SouthWall
+    2300010: WestWall1
+    2300012: WestWall3
+    3300000: DoorFrame
+    3300002: EastWall
+    3300004: Floor
+    3300006: NorthWall
+    3300008: SouthWall
+    3300010: WestWall1
+    3300012: WestWall3
+    4300000: DoorFrame
+    4300002: EastWall
+    4300004: Floor
+    4300006: NorthWall
+    4300008: SouthWall
+    4300010: WestWall1
+    4300012: WestWall3
     9500000: //RootNode
   materials:
     importMaterials: 1

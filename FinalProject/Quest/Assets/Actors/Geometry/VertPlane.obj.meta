@@ -1,25 +1,15 @@
 fileFormatVersion: 2
-guid: ee1c6122bf2970945be2d2942c681636
+guid: 54ef70cd02c72b44885001bdaa83136b
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Floor
-    100004: HiddenWall
-    100006: HiddenWall1
-    400000: //RootNode
-    400002: Floor
-    400004: HiddenWall
-    400006: HiddenWall1
-    2300000: Floor
-    2300002: HiddenWall
-    2300004: HiddenWall1
-    3300000: Floor
-    3300002: HiddenWall
-    3300004: HiddenWall1
-    4300000: Floor
-    4300002: HiddenWall
-    4300004: HiddenWall1
+    100000: default
+    100002: //RootNode
+    400000: default
+    400002: //RootNode
+    2300000: default
+    3300000: default
+    4300000: default
     9500000: //RootNode
   materials:
     importMaterials: 1

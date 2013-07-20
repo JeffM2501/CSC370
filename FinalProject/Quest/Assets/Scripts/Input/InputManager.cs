@@ -3,29 +3,23 @@ using System.Collections;
 
 public class InputManager : MonoBehaviour 
 {
-    public static InputManager Instance;
-
-    GameObject PlayerObject;
-
-    Movement PlayerMovemnt;
-
 	void Start ()
 	{
-        Instance = this;
+        GameState.Instance.Init(this); // fire off the manager
 	}
 
-    public void SetPlayer(GameObject player)
-    {
-        PlayerObject = player;
-        PlayerMovemnt = player.GetComponent("Movement") as Movement;
-    }
+   
 
 	void Update ()
 	{
-        if (PlayerObject == null)
-            return;
-
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+
+     //   if (h != 0 || v != 0)
+        //    print("H = " + h.ToString() + " V = " + v.ToString());
+
+        GameState.Instance.MovePlayer(new Vector3(h, GameState.MovementZ, v));
+
+        GameState.Instance.Update();
 	}
 }

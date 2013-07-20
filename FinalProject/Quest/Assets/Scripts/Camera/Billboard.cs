@@ -13,18 +13,15 @@ public class Billboard : MonoBehaviour
 	
 	void Update ()
 	{
-        if (Camera.current != null)
-            LastCamera = Camera.current;
+        if (Camera.mainCamera != null)
+            LastCamera = Camera.mainCamera;
 
         if (LastCamera == null)
             return;
 
-       
         transform.LookAt(LastCamera.transform);
-        transform.RotateAroundLocal(Vector3.fwd, Mathf.PI);
+       // transform.RotateAroundLocal(Vector3.fwd, Mathf.PI);
         if (StayUpright)
             transform.eulerAngles = new Vector3(0, -transform.eulerAngles.y, transform.eulerAngles.z);
-
-       
 	}
 }
