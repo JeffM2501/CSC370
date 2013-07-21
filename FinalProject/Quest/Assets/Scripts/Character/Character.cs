@@ -35,7 +35,7 @@ public class Character
 
     public event GameState.EventCallback LayersChanged;
 
-    public void EquipItem(Equipment item, Equipment.)
+    public void EquipItem(Equipment item, Equipment.EquipmentLocation location)
     {
 
     }

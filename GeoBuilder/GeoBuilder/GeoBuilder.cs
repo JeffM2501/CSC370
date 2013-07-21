@@ -77,8 +77,8 @@ namespace GeoBuilder
 
 
             // build low walls
-        }
+            // north
 
-        public void BuildHWall()
+        }
     }
 }
