@@ -1,0 +1,130 @@
+fileFormatVersion: 2
+guid: 48740f43156ffec489b7927af009f712
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: Floor
+    100002: FloorDoor
+    100004: LowerWallE
+    100006: LowerWallN
+    100008: LowerWallS
+    100010: LowerWallW
+    100012: Stairs
+    100014: //RootNode
+    100016: TopStep
+    100018: UpperWallE
+    100020: UpperWallN
+    100022: UpperWallS
+    100024: UpperWallS2
+    100026: UpperWallSDoor
+    100028: UpperWallW
+    400000: Floor
+    400002: FloorDoor
+    400004: LowerWallE
+    400006: LowerWallN
+    400008: LowerWallS
+    400010: LowerWallW
+    400012: Stairs
+    400014: //RootNode
+    400016: TopStep
+    400018: UpperWallE
+    400020: UpperWallN
+    400022: UpperWallS
+    400024: UpperWallS2
+    400026: UpperWallSDoor
+    400028: UpperWallW
+    2300000: Floor
+    2300002: FloorDoor
+    2300004: LowerWallE
+    2300006: LowerWallN
+    2300008: LowerWallS
+    2300010: LowerWallW
+    2300012: Stairs
+    2300014: TopStep
+    2300016: UpperWallE
+    2300018: UpperWallN
+    2300020: UpperWallS
+    2300022: UpperWallS2
+    2300024: UpperWallSDoor
+    2300026: UpperWallW
+    3300000: Floor
+    3300002: FloorDoor
+    3300004: LowerWallE
+    3300006: LowerWallN
+    3300008: LowerWallS
+    3300010: LowerWallW
+    3300012: Stairs
+    3300014: TopStep
+    3300016: UpperWallE
+    3300018: UpperWallN
+    3300020: UpperWallS
+    3300022: UpperWallS2
+    3300024: UpperWallSDoor
+    3300026: UpperWallW
+    4300000: Floor
+    4300002: FloorDoor
+    4300004: LowerWallE
+    4300006: LowerWallN
+    4300008: LowerWallS
+    4300010: LowerWallW
+    4300012: Stairs
+    4300014: TopStep
+    4300016: UpperWallE
+    4300018: UpperWallN
+    4300020: UpperWallS
+    4300022: UpperWallS2
+    4300024: UpperWallSDoor
+    4300026: UpperWallW
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 2
+  userData: 
