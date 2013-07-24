@@ -14,6 +14,10 @@ public class GameState
     GameObject PlayerObject;
     Movement PlayerMovemnt;
 
+    int CurrentRoom = -1;
+
+    Level LevelMap = new Level();
+
     public static float MovementZ = 0;
 
     public void Init( InputManager inMan )
@@ -42,5 +46,15 @@ public class GameState
             return;
 
         PlayerMovemnt.Move(vec * (10 * Time.deltaTime));
+    }
+
+    public void PlayerMoveRoom(RoomInstnace room, GameObject player)
+    {
+        CurrentRoom = room.RoomID;
+    }
+
+    public void RoomStartup(RoomInstnace room)
+    {
+        LevelMap.AddRoom(room);
     }
 }
