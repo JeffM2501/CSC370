@@ -18,7 +18,16 @@ public class GameState
 
     Level LevelMap = new Level();
 
+    public GUIMaster GUI;
+
     public static float MovementZ = 0;
+
+    public void Log(string message)
+    {
+        if (InputMan == null)
+            return;
+        InputMan.ConsolePrint(message);
+    }
 
     public void Init( InputManager inMan )
     {
@@ -56,5 +65,10 @@ public class GameState
     public void RoomStartup(RoomInstnace room)
     {
         LevelMap.AddRoom(room);
+    }
+
+    public void SkillButtonClicked(int button)
+    {
+        Log("Skill button " + button.ToString() + " Clicked");
     }
 }

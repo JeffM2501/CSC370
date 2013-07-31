@@ -22,4 +22,9 @@ public class InputManager : MonoBehaviour
 
         GameState.Instance.Update();
 	}
+
+    public void ConsolePrint(string message)
+    {
+        print(message);
+    }
 }

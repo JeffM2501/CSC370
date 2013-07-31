@@ -21,4 +21,9 @@ public class CharacterObject : MonoBehaviour
 	{
 	
 	}
+
+    public void BuildMaterialLayers()
+    {
+        List<SpriteManager.SpriteLayer> layers = TheCharacter.GetSpriteLayers();
+    }
 }

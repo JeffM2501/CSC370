@@ -5,8 +5,6 @@ using System;
 
 public class Character
 {
-
-
     public UInt64 ID = UInt64.MinValue;
 
     public string Name = string.Empty;
@@ -33,7 +31,7 @@ public class Character
     public Texture2D BaseLayer;
     public Texture3D HairLayer;
 
-    public event GameState.EventCallback LayersChanged;
+  //  public event GameState.EventCallback LayersChanged;
 
     public void EquipItem(Equipment item, Equipment.EquipmentLocation location)
     {

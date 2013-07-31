@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Level : MonoBehaviour
+public class Level
 {
     public List<RoomInstnace> Rooms = new List<RoomInstnace>();
 
