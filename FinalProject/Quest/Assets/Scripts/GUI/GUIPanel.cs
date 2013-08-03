@@ -21,8 +21,9 @@ public class GUIPanel : IDisposable
     public string Name = string.Empty;
 
     public Rect Bounds = new Rect();
+    protected Rect ActualBounds = new Rect();
 
-    protected bool NeedRebuild = false;
+    protected bool NeedRebuild = true;
 
     protected Rect EfectiveBounds = new Rect();
 
@@ -38,12 +39,12 @@ public class GUIPanel : IDisposable
     public enum Alignments
     {
         Absolute,
-        Min,
         Max,
         Center,
     }
 
-    public Alignments Alignement = Alignments.Absolute;
+    public Alignments HAlignement = Alignments.Absolute;
+    public Alignments VAlignement = Alignments.Absolute;
 
     public GUIPanel()
     {
@@ -55,13 +56,17 @@ public class GUIPanel : IDisposable
         Pannels.Add(this);
         ID = LastGUID;
         LastGUID++;
+
+        Load();
+    }
+
+    protected virtual void Load()
+    {
     }
 
     public void Resize()
     {
         NeedRebuild = true;
-        foreach(GUIElement element in Elements)
-            element.Resize();
     }
 
     public void Dispose()
@@ -70,10 +75,36 @@ public class GUIPanel : IDisposable
             Pannels.Remove(this);
     }
 
+    protected virtual void Rebuild()
+    {
+        NeedRebuild = false;
+
+        float x = Bounds.xMin;
+        if (HAlignement == Alignments.Max)
+            x = Camera.main.pixelWidth - Bounds.xMin;
+        else if (HAlignement == Alignments.Center)
+            x = (Camera.main.pixelWidth * 0.5f) - (Bounds.width * 0.5f) - Bounds.xMin;
+
+
+        float y = Bounds.xMin;
+        if (VAlignement == Alignments.Max)
+            y = Camera.main.pixelHeight - Bounds.yMin;
+        else if (VAlignement == Alignments.Center)
+            y = (Camera.main.pixelHeight * 0.5f) - (Bounds.height * 0.5f) - Bounds.yMin;
+
+        EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
+
+        foreach (GUIElement element in Elements)
+            element.Rebuild(EfectiveBounds);
+    }
+
     public void Draw()
     {
         if (!Enabled)
             return;
+
+        if (NeedRebuild)
+            Rebuild();
 
         PreDraw();
         if (Background != null)
@@ -85,12 +116,70 @@ public class GUIPanel : IDisposable
     public void Update(int id)
     {
         foreach (GUIElement element in Elements)
-            element.Draw(Bounds);
+            element.Draw();
     }
 
     public virtual void PreDraw()
     {
 
+    }
+
+    public GUIElement NewImageButton(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture2D image,EventHandler handler)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Button;
+
+        element.Clicked += handler;
+
+        Elements.Add(element);
+        return element;
+    }
+
+    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture2D image )
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Image;
+
+        Elements.Add(element);
+        return element;
+    }
+
+    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, Texture2D image)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, image.width, image.height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Image;
+
+        Elements.Add(element);
+        return element;
+    }
+
+    public GUIElement NewLabel(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, string text)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.Name = text;
+        element.ElementType = GUIElement.ElementTypes.Label;
+
+        Elements.Add(element);
+        return element;
     }
 }
 
@@ -104,9 +193,8 @@ public class GUIElement
 
     protected Rect EfectiveBounds = new Rect();
 
-    public GUIPanel.Alignments Alignement = GUIPanel.Alignments.Absolute;
-
-    public bool UseImageSize = false;
+    public GUIPanel.Alignments HAlignement = GUIPanel.Alignments.Absolute;
+    public GUIPanel.Alignments VAlignement = GUIPanel.Alignments.Absolute;
 
     [System.Serializable]
     public enum ElementTypes
@@ -127,14 +215,28 @@ public class GUIElement
     public Texture2D BackgroundImage = null;
     public string Name = string.Empty;
 
-    public void Resize()
+    public virtual void Rebuild(Rect parrent)
     {
-        NeedRebuild = true;
-        foreach(GUIElement element in Children)
-            element.Resize();
+        float x = Bounds.xMin;
+        if (HAlignement == GUIPanel.Alignments.Max)
+            x = parrent.width - Bounds.xMin;
+        else if (HAlignement == GUIPanel.Alignments.Center)
+            x = (parrent.width * 0.5f) - (Bounds.width * 0.5f) - Bounds.xMin;
+
+        float y = Bounds.xMin;
+        if (VAlignement == GUIPanel.Alignments.Max)
+            y = parrent.height - Bounds.yMin;
+        else if (VAlignement == GUIPanel.Alignments.Center)
+            y = (parrent.height * 0.5f) - (Bounds.height * 0.5f) - Bounds.yMin;
+
+
+        EfectiveBounds = new Rect(parrent.xMin + x, parrent.yMin + y, Bounds.width, Bounds.height);
+
+        foreach (GUIElement elemment in Children)
+            Rebuild(EfectiveBounds);
     }
 
-    public void Draw(Rect parrent)
+    public void Draw()
     {
         if (!Enabled)
             return;
@@ -158,10 +260,7 @@ public class GUIElement
                 break;
         }
 
-        Rect myRect = new Rect(parrent.xMin + Bounds.xMin, parrent.yMin + Bounds.yMin, Bounds.width, Bounds.height);
-
         foreach (GUIElement element in Children)
-            Draw(myRect);
-
+            Draw();
     }
 }

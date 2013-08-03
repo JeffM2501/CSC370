@@ -7,14 +7,22 @@ public class CharacterObject : MonoBehaviour
 {
     public Character TheCharacter;
 
+    protected Material RootMaterial = null;
+
     public void SetCharactr(Character c)
     {
         TheCharacter = c;
     }
 
+    void Alive()
+    {
+        if (RootMaterial == null)
+            RootMaterial = gameObject.renderer.materials[0];
+    }
+
 	void Start ()
 	{
-	
+	    
 	}
 
 	void Update ()
@@ -24,6 +32,11 @@ public class CharacterObject : MonoBehaviour
 
     public void BuildMaterialLayers()
     {
-        List<SpriteManager.SpriteLayer> layers = TheCharacter.GetSpriteLayers();
+        List<Material> mats = new List<Material>();
+
+        foreach (SpriteManager.SpriteLayer layer in TheCharacter.GetSpriteLayers())
+            mats.Add(layer.LayerMaterial);
+
+        gameObject.renderer.materials = mats.ToArray();
     }
 }

@@ -14,11 +14,15 @@ public class GUIMaster : MonoBehaviour
 
     public Texture2D PlayerInfoFrame;
 
-    public GUIPanel InventoryWindow = new GUIPanel();
+    public InventoryScreen InventoryWindow = new InventoryScreen();
+
+    void Alive()
+    {
+    }
 
 	void Start ()
 	{
-        GameState.Instance.GUI = this;
+        GameState.Instance.Init(this);
 	}
 
 	void Update ()
@@ -26,12 +30,24 @@ public class GUIMaster : MonoBehaviour
 	
 	}
 
+    public void Load()
+    {
+        InventoryWindow.Init();
+    }
+
     void OnGUI()
     {
         ActionBar();
         PlayerInfo();
 
         InventoryWindow.Draw();
+    }
+
+    public void ToggleInventory()
+    {
+        InventoryWindow.Enabled = !InventoryWindow.Enabled;
+
+        GameState.Instance.Log("Toggle");
     }
 
     void PlayerInfo()

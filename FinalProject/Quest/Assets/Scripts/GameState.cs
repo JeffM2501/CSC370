@@ -11,8 +11,7 @@ public class GameState
     public InputManager InputMan;
     public SpriteManager SpriteMan = new SpriteManager();
 
-    GameObject PlayerObject;
-    Movement PlayerMovemnt;
+    public Player PlayerObject;
 
     int CurrentRoom = -1;
 
@@ -21,6 +20,8 @@ public class GameState
     public GUIMaster GUI;
 
     public static float MovementZ = 0;
+
+    public bool Inited = false;
 
     public void Log(string message)
     {
@@ -32,7 +33,22 @@ public class GameState
     public void Init( InputManager inMan )
     {
         InputMan = inMan;
-        SetPlayer(GameObject.Find("Player") as GameObject);
+        CheckInits();
+    }
+
+    public void Init(GUIMaster gui)
+    {
+        GUI = gui;
+        CheckInits();
+    }
+
+    public void CheckInits()
+    {
+        if (InputMan != null && GUI != null)
+        {
+            SetPlayer(GameObject.Find("Player") as GameObject);
+            GUI.Load();
+        }
     }
 
     public void SetPlayer(GameObject player)
@@ -40,8 +56,9 @@ public class GameState
         if (player == null)
             return;
 
-      //  PlayerObject = player;
-        PlayerMovemnt = player.GetComponent("Movement") as Movement;
+        PlayerObject = new Player();
+        PlayerObject.WorldObject = player;
+        PlayerObject.PlayerMovemnt = player.GetComponent("Movement") as Movement;
     }
 
     public void Update()
@@ -51,10 +68,10 @@ public class GameState
 
     public void MovePlayer(Vector3 vec)
     {
-        if (PlayerMovemnt == null)
+        if (PlayerObject == null)
             return;
 
-        PlayerMovemnt.Move(vec * (10 * Time.deltaTime));
+        PlayerObject.PlayerMovemnt.Move(vec * (10 * Time.deltaTime));
     }
 
     public void PlayerMoveRoom(RoomInstnace room, GameObject player)

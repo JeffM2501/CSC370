@@ -5,9 +5,19 @@ using System;
 
 public class Character
 {
+    public GameObject WorldObject;
+
     public UInt64 ID = UInt64.MinValue;
 
     public string Name = string.Empty;
+   
+    public enum Genders
+    {
+        Male,
+        Female,
+    }
+
+    public Genders Gender = Genders.Female;
 
     public class BasicStats
     {
