@@ -13,8 +13,8 @@ public class Billboard : MonoBehaviour
 	
 	void Update ()
 	{
-        if (Camera.mainCamera != null)
-            LastCamera = Camera.mainCamera;
+        if (Camera.main != null)
+            LastCamera = Camera.main;
 
         if (LastCamera == null)
             return;

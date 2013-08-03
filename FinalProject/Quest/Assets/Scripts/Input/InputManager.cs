@@ -10,8 +10,6 @@ public class InputManager : MonoBehaviour
 
 	void Update ()
 	{
-        Debug.Log("Update");
-        print("update keys");
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -21,8 +19,6 @@ public class InputManager : MonoBehaviour
         GameState.Instance.MovePlayer(new Vector3(h, GameState.MovementZ, v));
 
         GameState.Instance.Update();
-
-        CheckKeys();
 	}
 
     public void CheckKeys()

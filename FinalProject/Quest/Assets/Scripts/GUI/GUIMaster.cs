@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 public class GUIMaster : MonoBehaviour
 {
+    public GUISkin Skin;
+
     public Texture2D[] SkillList;
 
-    public GUIStyle PlayerBarStyle = new GUIStyle();
     public GUIStyle ActionBarStyle = new GUIStyle();
 
     public float ActionBarScale = 1;
 
-    public Texture2D PlayerInfoFrame;
-
-    public InventoryScreen InventoryWindow = new InventoryScreen();
+    protected InventoryScreen InventoryWindow;
+    protected PlayerStatus StatusWindow;
 
     void Alive()
     {
@@ -27,40 +27,33 @@ public class GUIMaster : MonoBehaviour
 
 	void Update ()
 	{
-	
 	}
 
     public void Load()
     {
+        Debug.Log("GUI Load");
+
+        InventoryWindow = new InventoryScreen();
         InventoryWindow.Init();
+
+        StatusWindow = new PlayerStatus();
+        StatusWindow.Init();
     }
 
     void OnGUI()
     {
-        ActionBar();
-        PlayerInfo();
+        GUI.skin = Skin;
 
-        InventoryWindow.Draw();
+        ActionBar();
+
+        GUIPanel.DrawAll();
     }
 
     public void ToggleInventory()
     {
         InventoryWindow.Enabled = !InventoryWindow.Enabled;
 
-        GameState.Instance.Log("Toggle");
-    }
-
-    void PlayerInfo()
-    {
-        if (PlayerInfoFrame == null)
-            return;
-
-        Rect rect = new Rect(GetSkillSize().width, GetSkillSize().height, PlayerInfoFrame.width, PlayerInfoFrame.height);
-        GUI.BeginGroup(rect);
-
-        GUI.Box(new Rect(0, 0, PlayerInfoFrame.width, PlayerInfoFrame.height), PlayerInfoFrame);
-        GUI.Label(new Rect(28, 15, 100, 50), "Player 1", PlayerBarStyle);
-        GUI.EndGroup();
+        Debug.Log("Toggle Inventory to " + InventoryWindow.Enabled.ToString());
     }
 
     protected int GetSkillCount()
@@ -87,7 +80,7 @@ public class GUIMaster : MonoBehaviour
 
         float fullWidth = oneWidth * SkillCount;
 
-        GUI.BeginGroup(new Rect(skillSize.width,Camera.mainCamera.pixelHeight - (skillSize.height *2),fullWidth,skillSize.height));
+        GUI.BeginGroup(new Rect(skillSize.width,Camera.main.pixelHeight - (skillSize.height *2),fullWidth,skillSize.height));
 
         int skillButton = 0;
         

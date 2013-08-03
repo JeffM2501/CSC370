@@ -14,7 +14,7 @@ public class RoomInstnace : MonoBehaviour
 
     protected void SetChildRenderingEnable(bool set)
     {
-        for (int i = 0; i < transform.GetChildCount(); i++ )
+        for (int i = 0; i < transform.childCount; i++ )
         {
             GameObject child = transform.GetChild(i).gameObject;
             if (child.renderer != null)

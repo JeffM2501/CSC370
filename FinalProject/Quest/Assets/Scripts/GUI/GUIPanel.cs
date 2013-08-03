@@ -14,6 +14,12 @@ public class GUIPanel : IDisposable
             panel.Resize();
     }
 
+    public static void DrawAll()
+    {
+        foreach (GUIPanel panel in Pannels)
+            panel.Draw();
+    }
+
     public bool Enabled = true;
 
     public List<GUIElement> Elements = new List<GUIElement>();
@@ -77,18 +83,21 @@ public class GUIPanel : IDisposable
 
     protected virtual void Rebuild()
     {
+      //  Debug.Log("Rebuild");
+
         NeedRebuild = false;
+
+      //  Debug.Log(Bounds.ToString());
 
         float x = Bounds.xMin;
         if (HAlignement == Alignments.Max)
-            x = Camera.main.pixelWidth - Bounds.xMin;
+            x = Camera.main.pixelWidth - Bounds.width - Bounds.xMin;
         else if (HAlignement == Alignments.Center)
             x = (Camera.main.pixelWidth * 0.5f) - (Bounds.width * 0.5f) - Bounds.xMin;
 
-
         float y = Bounds.xMin;
         if (VAlignement == Alignments.Max)
-            y = Camera.main.pixelHeight - Bounds.yMin;
+            y = Camera.main.pixelHeight - Bounds.height - Bounds.yMin;
         else if (VAlignement == Alignments.Center)
             y = (Camera.main.pixelHeight * 0.5f) - (Bounds.height * 0.5f) - Bounds.yMin;
 
@@ -108,9 +117,9 @@ public class GUIPanel : IDisposable
 
         PreDraw();
         if (Background != null)
-            GUI.Window(ID, Bounds, Update, Background, Style);
+            GUI.Window(ID, EfectiveBounds, Update, Background, Style);
         else
-            GUI.Window(ID, Bounds, Update, Name, Style);
+            GUI.Window(ID, EfectiveBounds, Update, Name, Style);
     }
 
     public void Update(int id)
@@ -186,6 +195,8 @@ public class GUIPanel : IDisposable
 [System.Serializable]
 public class GUIElement
 {
+    public int ID = 0;
+
     public bool Enabled = true;
     public Rect Bounds = new Rect();
 
@@ -219,21 +230,23 @@ public class GUIElement
     {
         float x = Bounds.xMin;
         if (HAlignement == GUIPanel.Alignments.Max)
-            x = parrent.width - Bounds.xMin;
+            x = parrent.width - Bounds.width - Bounds.xMin;
         else if (HAlignement == GUIPanel.Alignments.Center)
-            x = (parrent.width * 0.5f) - (Bounds.width * 0.5f) - Bounds.xMin;
+            x = (parrent.width * 0.5f) - (Bounds.width * 0.5f) + Bounds.xMin;
 
-        float y = Bounds.xMin;
+        float y = Bounds.yMin;
         if (VAlignement == GUIPanel.Alignments.Max)
-            y = parrent.height - Bounds.yMin;
+            y = parrent.yMax - Bounds.height - Bounds.yMin;
         else if (VAlignement == GUIPanel.Alignments.Center)
-            y = (parrent.height * 0.5f) - (Bounds.height * 0.5f) - Bounds.yMin;
+            y = (parrent.height * 0.5f) - (Bounds.height * 0.5f) + Bounds.yMin;
 
+        EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
 
-        EfectiveBounds = new Rect(parrent.xMin + x, parrent.yMin + y, Bounds.width, Bounds.height);
+        Debug.Log("Building " + this.ToString());
+        Debug.Log(EfectiveBounds);
 
         foreach (GUIElement elemment in Children)
-            Rebuild(EfectiveBounds);
+            elemment.Rebuild(EfectiveBounds);
     }
 
     public void Draw()
@@ -244,15 +257,15 @@ public class GUIElement
         switch (ElementType)
         {
             case ElementTypes.Label:
-                GUI.Label(Bounds, Name);
+                GUI.Label(EfectiveBounds, Name);
                 break;
 
             case ElementTypes.Image:
-                GUI.Box(Bounds, BackgroundImage);
+                GUI.Label(EfectiveBounds, BackgroundImage);
                 break;
 
             case ElementTypes.Button:
-                if (GUI.Button(Bounds,Name))
+                if (GUI.Button(EfectiveBounds,Name))
                 {
                     if (Clicked != null)
                         Clicked(this, EventArgs.Empty);
@@ -261,6 +274,64 @@ public class GUIElement
         }
 
         foreach (GUIElement element in Children)
-            Draw();
+            element.Draw();
+    }
+
+    public GUIElement NewImageButton(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture2D image, EventHandler handler)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Button;
+
+        element.Clicked += handler;
+
+        Children.Add(element);
+        return element;
+    }
+
+    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture2D image)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Image;
+
+        Children.Add(element);
+        return element;
+    }
+
+    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, Texture2D image)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, image.width, image.height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Image;
+
+        Children.Add(element);
+        return element;
+    }
+
+    public GUIElement NewLabel(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, string text)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.Name = text;
+        element.ElementType = GUIElement.ElementTypes.Label;
+
+        Children.Add(element);
+        return element;
     }
 }

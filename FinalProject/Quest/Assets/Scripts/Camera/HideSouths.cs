@@ -20,7 +20,7 @@ public class HideSouths : MonoBehaviour
 
     Ray ScreenPointToTarget(Vector3 target, float x, float y, float depth)
     {
-        Vector3 source = Camera.mainCamera.ScreenToWorldPoint(new Vector3(x, y, depth));
+        Vector3 source = Camera.main.ScreenToWorldPoint(new Vector3(x, y, depth));
         return new Ray(source, target - source);
     }
 	
@@ -46,10 +46,10 @@ public class HideSouths : MonoBehaviour
 
         List<Ray> RaysToTest = new List<Ray>();
 
-        float width = Camera.mainCamera.pixelWidth;
-        float height = Camera.mainCamera.pixelHeight;
+        float width = Camera.main.pixelWidth;
+        float height = Camera.main.pixelHeight;
 
-        RaysToTest.Add(new Ray(Camera.mainCamera.transform.position, targetPos - Camera.mainCamera.transform.position));
+        RaysToTest.Add(new Ray(Camera.main.transform.position, targetPos - Camera.main.transform.position));
 
         float depth = 1;
 

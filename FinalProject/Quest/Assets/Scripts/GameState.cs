@@ -36,7 +36,7 @@ public class GameState
         CheckInits();
     }
 
-    public void Init(GUIMaster gui)
+    public void Init( GUIMaster gui )
     {
         GUI = gui;
         CheckInits();
@@ -57,13 +57,15 @@ public class GameState
             return;
 
         PlayerObject = new Player();
+        PlayerObject.Name = "Player1";
         PlayerObject.WorldObject = player;
         PlayerObject.PlayerMovemnt = player.GetComponent("Movement") as Movement;
     }
 
     public void Update()
     {
-        // do our work
+        if (Input.GetKeyDown(KeyCode.I))
+            GUI.ToggleInventory();
     }
 
     public void MovePlayer(Vector3 vec)
