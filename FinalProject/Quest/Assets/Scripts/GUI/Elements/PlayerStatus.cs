@@ -16,7 +16,7 @@ public class PlayerStatus : GUIPanel
     {
         Enabled = true;
 
-        Bounds = new Rect(10, 10, 256, 64+32);
+        Bounds = new Rect(0, 0, 204, 60+40);
         HAlignement = Alignments.Absolute;
         VAlignement = Alignments.Absolute;
     }
@@ -28,10 +28,13 @@ public class PlayerStatus : GUIPanel
 
         HeaderBar = this.NewImage(Alignments.Absolute, 0, Alignments.Absolute, 0, Resources.Load("GUI/PlayerNameOval") as Texture2D);
 
-        GUIElement name = HeaderBar.NewLabel(Alignments.Absolute, 32, Alignments.Absolute, 16, 256-64,64-32,TheCharacter.Name);
+       // GUIElement name = HeaderBar.NewLabel(Alignments.Absolute, 32, Alignments.Absolute, 16, 256-64,64-32,TheCharacter.Name);
 
-        StatsFrame = this.NewImage(Alignments.Absolute,32, Alignments.Absolute, 58, Resources.Load("GUI/StatusBarBackgrounds") as Texture2D);
+        StatsFrame = this.NewImage(Alignments.Absolute,32, Alignments.Absolute, 60, Resources.Load("GUI/StatusBarBackgrounds") as Texture2D);
+        StatsFrame.Name = "Satus Frame";
 
-        HealthBar = StatsFrame.NewImage(Alignments.Absolute, 8, Alignments.Absolute, 2, Resources.Load("GUI/HealthStatusFill") as Texture2D);
+        HealthBar = StatsFrame.NewImage(Alignments.Absolute, 24, Alignments.Absolute, 4, Resources.Load("GUI/HealthStatusFill") as Texture2D);
+        HealthBar.Name = "health bar";    
+    
     }
 }

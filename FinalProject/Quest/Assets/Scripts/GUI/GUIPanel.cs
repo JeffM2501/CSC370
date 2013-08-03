@@ -104,7 +104,7 @@ public class GUIPanel : IDisposable
         EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
 
         foreach (GUIElement element in Elements)
-            element.Rebuild(EfectiveBounds);
+            element.Rebuild(Bounds);
     }
 
     public void Draw()
@@ -124,8 +124,11 @@ public class GUIPanel : IDisposable
 
     public void Update(int id)
     {
+        int depthSave = GUI.depth;
+        GUI.depth = 100;
         foreach (GUIElement element in Elements)
             element.Draw();
+        GUI.depth = depthSave;
     }
 
     public virtual void PreDraw()
@@ -228,22 +231,23 @@ public class GUIElement
 
     public virtual void Rebuild(Rect parrent)
     {
-        float x = Bounds.xMin;
+        float x = parrent.xMin + Bounds.xMin;
         if (HAlignement == GUIPanel.Alignments.Max)
-            x = parrent.width - Bounds.width - Bounds.xMin;
+            x = parrent.xMax - Bounds.width - Bounds.xMin;
         else if (HAlignement == GUIPanel.Alignments.Center)
-            x = (parrent.width * 0.5f) - (Bounds.width * 0.5f) + Bounds.xMin;
+            x = parrent.xMin + ((parrent.width * 0.5f) - (Bounds.width * 0.5f) + Bounds.xMin);
 
-        float y = Bounds.yMin;
+        float y = parrent.yMin + Bounds.yMin;
         if (VAlignement == GUIPanel.Alignments.Max)
             y = parrent.yMax - Bounds.height - Bounds.yMin;
         else if (VAlignement == GUIPanel.Alignments.Center)
-            y = (parrent.height * 0.5f) - (Bounds.height * 0.5f) + Bounds.yMin;
+            y = parrent.yMin + (parrent.height * 0.5f) - (Bounds.height * 0.5f) + Bounds.yMin;
 
         EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
 
-        Debug.Log("Building " + this.ToString());
-        Debug.Log(EfectiveBounds);
+        Debug.Log("Building " + this.ToString() + " : " + Name);
+        Debug.Log("Parrent " + parrent.ToString()); 
+        Debug.Log("Bounds " + EfectiveBounds.ToString());
 
         foreach (GUIElement elemment in Children)
             elemment.Rebuild(EfectiveBounds);
@@ -254,6 +258,7 @@ public class GUIElement
         if (!Enabled)
             return;
 
+        GUI.depth--;
         switch (ElementType)
         {
             case ElementTypes.Label:
@@ -275,6 +280,7 @@ public class GUIElement
 
         foreach (GUIElement element in Children)
             element.Draw();
+        GUI.depth++;
     }
 
     public GUIElement NewImageButton(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture2D image, EventHandler handler)
