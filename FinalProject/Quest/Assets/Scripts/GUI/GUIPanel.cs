@@ -23,7 +23,7 @@ public class GUIPanel : IDisposable
     public bool Enabled = true;
 
     public List<GUIElement> Elements = new List<GUIElement>();
-    public Texture2D Background;
+    public Texture Background;
     public string Name = string.Empty;
 
     public Rect Bounds = new Rect();
@@ -103,8 +103,9 @@ public class GUIPanel : IDisposable
 
         EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
 
+        Rect relativeBounds = new Rect(0, 0, Bounds.width, Bounds.height);
         foreach (GUIElement element in Elements)
-            element.Rebuild(Bounds);
+            element.Rebuild(relativeBounds);
     }
 
     public void Draw()
@@ -136,7 +137,7 @@ public class GUIPanel : IDisposable
 
     }
 
-    public GUIElement NewImageButton(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture2D image,EventHandler handler)
+    public GUIElement NewImageButton(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture image, EventHandler handler)
     {
         GUIElement element = new GUIElement();
 
@@ -152,7 +153,7 @@ public class GUIPanel : IDisposable
         return element;
     }
 
-    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture2D image )
+    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture image)
     {
         GUIElement element = new GUIElement();
 
@@ -166,7 +167,7 @@ public class GUIPanel : IDisposable
         return element;
     }
 
-    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, Texture2D image)
+    public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, Texture image)
     {
         GUIElement element = new GUIElement();
 
@@ -226,7 +227,7 @@ public class GUIElement
 
     public event EventHandler Clicked;
 
-    public Texture2D BackgroundImage = null;
+    public Texture BackgroundImage = null;
     public string Name = string.Empty;
 
     public virtual void Rebuild(Rect parrent)
@@ -266,7 +267,7 @@ public class GUIElement
                 break;
 
             case ElementTypes.Image:
-                GUI.Label(EfectiveBounds, BackgroundImage);
+                GUI.DrawTexture(EfectiveBounds, BackgroundImage);
                 break;
 
             case ElementTypes.Button:
@@ -283,7 +284,7 @@ public class GUIElement
         GUI.depth++;
     }
 
-    public GUIElement NewImageButton(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture2D image, EventHandler handler)
+    public GUIElement NewImageButton(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture image, EventHandler handler)
     {
         GUIElement element = new GUIElement();
 
@@ -299,7 +300,7 @@ public class GUIElement
         return element;
     }
 
-    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture2D image)
+    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, float width, float height, Texture image)
     {
         GUIElement element = new GUIElement();
 
@@ -313,7 +314,7 @@ public class GUIElement
         return element;
     }
 
-    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, Texture2D image)
+    public GUIElement NewImage(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, Texture image)
     {
         GUIElement element = new GUIElement();
 

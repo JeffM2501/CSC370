@@ -31,7 +31,16 @@ public class Character
 
     public BasicStats Stats = new BasicStats();
     public Inventory InventoryItems = new Inventory();
-    private EquipmentList EquipedItems = new EquipmentList();
+    public EquipmentList EquipedItems = new EquipmentList();
+
+    // temp stats
+    public int AttackBonus = 0;
+    public int DefenseBonus = 0;
+
+    public float DodgeBonus = 0;
+    public float CritBonus = 0;
+
+    public int HealthBonus = 0;
 
     public int SkillSlots = 3;
 
@@ -43,9 +52,43 @@ public class Character
 
   //  public event GameState.EventCallback LayersChanged;
 
+    public Skill GetSkillByName(string name)
+    {
+        foreach (Skill skill in Skills)
+        {
+            if (skill.Name == name)
+                return skill;
+        }
+        return null;
+    }
+
     public void EquipItem(Equipment item, Equipment.EquipmentLocation location)
     {
+        Equipment returned = null;
+        Weapon weapon = item as Weapon;
+        if (weapon == null)
+            returned = EquipedItems.EquipArmor(item);
+        returned = EquipedItems.EquipWeapon(weapon, location == Equipment.EquipmentLocation.Weapon);
 
+        if (!InventoryItems.AddItem(returned))
+            DropItem(returned);
+
+        RebuildTempStats();
+    }
+
+    public void DropItem(Item item)
+    {
+
+    }
+
+    public void RebuildTempStats()
+    {
+        AttackBonus = 0;
+        DefenseBonus = 0;
+        HealthBonus = 0;
+
+        foreach (Skill skill in Skills)
+            skill.OnApply(this);
     }
 
     public List<SpriteManager.SpriteLayer> GetSpriteLayers()

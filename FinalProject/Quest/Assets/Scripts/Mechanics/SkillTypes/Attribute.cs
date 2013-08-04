@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Attribute : Skill
 {
-    public static int MaxLevel = 20;
+    public static int MaxAttributeLevel = 20;
     public enum AttributeTypes
     {
         Might,
@@ -14,4 +14,11 @@ public class Attribute : Skill
     }
 
     public AttributeTypes AttributeType = AttributeTypes.Might;
+
+    public Attribute()
+    {
+        MaxLevel = MaxAttributeLevel;
+        Purchase = 0;
+        Upgrade = 1000;
+    }
 }

@@ -33,9 +33,9 @@ public class InventoryScreen : GUIPanel
         TheCharacter = GameState.Instance.PlayerObject;
 
         if (TheCharacter.Gender == Character.Genders.Female)
-            this.Background = Resources.Load("GUI/InventoryFemale") as Texture2D;
+            this.Background = Resources.Load("GUI/InventoryFemale") as Texture;
         else
-            this.Background = Resources.Load("GUI/InventoryMale") as Texture2D;
+            this.Background = Resources.Load("GUI/InventoryMale") as Texture;
 
         GameState.Instance.Log(this.Background.ToString());
 
@@ -68,7 +68,7 @@ public class InventoryScreen : GUIPanel
         }
 
         // gold label
-        NewImage(Alignments.Absolute,155,Alignments.Absolute,245,Resources.Load("Items/GoldCoin") as Texture2D);
+        NewImage(Alignments.Absolute, 155, Alignments.Absolute, 245, Resources.Load("Items/GoldCoin") as Texture);
         GoldText = NewLabel(Alignments.Absolute, 190, Alignments.Absolute, 245, 100, 35, "000");
     }
 

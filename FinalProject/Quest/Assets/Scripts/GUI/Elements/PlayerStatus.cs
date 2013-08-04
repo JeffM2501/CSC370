@@ -26,15 +26,35 @@ public class PlayerStatus : GUIPanel
         base.Load();
         TheCharacter = GameState.Instance.PlayerObject;
 
-        HeaderBar = this.NewImage(Alignments.Absolute, 0, Alignments.Absolute, 0, Resources.Load("GUI/PlayerNameOval") as Texture2D);
+        HeaderBar = this.NewImage(Alignments.Absolute, 0, Alignments.Absolute, 0, Resources.Load("GUI/PlayerNameOval") as Texture);
 
-       // GUIElement name = HeaderBar.NewLabel(Alignments.Absolute, 32, Alignments.Absolute, 16, 256-64,64-32,TheCharacter.Name);
+        HeaderBar.NewLabel(Alignments.Absolute, 32, Alignments.Absolute, 16, 256-64,64-32,TheCharacter.Name);
 
-        StatsFrame = this.NewImage(Alignments.Absolute,32, Alignments.Absolute, 60, Resources.Load("GUI/StatusBarBackgrounds") as Texture2D);
-        StatsFrame.Name = "Satus Frame";
+        StatsFrame = this.NewImage(Alignments.Absolute, 32, Alignments.Absolute, 60, Resources.Load("GUI/StatusBarBackgrounds") as Texture);
+        StatsFrame.Name = "status Frame";
 
-        HealthBar = StatsFrame.NewImage(Alignments.Absolute, 24, Alignments.Absolute, 4, Resources.Load("GUI/HealthStatusFill") as Texture2D);
-        HealthBar.Name = "health bar";    
-    
+        HealthBar = StatsFrame.NewImage(Alignments.Absolute, 25, Alignments.Absolute, 6, Resources.Load("GUI/HealthStatusFill") as Texture);
+        HealthBar.Name = "Health bar";
+
+        ManaBar = StatsFrame.NewImage(Alignments.Absolute, 24, Alignments.Absolute, 26, Resources.Load("GUI/MagicStatusFill") as Texture);
+        ManaBar.Name = "Mana bar";
+
+        SetMana(1f);
+        SetHealth(1f);
+    }
+
+    protected static float BarWidth = 102;
+    protected static float BarOffset = 0;
+
+    public void SetMana(float param)
+    {
+        ManaBar.Bounds.width = BarOffset + (BarWidth * param);
+        this.NeedRebuild = true;
+    }
+
+    public void SetHealth(float param)
+    {
+        HealthBar.Bounds.width = BarOffset + (BarWidth * param);
+        this.NeedRebuild = true;
     }
 }

@@ -9,10 +9,10 @@ public class EquipmentList
     public Equipment Torso;
     public Equipment Ring;
     public Equipment Amulet;
-    public Equipment LeftHand;
-    public Equipment RightHand;
+    public Weapon LeftHand;
+    public Weapon RightHand;
 
-    public Equipment EquipWeapon(Equipment item, bool leftHand)
+    public Weapon EquipWeapon(Weapon item, bool leftHand)
     {
         if (item.Location != Equipment.EquipmentLocation.Weapon  && item.Location != Equipment.EquipmentLocation.OffHand)
             return item;
@@ -27,7 +27,7 @@ public class EquipmentList
                 return item;
         }
 
-        Equipment returnedItem = leftHand ? LeftHand : RightHand;
+        Weapon returnedItem = leftHand ? LeftHand : RightHand;
         if (leftHand)
             LeftHand = item;
         else
@@ -68,5 +68,10 @@ public class EquipmentList
         }
 
         return returnedItem;
+    }
+
+    public bool IsWielding(Weapon.WeaponTypes weapon)
+    {
+        return (LeftHand != null && LeftHand.WeaponType == weapon) || (RightHand != null && RightHand.WeaponType == weapon);
     }
 }
