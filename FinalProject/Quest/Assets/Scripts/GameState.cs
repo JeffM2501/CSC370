@@ -47,6 +47,9 @@ public class GameState
         if (InputMan != null && GUI != null)
         {
             SetPlayer(GameObject.Find("Player") as GameObject);
+            SkillFactory.Setup();
+            ItemFactory.Setup();
+
             GUI.Load();
         }
     }
@@ -86,8 +89,8 @@ public class GameState
         LevelMap.AddRoom(room);
     }
 
-    public void SkillButtonClicked(int button)
+    public void SkillButtonClicked(SkillInstance skill)
     {
-        Log("Skill button " + button.ToString() + " Clicked");
+        skill.OnAcivate(PlayerObject);
     }
 }

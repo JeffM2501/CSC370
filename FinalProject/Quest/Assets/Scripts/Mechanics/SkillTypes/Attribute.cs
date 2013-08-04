@@ -22,3 +22,21 @@ public class Attribute : Skill
         Upgrade = 1000;
     }
 }
+
+public class AttributeInstance
+{
+    public Attribute BaseAttribute = null;
+    public int Level = 0;
+
+    public AttributeInstance(Attribute s)
+    {
+        BaseAttribute = s;
+    }
+
+    public AttributeInstance(Attribute s, int level)
+    {
+        BaseAttribute = s;
+        Level = level;
+    }
+
+}

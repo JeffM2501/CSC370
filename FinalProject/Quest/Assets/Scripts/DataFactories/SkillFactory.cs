@@ -9,6 +9,9 @@ public static class SkillFactory
     public static Attribute Smarts;
     public static Attribute Agility;
 
+    // basic attacks
+    public static Dictionary<Weapon.WeaponTypes, BasicWeaponAttack>  BasicAttacks = new Dictionary<Weapon.WeaponTypes,BasicWeaponAttack>();
+
     public static Dictionary<string, Skill> Skills = new Dictionary<string, Skill>();
 
     public static Dictionary<string, Spell> Spells = new Dictionary<string, Spell>();
@@ -73,7 +76,19 @@ public static class SkillFactory
         AddSkill("Headshot", "GUI/SkillIcons/Headshot", new Headshot());
         AddSkill("Claw", "GUI/SkillIcons/Beast", new Claw());
 
-    
+        // base attacks
+        BasicAttacks.Add(Weapon.WeaponTypes.Hand, new BasicWeaponAttack("Punch", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Hand));
+        BasicAttacks.Add(Weapon.WeaponTypes.Sword, new BasicWeaponAttack("Slash", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Sword));
+        BasicAttacks.Add(Weapon.WeaponTypes.Staff, new BasicWeaponAttack("Whack", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Staff));
+        BasicAttacks.Add(Weapon.WeaponTypes.Bow, new BasicWeaponAttack("Shoot", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Bow));
+    }
+
+    public static Skill FindSkillByName(string name)
+    {
+        if (Skills.ContainsKey(name))
+            return Skills[name];
+
+        return null;
     }
 
     public static Skill AddWeaponSkill(string name, string icon, Weapon.WeaponTypes weapon)
@@ -87,7 +102,6 @@ public static class SkillFactory
     public static Skill AddSkill(string name, string icon, Skill skill)
     {
         skill.Name = name;
-        skill.Level = 0;
         skill.IconImage = icon;
         Skills.Add(skill.Name, skill);
         return skill;
@@ -107,11 +121,11 @@ public class WeaponSkill : Skill
 
     public Weapon.WeaponTypes WeaponType = Weapon.WeaponTypes.Hand;
 
-    public override void OnApply(Character character)
+    public override void OnApply(Character character, int level)
     {
-        base.OnApply(character);
+        base.OnApply(character,level);
         if (character.EquipedItems.IsWielding(WeaponType))
-            character.AttackBonus += Level;
+            character.AttackBonus += level;
     }
 }
 
@@ -124,12 +138,12 @@ public class FistWeapon : Skill
         Requirements.Add("Agility 2");
         MaxLevel = 5;
     }
-    
-    public override void OnApply(Character character)
+
+    public override void OnApply(Character character, int level)
     {
-        base.OnApply(character);
+        base.OnApply(character, level);
         if (character.EquipedItems.IsWielding(Weapon.WeaponTypes.Hand) || (character.EquipedItems.LeftHand == null && character.EquipedItems.RightHand == null))
-            character.AttackBonus += Level;
+            character.AttackBonus += level;
     }
 }
 
@@ -146,10 +160,10 @@ public class Dodge : Skill
         Description = "Lets you avoid some attacks";
     }
 
-    public override void OnApply(Character character)
+    public override void OnApply(Character character, int level)
     {
-        base.OnApply(character);
-        character.DodgeBonus += 0.05f * Level;
+        base.OnApply(character, level);
+        character.DodgeBonus += 0.05f * level;
     }
 }
 
@@ -166,10 +180,10 @@ public class ToughAsNails : Skill
         Description = "Adds more hit points per level";
     }
 
-    public override void OnApply(Character character)
+    public override void OnApply(Character character, int level)
     {
-        base.OnApply(character);
-        character.HealthBonus += 5 * Level;
+        base.OnApply(character, level);
+        character.HealthBonus += 5 * level;
     }
 }
 
@@ -186,10 +200,10 @@ public class Deadeye : Skill
         Description = "Increases chance for critical hit";
     }
 
-    public override void OnApply(Character character)
+    public override void OnApply(Character character, int level)
     {
-        base.OnApply(character);
-        character.CritBonus += 0.25f * Level;
+        base.OnApply(character, level);
+        character.CritBonus += 0.25f * level;
     }
 }
 
@@ -208,9 +222,9 @@ public class Cleave : Skill
         Cooldown = 2;
     }
 
-    public override void OnAcivate(Character character)
+    public override void OnAcivate(Character character, int level)
     {
-        base.OnAcivate(character);
+        base.OnAcivate(character,level);
         // tell combat system to hit EVERYONE
     }
 }
@@ -230,9 +244,9 @@ public class Headshot : Skill
         Cooldown = 2;
     }
 
-    public override void OnAcivate(Character character)
+    public override void OnAcivate(Character character, int level)
     {
-        base.OnAcivate(character);
+        base.OnAcivate(character, level);
         // tell combat system to attack target with bonuses
     }
 }
@@ -252,9 +266,37 @@ public class Claw : Skill
         Cooldown = 1;
     }
 
-    public override void OnAcivate(Character character)
+    public override void OnAcivate(Character character, int level)
     {
-        base.OnAcivate(character);
+        base.OnAcivate(character, level);
+        // tell combat system to attack target with bonuses
+    }
+}
+
+public class BasicWeaponAttack : Skill
+{
+    public Weapon.WeaponTypes SkillWeapon = Weapon.WeaponTypes.Hand;
+
+    public BasicWeaponAttack( string name, string icon, Weapon.WeaponTypes wep )
+        : base()
+    {
+        Purchase = -1;
+        Upgrade = -1;
+
+        this.SkillType = SkillTypes.Active;
+        Name = name;
+        IconImage = icon;
+        SkillWeapon = wep;
+    }
+
+    public override void OnAcivate(Character character, int level)
+    {
+        base.OnAcivate(character, level);
+
+        if (character.EquipedItems.IsWielding(SkillWeapon))
+        {
+            // attack
+        }
         // tell combat system to attack target with bonuses
     }
 }

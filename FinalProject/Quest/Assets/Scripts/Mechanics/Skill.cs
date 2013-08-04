@@ -25,10 +25,7 @@ public class Skill
     public bool Active = false;
     public float Cooldown = 0;
 
-    public float LastUse = -99999;
-
     public int MaxLevel = 0;
-    public int Level = 0;
 
     public int Purchase = 0;
     public int Upgrade = 0;
@@ -62,7 +59,7 @@ public class Skill
             }
             else
             {
-                Skill skill = character.GetSkillByName(stat);
+                SkillInstance skill = character.GetSkillByName(stat);
                 if (skill == null || skill.Level < level)
                     return false;
             }
@@ -72,19 +69,54 @@ public class Skill
     }
 
     // called when ever we need to modify the character
-    public virtual void OnApply(Character character)
+    public virtual void OnApply(Character character, int level)
     {
 
     }
 
-    public virtual void OnAcivate(Character character)
+    public virtual void OnAcivate(Character character, int level)
     {
 
     }
 
-    public virtual void OnUpgrade(Character character)
+    public virtual void OnUpgrade(Character character, int level)
     {
 
     }
+}
 
+public class SkillInstance
+{
+    public Skill BaseSkill = null;
+
+    public int Level = 0;
+
+    public float LastUse = -99999;
+
+    public SkillInstance(Skill s)
+    {
+        BaseSkill = s;
+    }
+
+    public SkillInstance(Skill s, int level)
+    {
+        BaseSkill = s;
+        Level = level;
+    }
+
+    // called when ever we need to modify the character
+    public void OnApply(Character character)
+    {
+        BaseSkill.OnApply(character, Level);
+    }
+
+    public void OnAcivate(Character character)
+    {
+        BaseSkill.OnAcivate(character, Level);
+    }
+
+    public void OnUpgrade(Character character)
+    {
+        BaseSkill.OnUpgrade(character, Level);
+    }
 }

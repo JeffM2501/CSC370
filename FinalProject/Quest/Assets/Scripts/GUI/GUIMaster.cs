@@ -7,7 +7,7 @@ public class GUIMaster : MonoBehaviour
 {
     public GUISkin Skin;
 
-    public Texture2D[] SkillList;
+    protected List<SkillInstance> SkillList = new List<SkillInstance>();
 
     public GUIStyle ActionBarStyle = new GUIStyle();
 
@@ -49,6 +49,25 @@ public class GUIMaster : MonoBehaviour
         GUIPanel.DrawAll();
     }
 
+    public void SetPlayer(Player player)
+    {
+        SkillList.Clear();
+
+        SkillList.Add(new SkillInstance(SkillFactory.BasicAttacks[player.EquipedItems.WeaponType()]));
+        
+        foreach (SkillInstance skill in player.Skills)
+        {
+            if (skill.BaseSkill.SkillType == Skill.SkillTypes.Active)
+                SkillList.Add(skill);
+        }
+
+        foreach (SkillInstance skill in player.Skills)
+        {
+            if (skill.BaseSkill.SkillType == Skill.SkillTypes.Spell)
+                SkillList.Add(skill);
+        }
+    }
+
     public void ToggleInventory()
     {
         InventoryWindow.Enabled = !InventoryWindow.Enabled;
@@ -58,14 +77,26 @@ public class GUIMaster : MonoBehaviour
 
     protected int GetSkillCount()
     {
-        return SkillList.Length;
+        return SkillList.Count;
+    }
+
+    SkillInstance GetSkill(int index)
+    {
+        return SkillList[index];
+    }
+
+    Texture GetSkillImage(int index)
+    {
+        return Resources.Load(SkillList[index].BaseSkill.IconImage) as Texture;
     }
 
     protected Rect GetSkillSize()
     {
-        if (SkillList.Length == 0)
+        if (SkillList.Count == 0)
             return Rect.MinMaxRect(0, 0, 0, 0);
-        return new Rect(0, 0, SkillList[0].width * ActionBarScale, SkillList[0].height * ActionBarScale);
+
+        Texture tex = GetSkillImage(0);
+        return new Rect(0, 0, tex.width * ActionBarScale, tex.height * ActionBarScale);
     }
 
     void ActionBar()
@@ -82,15 +113,12 @@ public class GUIMaster : MonoBehaviour
 
         GUI.BeginGroup(new Rect(skillSize.width,Camera.main.pixelHeight - (skillSize.height *2),fullWidth,skillSize.height));
 
-        int skillButton = 0;
-        
-        foreach (Texture2D skill in SkillList)
+        for (int i = 0; i < SkillList.Count; i++ )
         {
-            if (GUI.Button(skillSize, skill, ActionBarStyle))
-                GameState.Instance.SkillButtonClicked(skillButton);
+            if (GUI.Button(skillSize, GetSkillImage(i), ActionBarStyle))
+                GameState.Instance.SkillButtonClicked(GetSkill(i));
 
             skillSize.x += oneWidth;
-            skillButton++;
         }
 
 

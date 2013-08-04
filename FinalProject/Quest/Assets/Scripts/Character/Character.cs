@@ -44,19 +44,19 @@ public class Character
 
     public int SkillSlots = 3;
 
-    public Dictionary<Attribute.AttributeTypes, Attribute> Attributes = new Dictionary<Attribute.AttributeTypes, Attribute>();
-    public List<Skill> Skills = new List<Skill>();
+    public Dictionary<Attribute.AttributeTypes, AttributeInstance> Attributes = new Dictionary<Attribute.AttributeTypes, AttributeInstance>();
+    public List<SkillInstance> Skills = new List<SkillInstance>();
 
     public Texture2D BaseLayer;
     public Texture3D HairLayer;
 
   //  public event GameState.EventCallback LayersChanged;
 
-    public Skill GetSkillByName(string name)
+    public SkillInstance GetSkillByName(string name)
     {
-        foreach (Skill skill in Skills)
+        foreach (SkillInstance skill in Skills)
         {
-            if (skill.Name == name)
+            if (skill.BaseSkill.Name == name)
                 return skill;
         }
         return null;
@@ -87,7 +87,7 @@ public class Character
         DefenseBonus = 0;
         HealthBonus = 0;
 
-        foreach (Skill skill in Skills)
+        foreach (SkillInstance skill in Skills)
             skill.OnApply(this);
     }
 

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : Character
 {
@@ -7,15 +9,14 @@ public class Player : Character
 
     public int GoldCount = 0;
 
-	// Use this for initialization
-	void Start ()
+    public Player()
     {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-	}
+        Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might,2));
+        Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
+        Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
+
+        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Sword"), 2));
+        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 1));
+        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
+    }
 }

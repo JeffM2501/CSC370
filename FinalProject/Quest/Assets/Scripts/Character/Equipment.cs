@@ -16,8 +16,8 @@ public class Equipment : Item
 
     public EquipmentLocation Location = EquipmentLocation.Torso;
 
-    public Texture2D MaleEquipmentLayer;
-    public Texture2D FemaleEquipmentLayer;
+    public Texture MaleEquipmentLayer;
+    public Texture FemaleEquipmentLayer;
 }
 
 public class Weapon : Equipment
@@ -32,8 +32,21 @@ public class Weapon : Equipment
 
     public WeaponTypes WeaponType = WeaponTypes.Hand;
 
+    public int MinDamage = 0;
+    public int MaxDamage = 0;
+
     public Weapon()
     {
         Location = Equipment.EquipmentLocation.Weapon;
     }
 }
+
+public class Armor : Equipment
+{
+    public int ArmorValue = 0;
+
+    public Armor()
+    {
+    }
+}
+

@@ -74,4 +74,14 @@ public class EquipmentList
     {
         return (LeftHand != null && LeftHand.WeaponType == weapon) || (RightHand != null && RightHand.WeaponType == weapon);
     }
+
+    public Weapon.WeaponTypes WeaponType()
+    {
+        if (LeftHand != null)
+            return LeftHand.WeaponType;
+        if (RightHand != null)
+            return RightHand.WeaponType;
+
+        return Weapon.WeaponTypes.Hand;
+    }
 }
