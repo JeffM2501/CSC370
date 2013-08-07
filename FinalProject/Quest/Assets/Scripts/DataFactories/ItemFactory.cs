@@ -7,6 +7,8 @@ public class ItemFactory
 {
     public static Dictionary<string, Equipment> Equipments = new Dictionary<string, Equipment>();
 
+    public static Equipment Pants = null;
+
     public static void Setup()
     {
         Armors();
@@ -24,6 +26,13 @@ public class ItemFactory
         AddArmor("Leather Hat", "GUI/Items/Icons/C_Elm01", "GUI/Items/Armors/cap_m", "GUI/Items/Armors/cap_f", Equipment.EquipmentLocation.Head, 2);
         AddArmor("Skullcap", "GUI/Items/Icons/C_Elm02", "GUI/Items/Armors/skullcap_m", "GUI/Items/Armors/skullcap_f", Equipment.EquipmentLocation.Head, 3);
         AddArmor("Plate Helmet", "GUI/Items/Icons/C_Elm03", "GUI/Items/Armors/helm_m", "GUI/Items/Armors/helm_f", Equipment.EquipmentLocation.Head, 4);
+
+        Pants = new Equipment();
+        Pants.Name = "Pants";
+        Pants.InventoryIcon = null;
+        Pants.MaleEquipmentLayer = Resources.Load("GUI/Items/Armors/boots_m") as Texture;
+        Pants.FemaleEquipmentLayer = Resources.Load("GUI/Items/Armors/boots_f") as Texture;
+        Pants.Location = Equipment.EquipmentLocation.Unknown;
     }
 
     public static void Weapons()

@@ -47,10 +47,19 @@ public class Character
     public Dictionary<Attribute.AttributeTypes, AttributeInstance> Attributes = new Dictionary<Attribute.AttributeTypes, AttributeInstance>();
     public List<SkillInstance> Skills = new List<SkillInstance>();
 
-    public Texture2D BaseLayer;
-    public Texture3D HairLayer;
+    protected bool UseLayers = true;
+    protected bool ForceHair = false;
 
-  //  public event GameState.EventCallback LayersChanged;
+    public Texture  BaseLayer;
+    public Color    HairColor = Color.white;
+    public Texture  HairLayer;
+
+    public Color EyeColor = Color.white;
+    public Texture EyeLayer = null;
+
+    protected List<SpriteManager.SpriteLayer> GraphicLayers = new List<SpriteManager.SpriteLayer>();
+
+    public event GameState.EventCallback LayersChanged;
 
     public SkillInstance GetSkillByName(string name)
     {
@@ -74,11 +83,16 @@ public class Character
             DropItem(returned);
 
         RebuildTempStats();
+
+        RebuildEquipment();
     }
 
     public void DropItem(Item item)
     {
+        GameState.Instance.DropItem(item, WorldObject.transform.position);
 
+        // find a bundle around us
+        GameObject.FindGameObjectsWithTag("Bundle");
     }
 
     public void RebuildTempStats()
@@ -91,8 +105,40 @@ public class Character
             skill.OnApply(this);
     }
 
-    public List<SpriteManager.SpriteLayer> GetSpriteLayers()
+    public virtual void RebuildEquipment()
     {
-        return new List<SpriteManager.SpriteLayer>();
+        SpriteManager spriteMan = GameState.Instance.SpriteMan;
+
+        // base
+        GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, Color.white));
+
+        if (!UseLayers)
+            return;
+
+        // pants, everyone gets em
+        GraphicLayers.Add(spriteMan.GetLayer(ItemFactory.Pants.GetTextureForGender(Gender),Color.white));
+
+        // shirts
+        if (EquipedItems.Torso != null)
+            GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Torso.GetTextureForGender(Gender), EquipedItems.Torso.LayerColor));
+
+        // eyes
+        if (EyeLayer != null)
+            GraphicLayers.Add(spriteMan.GetLayer(EyeLayer, EyeColor));
+
+        // hair or hats
+        if (HairLayer != null && (ForceHair || EquipedItems.Head == null))
+            GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, HairColor));
+
+        if (EquipedItems.Head != null)
+            GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
+
+        if (LayersChanged != null)
+            LayersChanged(this, EventArgs.Empty);
+    }
+
+    public virtual List<SpriteManager.SpriteLayer> GetSpriteLayers()
+    {
+        return GraphicLayers;
     }
 }

@@ -16,6 +16,8 @@ public class GUIMaster : MonoBehaviour
     protected InventoryScreen InventoryWindow;
     protected PlayerStatus StatusWindow;
 
+    public GameObject DropedBagGraphic;
+
     void Alive()
     {
     }

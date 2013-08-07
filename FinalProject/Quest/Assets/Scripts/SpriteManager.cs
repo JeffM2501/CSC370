@@ -8,11 +8,11 @@ public class SpriteManager
     public class SpriteLayer
     {
         public string Name = string.Empty;
-        public Texture2D LayerImage = null;
+        public Texture LayerImage = null;
         public Color LayerColor = Color.white;
         public Material LayerMaterial = null;
 
-        public SpriteLayer(Texture2D tex, Color c)
+        public SpriteLayer(Texture tex, Color c)
         {
             LayerImage = tex;
             LayerColor = c;
@@ -21,7 +21,7 @@ public class SpriteManager
             LayerMaterial.SetTexture("_mainTexture", tex);
         }
 
-        public bool Equals(Texture2D tex, Color c)
+        public bool Equals(Texture tex, Color c)
         {
            return LayerImage == tex && c == LayerColor;
         }
@@ -29,7 +29,7 @@ public class SpriteManager
 
     public List<SpriteLayer> LayerCache = new List<SpriteLayer>();
 
-    public SpriteLayer GetLayer(Texture2D image, Color color )
+    public SpriteLayer GetLayer(Texture image, Color color )
     {
         foreach(SpriteLayer layer in LayerCache)
         {

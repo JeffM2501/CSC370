@@ -12,12 +12,20 @@ public class Equipment : Item
         Amulet,
         Weapon,
         OffHand,
+        Unknown,
     }
 
     public EquipmentLocation Location = EquipmentLocation.Torso;
 
     public Texture MaleEquipmentLayer;
     public Texture FemaleEquipmentLayer;
+
+    public Color LayerColor = Color.white;
+
+    public Texture GetTextureForGender(Character.Genders gender)
+    {
+        return gender == Character.Genders.Male ? MaleEquipmentLayer : FemaleEquipmentLayer;
+    }
 }
 
 public class Weapon : Equipment

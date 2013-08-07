@@ -11,6 +11,8 @@ public class Player : Character
 
     public Player()
     {
+        HairColor = Color.magenta;
+
         Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might,2));
         Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
         Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));

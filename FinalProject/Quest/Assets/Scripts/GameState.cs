@@ -93,4 +93,27 @@ public class GameState
     {
         skill.OnAcivate(PlayerObject);
     }
+
+    public static GameObject FindGameObjectInRadius(Vector3 source, string tag, float rad)
+    {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag))
+        {
+            float dist = Vector3.Distance(source, obj.transform.position);
+            if (dist <= rad)
+                return obj;
+        }
+
+        return null;
+    }
+
+    public void DropItem(Item item, Vector3 location)
+    {
+        GameObject nearestBag = FindGameObjectInRadius(location, "DropedBag", 2.0f);
+
+        if (nearestBag == null)
+            nearestBag = MonoBehaviour.Instantiate(GUI.DropedBagGraphic) as GameObject;
+        
+        // get the bag container and add the item
+    }
+
 }
