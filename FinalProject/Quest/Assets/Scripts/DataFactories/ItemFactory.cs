@@ -35,7 +35,7 @@ public class ItemFactory
 
         AddWeapon("Whacking Stick", "GUI/Items/Icons/W_Mace001", Weapon.WeaponTypes.Staff, 5, 10);
         AddWeapon("Spear", "GUI/Items/Icons/W_Spear001", Weapon.WeaponTypes.Staff, 7, 15);
-        AddWeapon("Pokey Stick", "GUI/Items/Icons/W_Spear004", Weapon.WeaponTypes.Staff, 15, 25);
+        AddWeapon("Pokey Stick", "GUI/Items/Icons/W_Spear004", Weapon.WeaponTypes.Staff, 10, 20);
         AddWeapon("Staff of Baddassery", "GUI/Items/Icons/W_Spear007", Weapon.WeaponTypes.Staff, 15, 25);
 
         AddWeapon("Simple Bow", "GUI/Items/Icons/W_Bow01", Weapon.WeaponTypes.Bow, 3, 8);
