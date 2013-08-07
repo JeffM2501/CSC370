@@ -19,17 +19,16 @@ public class Character
 
     public Genders Gender = Genders.Female;
 
-    public class BasicStats
-    {
-        public int HitPoints;
-        public int MagicPower;
-        public float PerceptionRange;
-        public float Speed;
-        public int AttackValue;
-        public int ArmorValue;
-    }
+    public int HitPoints = 0;
+    public int MagicPower = 0;
+    public float PerceptionRange = 0;
+    public float Speed = 0;
 
-    public BasicStats Stats = new BasicStats();
+    public float Initiative = 0;
+
+    public int AttackValue = 0;
+    public int ArmorValue = 0;
+
     public Inventory InventoryItems = new Inventory();
     public EquipmentList EquipedItems = new EquipmentList();
 
@@ -41,6 +40,9 @@ public class Character
     public float CritBonus = 0;
 
     public int HealthBonus = 0;
+    public int MagicBonus = 0;
+
+    public float SpeedBonus = 0;
 
     public int SkillSlots = 3;
 
@@ -98,11 +100,35 @@ public class Character
     public void RebuildTempStats()
     {
         AttackBonus = 0;
+        MagicBonus = 0;
         DefenseBonus = 0;
         HealthBonus = 0;
+        SpeedBonus = 0;
 
         foreach (SkillInstance skill in Skills)
             skill.OnApply(this);
+
+        Speed = (Attributes[Attribute.AttributeTypes.Agility].Level + SpeedBonus) * 2f;
+        HitPoints = Attributes[Attribute.AttributeTypes.Might].Level * 10 + HealthBonus;
+        if (HitPoints < 5)
+            HitPoints = 5;
+
+        MagicPower = Attributes[Attribute.AttributeTypes.Smarts].Level * 5 + MagicBonus;
+        PerceptionRange = (Attributes[Attribute.AttributeTypes.Smarts].Level + Attributes[Attribute.AttributeTypes.Agility].Level) * 2f;
+        if (PerceptionRange < 5)
+            PerceptionRange = 5;
+
+        Initiative = (Attributes[Attribute.AttributeTypes.Smarts].Level + Attributes[Attribute.AttributeTypes.Agility].Level) / 2f;
+
+        int weaponStatValue = Attributes[Attribute.AttributeTypes.Might].Level;
+        if (EquipedItems.IsWielding(Weapon.WeaponTypes.Staff))
+            weaponStatValue = Attributes[Attribute.AttributeTypes.Smarts].Level;
+         if (EquipedItems.IsWielding(Weapon.WeaponTypes.Bow))
+            weaponStatValue = Attributes[Attribute.AttributeTypes.Agility].Level;
+
+         AttackBonus = weaponStatValue + AttackBonus;
+
+         ArmorValue = EquipedItems.ArmorValue() + DefenseBonus;
     }
 
     public virtual void RebuildEquipment()

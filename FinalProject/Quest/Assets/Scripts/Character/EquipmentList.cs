@@ -84,4 +84,15 @@ public class EquipmentList
 
         return Weapon.WeaponTypes.Hand;
     }
+
+    public int ArmorValue()
+    {
+        int value = 0;
+
+        if (Head as Armor != null)
+            value += (Head as Armor).ArmorValue;
+        if (Torso as Armor != null)
+            value += (Torso as Armor).ArmorValue;
+        return value;
+    }
 }
