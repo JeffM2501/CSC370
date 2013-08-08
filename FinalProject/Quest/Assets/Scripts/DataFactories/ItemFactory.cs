@@ -7,25 +7,38 @@ public class ItemFactory
 {
     public static Dictionary<string, Equipment> Equipments = new Dictionary<string, Equipment>();
 
+    public static Dictionary<string, Item> Items = new Dictionary<string, Item>();
+
     public static Equipment Pants = null;
 
-    public static Equipment FindItemByName(string name)
+    public static Item FindItemByName(string name)
     {
-        Debug.Log(Equipments);
-
         if (Equipments.ContainsKey(name))
             return Equipments[name];
+
+        if (Items.ContainsKey(name))
+            return Items[name];
 
         return null;
     }
 
     public static void Setup()
     {
-        Armors();
-        Weapons();
+        AddArmors();
+        AddWeapons();
+        AddItems();
     }
 
-    public static void Armors()
+    public static void AddItems()
+    {
+        AddItem("Watermelon", "Items/Icons/I_C_Watermellon");
+        AddItem("Small Mana Potion", "Items/Icons/p_Blue02");
+        AddItem("Large Mana Potion", "Items/Icons/p_Blue01");
+        AddItem("Small Health Potion", "Items/Icons/p_Red02");
+        AddItem("Large Health Potion", "Items/Icons/p_Red01");
+    }
+
+    public static void AddArmors()
     {
         AddArmor("Cloth Shirt", "Items/Icons/A_Clothing01","Items/Armors/shirt_m","Items/Armors/shirt_f",Equipment.EquipmentLocation.Torso, 1);
         AddArmor("Leather Armor", "Items/Icons/A_Armor01", "Items/Armors/leather_m", "Items/Armors/leather_f", Equipment.EquipmentLocation.Torso, 3);
@@ -45,7 +58,7 @@ public class ItemFactory
         Pants.Location = Equipment.EquipmentLocation.Unknown;
     }
 
-    public static void Weapons()
+    public static void AddWeapons()
     {
         AddWeapon("Sword", "Items/Icons/W_Sword002", Weapon.WeaponTypes.Sword, 5, 10);
         AddWeapon("Fancy Sword", "Items/Icons/W_Sword004", Weapon.WeaponTypes.Sword, 7, 15);
@@ -62,9 +75,9 @@ public class ItemFactory
         AddWeapon("Sweet Recurved Bow", "Items/Icons/W_Bow08", Weapon.WeaponTypes.Bow, 7, 15);
         AddWeapon("The bow that will pierce the heavens", "Items/Icons/W_Bow11", Weapon.WeaponTypes.Bow, 10, 20);
 
-        AddWeapon("Weighted Gloves", "Items/Icons/Ac_Gloves01", Weapon.WeaponTypes.Bow, 3, 8);
-        AddWeapon("Steel Knuckles", "Items/Icons/W_Fist02", Weapon.WeaponTypes.Bow, 5, 10);
-        AddWeapon("Fistblade", "Items/Icons/W_Fist04", Weapon.WeaponTypes.Bow, 7, 15);
+        AddWeapon("Weighted Gloves", "Items/Icons/Ac_Gloves01", Weapon.WeaponTypes.Hand, 3, 8);
+        AddWeapon("Steel Knuckles", "Items/Icons/W_Fist02", Weapon.WeaponTypes.Hand, 5, 10);
+        AddWeapon("Fistblade", "Items/Icons/W_Fist04", Weapon.WeaponTypes.Hand, 7, 15);
     }
 
     public static Armor AddArmor(string name, string icon, string maleLayer, string femaleLayer, Equipment.EquipmentLocation location, int value )
@@ -97,5 +110,16 @@ public class ItemFactory
         Equipments.Add(name, weap);
 
         return weap;
+    }
+
+    public static Item AddItem(string name, string icon )
+    {
+        Item item = new Item();
+        item.Name = name;
+        item.InventoryIcon = Resources.Load(icon) as Texture;
+
+        Items.Add(name, item);
+
+        return item;
     }
 }

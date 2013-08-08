@@ -26,16 +26,15 @@ public class Movement : MonoBehaviour
         }
 
         Debug.DrawRay(ray.origin, ray.direction, Color.blue, 0.025f);
-        if (Physics.Raycast(ray, out hit, dist + rad))
+        if (Physics.Raycast(ray, out hit, dist + rad) && hit.collider.gameObject.tag != "LootDrop")
         {
-      //      print("Hit Distance " + hit.distance.ToString());
-       //     print("Radius " + rad.ToString());
+            //      print("Hit Distance " + hit.distance.ToString());
+            //     print("Radius " + rad.ToString());
 
             if (hit.distance < rad)
                 return;
 
             dir *= hit.distance - rad;
-           
         }
         else
             dir *= dist;

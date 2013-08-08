@@ -22,6 +22,6 @@ public class Billboard : MonoBehaviour
         transform.LookAt(LastCamera.transform);
        // transform.RotateAroundLocal(Vector3.fwd, Mathf.PI);
         if (StayUpright)
-            transform.eulerAngles = new Vector3(0, -transform.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
 	}
 }

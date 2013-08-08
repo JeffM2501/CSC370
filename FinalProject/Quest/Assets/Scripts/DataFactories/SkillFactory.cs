@@ -78,9 +78,9 @@ public static class SkillFactory
 
         // base attacks
         BasicAttacks.Add(Weapon.WeaponTypes.Hand, new BasicWeaponAttack("Punch", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Hand));
-        BasicAttacks.Add(Weapon.WeaponTypes.Sword, new BasicWeaponAttack("Slash", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Sword));
-        BasicAttacks.Add(Weapon.WeaponTypes.Staff, new BasicWeaponAttack("Whack", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Staff));
-        BasicAttacks.Add(Weapon.WeaponTypes.Bow, new BasicWeaponAttack("Shoot", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Bow));
+        BasicAttacks.Add(Weapon.WeaponTypes.Sword, new BasicWeaponAttack("Slash", "GUI/SkillIcons/Sword", Weapon.WeaponTypes.Sword));
+        BasicAttacks.Add(Weapon.WeaponTypes.Staff, new BasicWeaponAttack("Whack", "GUI/SkillIcons/Staves", Weapon.WeaponTypes.Staff));
+        BasicAttacks.Add(Weapon.WeaponTypes.Bow, new BasicWeaponAttack("Shoot", "GUI/SkillIcons/Bow", Weapon.WeaponTypes.Bow));
     }
 
     public static Skill FindSkillByName(string name)

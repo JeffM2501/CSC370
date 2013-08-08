@@ -79,7 +79,7 @@ public class GameState
         if (PlayerObject == null)
             return;
 
-        PlayerObject.PlayerMovemnt.Move(vec * (10 * Time.deltaTime));
+        PlayerObject.PlayerMovemnt.Move(vec * (PlayerObject.Speed * Time.deltaTime));
     }
 
     public void PlayerMoveRoom(RoomInstnace room, GameObject player)

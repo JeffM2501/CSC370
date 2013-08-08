@@ -7,13 +7,9 @@ public class Player : Character
 {
     public Movement PlayerMovemnt = null;
 
-    public int GoldCount = 0;
-
     public Player()
     {
         HairColor = Color.magenta;
-
-       
     }
 
     public override void Init()

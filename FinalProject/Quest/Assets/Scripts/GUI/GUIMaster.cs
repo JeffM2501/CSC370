@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class GUIMaster : MonoBehaviour
 {
+    public GameObject LootBag;
+    public GameObject LootBouncer;
+
     public GUISkin Skin;
 
     protected List<SkillInstance> SkillList = new List<SkillInstance>();
@@ -18,6 +21,10 @@ public class GUIMaster : MonoBehaviour
 
     public GameObject DropedBagGraphic;
 
+    public float width = 0;
+
+    protected Player ThePlayer;
+
     void Alive()
     {
     }
@@ -25,10 +32,16 @@ public class GUIMaster : MonoBehaviour
 	void Start ()
 	{
         GameState.Instance.Init(this);
+        width = Camera.main.pixelWidth;
 	}
 
 	void Update ()
 	{
+        if (width != Camera.main.pixelWidth)
+        {
+            GUIPanel.RebuildAll();
+            width = Camera.main.pixelWidth;
+        }
 	}
 
     public void Load()
@@ -40,6 +53,8 @@ public class GUIMaster : MonoBehaviour
 
         StatusWindow = new PlayerStatus();
         StatusWindow.Init();
+
+        SetPlayer(GameState.Instance.PlayerObject);
     }
 
     void OnGUI()
@@ -53,17 +68,23 @@ public class GUIMaster : MonoBehaviour
 
     public void SetPlayer(Player player)
     {
+        ThePlayer = player;
+        BuildSkillList();
+    }
+
+    public void BuildSkillList()
+    {
         SkillList.Clear();
 
-        SkillList.Add(new SkillInstance(SkillFactory.BasicAttacks[player.EquipedItems.WeaponType()]));
-        
-        foreach (SkillInstance skill in player.Skills)
+        SkillList.Add(new SkillInstance(SkillFactory.BasicAttacks[ThePlayer.EquipedItems.WeaponType()]));
+
+        foreach (SkillInstance skill in ThePlayer.Skills)
         {
             if (skill.BaseSkill.SkillType == Skill.SkillTypes.Active)
                 SkillList.Add(skill);
         }
 
-        foreach (SkillInstance skill in player.Skills)
+        foreach (SkillInstance skill in ThePlayer.Skills)
         {
             if (skill.BaseSkill.SkillType == Skill.SkillTypes.Spell)
                 SkillList.Add(skill);

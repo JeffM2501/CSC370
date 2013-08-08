@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class Inventory
 {
+    public int GoldCoins = 0;
+
     protected List<Item> Items = new List<Item>();
     public int MaxItems = 12;
 
@@ -13,6 +15,11 @@ public class Inventory
     public Inventory(int maxItems)
     {
         MaxItems = maxItems;
+    }
+
+    public int ItemCount()
+    {
+        return Items.Count;
     }
 
     public Item[] GetItems()
