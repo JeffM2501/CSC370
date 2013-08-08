@@ -53,16 +53,18 @@ public class InventoryScreen : GUIPanel
 
         float boxSize = 70;
 
+        int id = 0;
         for (int r = 0; r < 2; r++)
         {
             for (int i = 0; i < 6; i++)
             {
-                int id = i + (r*6);
+               // int id = i + (r*6);
 
                 float x = leftBuffer + (i * (boxSize + xBuffer));
                 float y = yStart + (r * (ybuffer + boxSize));
                 GUIElement element = NewImageButton(Alignments.Absolute, x, Alignments.Absolute, y, boxSize, boxSize, null, InventoryClick);
                 element.ID = id;
+                id++;
                 InventorySlots.Add(element);
             }
         }
@@ -102,6 +104,10 @@ public class InventoryScreen : GUIPanel
             element.BackgroundImage = null;
         else
             element.BackgroundImage = item.InventoryIcon;
+
+        string icon = "NULL";
+        if (element.BackgroundImage != null)
+            icon = element.ToString();
     }
 
     public void SetInventoryItems()
@@ -112,6 +118,11 @@ public class InventoryScreen : GUIPanel
         SetElementImage(RightSlot, TheCharacter.EquipedItems.RightHand);
 
         for (int i = 0; i < InventorySlots.Count; i++)
-            SetElementImage(InventorySlots[i], TheCharacter.InventoryItems.GetItem(i));
+        {
+            Item invItem = TheCharacter.InventoryItems.GetItem(i);
+//             Debug.Log("SetElementImage  " + i.ToString() + " to ");
+//             Debug.Log(invItem);
+            SetElementImage(InventorySlots[i], invItem);
+        }
     }
 }

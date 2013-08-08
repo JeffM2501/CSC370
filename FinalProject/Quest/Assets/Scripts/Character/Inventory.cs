@@ -30,7 +30,7 @@ public class Inventory
 
     public bool AddItem(Item item)
     {
-        if (Items.Count == MaxItems)
+        if (item == null || Items.Count == MaxItems)
             return false;
 
         Items.Add(item);

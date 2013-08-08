@@ -78,6 +78,12 @@ public class Character
         return null;
     }
 
+    public void BackpackItem(Item item)
+    {
+        if (!InventoryItems.AddItem(item))
+            DropItem(item);
+    }
+
     public void EquipItem(Equipment item, Equipment.EquipmentLocation location)
     {
         Equipment returned = null;
@@ -86,7 +92,7 @@ public class Character
             returned = EquipedItems.EquipArmor(item);
         returned = EquipedItems.EquipWeapon(weapon, location == Equipment.EquipmentLocation.Weapon);
 
-        if (!InventoryItems.AddItem(returned))
+        if (returned != null && !InventoryItems.AddItem(returned))
             DropItem(returned);
 
         RebuildTempStats();
