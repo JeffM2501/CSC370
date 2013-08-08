@@ -63,6 +63,11 @@ public class Character
 
     public event GameState.EventCallback LayersChanged;
 
+    public virtual void Init()
+    {
+
+    }
+
     public SkillInstance GetSkillByName(string name)
     {
         foreach (SkillInstance skill in Skills)

@@ -20,6 +20,14 @@ public class Inventory
         return Items.ToArray();
     }
 
+    public Item GetItem( int index )
+    {
+        if (Items.Count <= index)
+            return null;
+
+        return Items[index];
+    }
+
     public bool AddItem(Item item)
     {
         if (Items.Count == MaxItems)

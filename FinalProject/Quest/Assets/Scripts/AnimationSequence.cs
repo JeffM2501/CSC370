@@ -121,7 +121,7 @@ public class AnimationSequence
 
     public void Update()
     {
-
+        // apply UVs to object
     }
 }
 

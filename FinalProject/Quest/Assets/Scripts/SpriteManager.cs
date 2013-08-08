@@ -16,7 +16,14 @@ public class SpriteManager
         {
             LayerImage = tex;
             LayerColor = c;
-            LayerMaterial = new Material(Resources.Load("Resources/DefaultSpriteMaterial") as Material);
+
+            UnityEngine.Object baseMat = Resources.Load("DefaultSpriteMaterial");
+            if (baseMat == null)
+                Debug.Log("Mat not found");
+            else
+                Debug.Log(baseMat);
+
+            LayerMaterial = new Material(baseMat as Material);
             LayerMaterial.color = c;
             LayerMaterial.SetTexture("_mainTexture", tex);
         }

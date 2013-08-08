@@ -246,9 +246,9 @@ public class GUIElement
 
         EfectiveBounds = new Rect(x, y, Bounds.width, Bounds.height);
 
-        Debug.Log("Building " + this.ToString() + " : " + Name);
-        Debug.Log("Parrent " + parrent.ToString()); 
-        Debug.Log("Bounds " + EfectiveBounds.ToString());
+    //    Debug.Log("Building " + this.ToString() + " : " + Name);
+    //    Debug.Log("Parrent " + parrent.ToString()); 
+     //   Debug.Log("Bounds " + EfectiveBounds.ToString());
 
         foreach (GUIElement elemment in Children)
             elemment.Rebuild(EfectiveBounds);
@@ -271,7 +271,15 @@ public class GUIElement
                 break;
 
             case ElementTypes.Button:
-                if (GUI.Button(EfectiveBounds,Name))
+
+                bool click = false;
+
+                if (BackgroundImage != null)
+                    click = GUI.Button(EfectiveBounds, BackgroundImage);
+                else
+                    click = GUI.Button(EfectiveBounds, Name);
+
+                if (click)
                 {
                     if (Clicked != null)
                         Clicked(this, EventArgs.Empty);

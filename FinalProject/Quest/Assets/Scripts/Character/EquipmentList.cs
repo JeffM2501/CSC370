@@ -14,6 +14,9 @@ public class EquipmentList
 
     public Weapon EquipWeapon(Weapon item, bool leftHand)
     {
+        if (item == null)
+            return item;
+
         if (item.Location != Equipment.EquipmentLocation.Weapon  && item.Location != Equipment.EquipmentLocation.OffHand)
             return item;
 
@@ -38,6 +41,9 @@ public class EquipmentList
 
     public Equipment EquipArmor(Equipment item)
     {
+        if (item == null)
+            return null;
+
         Equipment returnedItem = null;
 
         switch (item.Location)

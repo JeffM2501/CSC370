@@ -70,6 +70,8 @@ public class InventoryScreen : GUIPanel
         // gold label
         NewImage(Alignments.Absolute, 155, Alignments.Absolute, 245, Resources.Load("Items/GoldCoin") as Texture);
         GoldText = NewLabel(Alignments.Absolute, 190, Alignments.Absolute, 245, 100, 35, "000");
+
+        SetInventoryItems();
     }
 
     protected void SlotClick(object sender, EventArgs args)
@@ -92,5 +94,24 @@ public class InventoryScreen : GUIPanel
 
         int slotID = element.ID;
         Debug.Log("GUI item slot click " + slotID.ToString());
+    }
+
+    protected void SetElementImage(GUIElement element, Item item)
+    {
+        if (item == null || item.InventoryIcon == null)
+            element.BackgroundImage = null;
+        else
+            element.BackgroundImage = item.InventoryIcon;
+    }
+
+    public void SetInventoryItems()
+    {
+        SetElementImage(HeadSlot, TheCharacter.EquipedItems.Head);
+        SetElementImage(BodySlot, TheCharacter.EquipedItems.Torso);
+        SetElementImage(LeftSlot, TheCharacter.EquipedItems.LeftHand);
+        SetElementImage(RightSlot, TheCharacter.EquipedItems.RightHand);
+
+        for (int i = 0; i < InventorySlots.Count; i++)
+            SetElementImage(InventorySlots[i], TheCharacter.InventoryItems.GetItem(i));
     }
 }

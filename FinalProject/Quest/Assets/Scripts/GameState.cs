@@ -46,10 +46,11 @@ public class GameState
     {
         if (InputMan != null && GUI != null)
         {
-            SetPlayer(GameObject.Find("Player") as GameObject);
             SkillFactory.Setup();
             ItemFactory.Setup();
 
+            SetPlayer(GameObject.Find("Player") as GameObject);
+     
             GUI.Load();
         }
     }
@@ -63,6 +64,8 @@ public class GameState
         PlayerObject.Name = "Player1";
         PlayerObject.WorldObject = player;
         PlayerObject.PlayerMovemnt = player.GetComponent("Movement") as Movement;
+
+        PlayerObject.Init();
     }
 
     public void Update()

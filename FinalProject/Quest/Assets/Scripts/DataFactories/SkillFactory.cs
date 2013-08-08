@@ -88,6 +88,7 @@ public static class SkillFactory
         if (Skills.ContainsKey(name))
             return Skills[name];
 
+        Debug.Log("Skill count not found " + name);
         return null;
     }
 

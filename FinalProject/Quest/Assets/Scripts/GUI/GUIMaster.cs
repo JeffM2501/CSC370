@@ -33,7 +33,7 @@ public class GUIMaster : MonoBehaviour
 
     public void Load()
     {
-        Debug.Log("GUI Load");
+   //     Debug.Log("GUI Load");
 
         InventoryWindow = new InventoryScreen();
         InventoryWindow.Init();
@@ -74,7 +74,10 @@ public class GUIMaster : MonoBehaviour
     {
         InventoryWindow.Enabled = !InventoryWindow.Enabled;
 
-        Debug.Log("Toggle Inventory to " + InventoryWindow.Enabled.ToString());
+        if (InventoryWindow.Enabled)
+            InventoryWindow.SetInventoryItems();
+
+   //     Debug.Log("Toggle Inventory to " + InventoryWindow.Enabled.ToString());
     }
 
     protected int GetSkillCount()
