@@ -68,6 +68,11 @@ public class Skill
         return true;
     }
 
+    public virtual bool Useable(Character character)
+    {
+        return true;
+    }
+
     // called when ever we need to modify the character
     public virtual void OnApply(Character character, int level)
     {
@@ -105,18 +110,23 @@ public class SkillInstance
     }
 
     // called when ever we need to modify the character
-    public void OnApply(Character character)
+    public virtual void OnApply(Character character)
     {
         BaseSkill.OnApply(character, Level);
     }
 
-    public void OnAcivate(Character character)
+    public virtual void OnAcivate(Character character)
     {
         BaseSkill.OnAcivate(character, Level);
     }
 
-    public void OnUpgrade(Character character)
+    public virtual void OnUpgrade(Character character)
     {
         BaseSkill.OnUpgrade(character, Level);
+    }
+
+    public virtual bool Useable(Character character)
+    {
+        return BaseSkill.Useable(character);
     }
 }
