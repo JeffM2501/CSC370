@@ -14,6 +14,20 @@ public class Player : Character
 
     public override void Init()
     {
+        // TODO, when unity material bug is fixed, remove these lines
+        FemaleLayers.Add("TempSprites/Materials/body_f_base");
+        FemaleLayers.Add("TempSprites/Materials/body_f_base_hat");
+        FemaleLayers.Add("TempSprites/Materials/body_f_leather");
+        FemaleLayers.Add("TempSprites/Materials/body_f_leather_hat");
+        FemaleLayers.Add("TempSprites/Materials/body_f_plate");
+        FemaleLayers.Add("TempSprtes/Materials/body_f_plate_helm");
+
+        MaleLayers.Add("TempSprites/Materials/body_m_base");
+        MaleLayers.Add("TempSprites/Materials/body_m_base_hat");
+        MaleLayers.Add("TempSprites/Materials/body_m_leather");
+        MaleLayers.Add("TempSprites/Materials/body_m_leather_hat");
+        MaleLayers.Add("TempSprites/Materials/body_m_plate");
+        MaleLayers.Add("TempSprites/Materials/body_m_plate_helm");
 
         Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 2));
         Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
@@ -38,5 +52,12 @@ public class Player : Character
 
         base.Init();
         Anims.SetSequence("Walk");
+    }
+
+    public override void Move(Vector3 vec)
+    {
+        base.Move(vec);
+
+        PlayerMovemnt.Move(vec * (Speed * Time.deltaTime));
     }
 }

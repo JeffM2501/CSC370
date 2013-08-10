@@ -96,8 +96,13 @@ public class Character
     public List<SkillInstance> Skills = new List<SkillInstance>();
     public List<SpellInstance> Spells = new List<SpellInstance>();
 
-    protected bool UseLayers = true;
+    protected bool UseLayers = false;
     protected bool ForceHair = false;
+
+    // this is a hack because unity 4.2 broke my spite layering code
+    // see http://forum.unity3d.com/threads/192146-Unity-4-2-Multiple-Materials-draw-order for bug info
+    public List<string> FemaleLayers = new List<string>();
+    public List<string> MaleLayers = new List<string>();
 
     public string BaseLayer = string.Empty;
     public Color HairColor = Color.white;
@@ -230,6 +235,27 @@ public class Character
         GameObject.FindGameObjectsWithTag("Bundle");
     }
 
+    public virtual void Move(Vector3 vec)
+    {
+        float x = Mathf.Abs(vec.x);
+        float y = Mathf.Abs(vec.z);
+
+//         if (x < 0.01f && y < 0.01f && Anims.CurrentDirection != AnimationSequence.Directions.None)
+//             return;
+
+        if (x < 0.0001f && y < 0.0001f)
+            Anims.SetSequence("Idle");
+        else
+        {
+            Anims.SetSequence("Walk");
+            if (x > y)
+                Anims.SetDirection(vec.x < 0 ? AnimationSequence.Directions.East : AnimationSequence.Directions.West);
+            else
+                Anims.SetDirection(vec.z > 0 ? AnimationSequence.Directions.North : AnimationSequence.Directions.South);
+        }
+        
+    }
+
     public void RebuildTempStats()
     {
         AttackBonus = 0;
@@ -300,12 +326,49 @@ public class Character
          }
     }
 
+    protected string GetFixedSpriteImage(List<string> list)
+    {
+        if (FemaleLayers.Count == 1)
+            return list[0];
+        else
+        {
+            if (EquipedItems.Torso != null)
+            {
+                if (EquipedItems.Torso.Name == "Leather Armor")
+                {
+                    if (EquipedItems.Head != null)
+                        return list[3];
+                    else
+                        return list[2];
+                }
+                else if (EquipedItems.Torso.Name != "Cloth Shirt")
+                {
+                    if (EquipedItems.Head != null)
+                        return list[5];
+                    else
+                       return list[4];
+                }
+            }
+
+            if (EquipedItems.Head != null)
+                return list[1];
+            else
+                return list[0];
+        }
+    }
+
     public virtual void RebuildEquipment()
     {
         SpriteManager spriteMan = GameState.Instance.SpriteMan;
 
-        // base
-        GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, Color.white));
+        GraphicLayers.Clear();
+
+        if (!UseLayers && Gender == Genders.Female && FemaleLayers.Count > 0)
+            GraphicLayers.Add(spriteMan.GetLayer(GetFixedSpriteImage(FemaleLayers), Color.white));
+        else if (!UseLayers && Gender == Genders.Male && MaleLayers.Count > 0)
+            GraphicLayers.Add(spriteMan.GetLayer(GetFixedSpriteImage(MaleLayers), Color.white));
+        else
+            GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, Color.white));
 
         if (!UseLayers)
             return;
@@ -325,8 +388,8 @@ public class Character
         if (HairLayer != string.Empty && (ForceHair || EquipedItems.Head == null))
             GraphicLayers.Add(spriteMan.GetLayer(HairLayer, HairColor));
 
-       if (EquipedItems.Head != null)
-           GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
+    //   if (EquipedItems.Head != null)
+   //        GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
 
         if (LayersChanged != null)
             LayersChanged(this, EventArgs.Empty);

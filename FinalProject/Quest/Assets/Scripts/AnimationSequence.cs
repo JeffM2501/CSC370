@@ -136,6 +136,9 @@ public class AnimationSequence
 
     public void SetSequence(string name)
     {
+        if (CurrentAnimSet != null && name == CurrentAnimSet.Name)
+            return;
+
         LastUpdateTime = -9999;
 
         if (FrameSets.ContainsKey(name))
@@ -155,6 +158,9 @@ public class AnimationSequence
 
     public void SetDirection(Directions dir)
     {
+        if (dir == CurrentDirection)
+            return;
+
         CurrentDirection = dir;
         forceFrame = true;
     }

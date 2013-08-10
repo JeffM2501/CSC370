@@ -86,7 +86,7 @@ public class GameState
         if (PlayerObject == null)
             return;
 
-        PlayerObject.PlayerMovemnt.Move(vec * (PlayerObject.Speed * Time.deltaTime));
+        PlayerObject.Move(vec);
     }
 
     public void RoomStartup(RoomInstnace room)
