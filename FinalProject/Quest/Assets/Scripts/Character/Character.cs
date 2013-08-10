@@ -5,6 +5,8 @@ using System;
 
 public class Character
 {
+    public Character Target = null;
+
     public GameObject WorldObject;
 
     public UInt64 ID = UInt64.MinValue;
@@ -67,6 +69,17 @@ public class Character
     }
 
     public List<Buff> Buffs = new List<Buff>();
+
+    public void AddBuff(BuffTypes buff, float value, float durration)
+    {
+        Buff b = new Buff();
+        b.BuffType = buff;
+        b.Value = value;
+        b.Durration = durration;
+        b.StarTime = Time.time;
+        Buffs.Add(b);
+        RebuildTempStats();
+    }
 
     public int SkillSlots = 3;
 
@@ -131,6 +144,19 @@ public class Character
 
         foreach (TimedEvent evt in toKill)
             TimedEvents.Remove(evt);
+
+        List<Buff> buffsToKill = new List<Buff>();
+
+        foreach (Buff b in Buffs)
+        {
+            if (b.StarTime + b.Durration < Time.time)
+                buffsToKill.Add(b);
+        }
+
+        foreach (Buff b in buffsToKill)
+            Buffs.Remove(b);
+
+        RebuildTempStats();
     }
 
     public virtual void Init()
@@ -185,6 +211,8 @@ public class Character
         DefenseBonus = 0;
         HealthBonus = 0;
         SpeedBonus = 0;
+        DodgeBonus = 0;
+        CritBonus = 0;
 
         foreach (SkillInstance skill in Skills)
             skill.OnApply(this);
@@ -210,6 +238,40 @@ public class Character
          AttackBonus = weaponStatValue + AttackBonus;
 
          ArmorValue = EquipedItems.ArmorValue() + DefenseBonus;
+
+         foreach (Buff buff in Buffs)
+         {
+             switch (buff.BuffType)
+             {
+                 case BuffTypes.Attack:
+                     AttackBonus += (int)buff.Value;
+                     break;
+
+                 case BuffTypes.Defense:
+                     ArmorValue += (int)buff.Value;
+                     break;
+
+                 case BuffTypes.Health:
+                     HitPoints += (int)buff.Value;
+                     break;
+
+                 case BuffTypes.Speed:
+                     Speed += (int)buff.Value;
+                     break;
+
+                 case BuffTypes.Magic:
+                     MagicPower += (int)buff.Value;
+                     break;
+
+                 case BuffTypes.Dodge:
+                     DodgeBonus += buff.Value;
+                     break;
+
+                 case BuffTypes.Crit:
+                     CritBonus += buff.Value;
+                     break;
+             }
+         }
     }
 
     public virtual void RebuildEquipment()

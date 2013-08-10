@@ -30,22 +30,26 @@ public class SpellFeactory
                 );
     }
 
-    static int MagicMissile(int damage, int level, Spell spell)
+    static int MagicMissile(int damage, int level, Spell spell, Character caster)
     {
         // fire off spell effect
         return damage;
     }
 
-    static int FireBall(int damage, int level, Spell spell)
+    static int FireBall(int damage, int level, Spell spell, Character caster)
     {
         // fire off spell effect
         return damage;
     }
 
-    static int Shield(int damage, int level, Spell spell)
+    static int Shield(int damage, int level, Spell spell, Character caster)
     {
-        // fire off spell effect
-        return damage;
+        Character target = caster.Target;
+        if (target == null)
+            target = caster;
+
+        caster.AddBuff(Character.BuffTypes.Defense, 3 * level, 30 * level);
+        return 0;
     }
 
     protected static Spell AddSpell(   string name, string description, int mana, 

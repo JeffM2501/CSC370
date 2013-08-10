@@ -9,7 +9,7 @@ public class Spell : Skill
 
     public int Damage = 0;
 
-    public delegate int CastSpellCallback(int damage, int level, Spell spell);
+    public delegate int CastSpellCallback(int damage, int level, Spell spell, Character caster);
 
     public CastSpellCallback CastSpell;
 
