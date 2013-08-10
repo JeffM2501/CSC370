@@ -17,12 +17,12 @@ public class Equipment : Item
 
     public EquipmentLocation Location = EquipmentLocation.Torso;
 
-    public Texture MaleEquipmentLayer;
-    public Texture FemaleEquipmentLayer;
+    public string MaleEquipmentLayer;
+    public string FemaleEquipmentLayer;
 
     public Color LayerColor = Color.white;
 
-    public Texture GetTextureForGender(Character.Genders gender)
+    public string GetTextureForGender(Character.Genders gender)
     {
         return gender == Character.Genders.Male ? MaleEquipmentLayer : FemaleEquipmentLayer;
     }

@@ -40,21 +40,21 @@ public class ItemFactory
 
     public static void AddArmors()
     {
-        AddArmor("Cloth Shirt", "Items/Icons/A_Clothing01","Items/Armors/shirt_m","Items/Armors/shirt_f",Equipment.EquipmentLocation.Torso, 1);
-        AddArmor("Leather Armor", "Items/Icons/A_Armor01", "Items/Armors/leather_m", "Items/Armors/leather_f", Equipment.EquipmentLocation.Torso, 3);
-        AddArmor("Chain Mail Armor", "Items/Icons/A_Armor04", "Items/Armors/chain_m", "Items/Armors/chain_f", Equipment.EquipmentLocation.Torso, 7);
-        AddArmor("Plate Armor", "Items/Icons/A_Armor02", "Items/Armors/plate_m", "Items/Armors/plate_f", Equipment.EquipmentLocation.Torso, 12);
+        AddArmor("Cloth Shirt", "Items/Icons/A_Clothing01", "Items/Armors/Materials/shirt_m", "Items/Armors/Materials/shirt_f", Equipment.EquipmentLocation.Torso, 1);
+        AddArmor("Leather Armor", "Items/Icons/A_Armor01", "Items/ArmorsMaterials//leather_m", "Items/Armors/Materials/leather_f", Equipment.EquipmentLocation.Torso, 3);
+        AddArmor("Chain Mail Armor", "Items/Icons/A_Armor04", "Items/Armors/Materials/chain_m", "Items/Armors/Materials/chain_f", Equipment.EquipmentLocation.Torso, 7);
+        AddArmor("Plate Armor", "Items/Icons/A_Armor02", "Items/Armors/Materials/plate_m", "Items/Armors/Materials/plate_f", Equipment.EquipmentLocation.Torso, 12);
 
-        AddArmor("Cloth Hood", "Items/Icons/C_Hat03", "Items/Armors/clothhood_m", "Items/Armors/clothhood_f", Equipment.EquipmentLocation.Head, 1);
-        AddArmor("Leather Hat", "Items/Icons/C_Elm01", "Items/Armors/cap_m", "Items/Armors/cap_f", Equipment.EquipmentLocation.Head, 2);
-        AddArmor("Skullcap", "Items/Icons/C_Elm02", "Items/Armors/skullcap_m", "Items/Armors/skullcap_f", Equipment.EquipmentLocation.Head, 3);
-        AddArmor("Plate Helmet", "Items/Icons/C_Elm03", "Items/Armors/helm_m", "Items/Armors/helm_f", Equipment.EquipmentLocation.Head, 4);
+        AddArmor("Cloth Hood", "Items/Icons/C_Hat03", "Items/Armors/Materials/clothhood_m", "Items/Materials/Armors/clothhood_f", Equipment.EquipmentLocation.Head, 1);
+        AddArmor("Leather Hat", "Items/Icons/C_Elm01", "Items/Armors/Materials/cap_m", "Items/Armors/Materials/cap_f", Equipment.EquipmentLocation.Head, 2);
+        AddArmor("Skullcap", "Items/Icons/C_Elm02", "Items/Armors/Materials/skullcap_m", "Items/Armors/Materials/skullcap_f", Equipment.EquipmentLocation.Head, 3);
+        AddArmor("Plate Helmet", "Items/Icons/C_Elm03", "Items/Armors/Materials/helm_m", "Items/Armors/Materials/helm_f", Equipment.EquipmentLocation.Head, 4);
 
         Pants = new Equipment();
         Pants.Name = "Pants";
         Pants.InventoryIcon = null;
-        Pants.MaleEquipmentLayer = Resources.Load("Items/Armors/boots_m") as Texture;
-        Pants.FemaleEquipmentLayer = Resources.Load("Items/Armors/boots_f") as Texture;
+        Pants.MaleEquipmentLayer = "Items/Armors/Materials/boots_m";
+        Pants.FemaleEquipmentLayer = "Items/Armors/Materials/boots_f";
         Pants.Location = Equipment.EquipmentLocation.Unknown;
     }
 
@@ -85,8 +85,8 @@ public class ItemFactory
         Armor armor = new Armor();
         armor.Name = name;
         armor.InventoryIcon = Resources.Load(icon) as Texture;
-        armor.MaleEquipmentLayer = Resources.Load(maleLayer) as Texture;
-        armor.FemaleEquipmentLayer = Resources.Load(femaleLayer) as Texture;
+        armor.MaleEquipmentLayer = maleLayer;
+        armor.FemaleEquipmentLayer = femaleLayer;
         armor.Location = location;
         armor.ArmorValue = value;
 

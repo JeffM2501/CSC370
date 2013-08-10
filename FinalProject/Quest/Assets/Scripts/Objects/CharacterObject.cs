@@ -9,9 +9,19 @@ public class CharacterObject : MonoBehaviour
 
     protected Material RootMaterial = null;
 
-    public void SetCharactr(Character c)
+    public GameObject Billboard = null;
+
+    protected bool NeedRebuild = false;
+
+    protected AnimationSequence Anims = null;
+
+    public void SetCharacter(Character c)
     {
         TheCharacter = c;
+        NeedRebuild = true;
+
+        Anims = TheCharacter.Anims;
+        Anims.SetGameObject(Billboard);
     }
 
     void Alive()
@@ -27,16 +37,21 @@ public class CharacterObject : MonoBehaviour
 
 	void Update ()
 	{
-	
+        if (NeedRebuild && Billboard != null && TheCharacter != null)
+            BuildMaterialLayers();
 	}
 
     public void BuildMaterialLayers()
     {
+        if (Billboard == null)
+            return;
+
         List<Material> mats = new List<Material>();
 
         foreach (SpriteManager.SpriteLayer layer in TheCharacter.GetSpriteLayers())
             mats.Add(layer.LayerMaterial);
+        Billboard.renderer.materials = mats.ToArray();
 
-        gameObject.renderer.materials = mats.ToArray();
+        NeedRebuild = false;
     }
 }

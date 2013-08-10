@@ -12,31 +12,43 @@ public class SpriteManager
         public Color LayerColor = Color.white;
         public Material LayerMaterial = null;
 
-        public SpriteLayer(Texture tex, Color c)
+        public string MatName = string.Empty;
+
+        public SpriteLayer(string mat, Color c)
         {
-            LayerImage = tex;
+            MatName = mat;
             LayerColor = c;
-            LayerMaterial = new Material(Resources.Load("DefaultSpriteMaterial") as Material);
+
+            Material baseMat = Resources.Load(mat) as Material;
+            if (baseMat == null)
+            {
+                Debug.Log("Unable to load material " + mat);
+                return;
+            }
+
+            LayerMaterial = new Material(baseMat);
+            
+            LayerImage = LayerMaterial.mainTexture;
+            LayerMaterial.name += c.ToString();
             LayerMaterial.color = c;
-            LayerMaterial.SetTexture("_mainTexture", tex);
         }
 
-        public bool Equals(Texture tex, Color c)
+        public bool Equals(string mat, Color c)
         {
-           return LayerImage == tex && c == LayerColor;
+            return MatName == mat && c == LayerColor;
         }
     }
 
     public List<SpriteLayer> LayerCache = new List<SpriteLayer>();
 
-    public SpriteLayer GetLayer(Texture image, Color color )
+    public SpriteLayer GetLayer(string mat, Color color )
     {
         foreach(SpriteLayer layer in LayerCache)
         {
-            if (layer.Equals(image, color))
+            if (layer.Equals(mat, color))
                 return layer;
         }
-        SpriteLayer l = new SpriteLayer(image, color);
+        SpriteLayer l = new SpriteLayer(mat, color);
         LayerCache.Add(l);
         return l;
     }

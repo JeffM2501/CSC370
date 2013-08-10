@@ -14,6 +14,10 @@ public class Character
     public string Name = string.Empty;
 
     public int XP = 0;
+
+    public bool IsHominid = true;
+
+    public AnimationSequence Anims = null;
    
     public enum Genders
     {
@@ -95,12 +99,12 @@ public class Character
     protected bool UseLayers = true;
     protected bool ForceHair = false;
 
-    public Texture  BaseLayer;
-    public Color    HairColor = Color.white;
-    public Texture  HairLayer;
+    public string BaseLayer = string.Empty;
+    public Color HairColor = Color.white;
+    public string HairLayer = string.Empty;
 
     public Color EyeColor = Color.white;
-    public Texture EyeLayer = null;
+    public string EyeLayer = string.Empty;
 
     protected List<SpriteManager.SpriteLayer> GraphicLayers = new List<SpriteManager.SpriteLayer>();
 
@@ -162,12 +166,28 @@ public class Character
         foreach (Buff b in buffsToKill)
             Buffs.Remove(b);
 
-        RebuildTempStats();
+        if (HitPoints == 0)
+            RebuildTempStats();
+
+        if (Anims != null)
+            Anims.Update();
     }
 
     public virtual void Init()
     {
+        Material mat = Resources.Load(BaseLayer) as Material;
 
+        if (IsHominid)
+        {
+            Anims = new HominidAnimation(mat.mainTexture);
+        }
+        else
+        {
+            Anims = new MonsterAnimation(mat.mainTexture);
+            UseLayers = false;
+        }
+
+        WorldObject.GetComponent<CharacterObject>().SetCharacter(this);
     }
 
     public SkillInstance GetSkillByName(string name)
@@ -298,15 +318,15 @@ public class Character
             GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Torso.GetTextureForGender(Gender), EquipedItems.Torso.LayerColor));
 
         // eyes
-        if (EyeLayer != null)
+        if (EyeLayer != string.Empty)
             GraphicLayers.Add(spriteMan.GetLayer(EyeLayer, EyeColor));
 
         // hair or hats
-        if (HairLayer != null && (ForceHair || EquipedItems.Head == null))
-            GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, HairColor));
+        if (HairLayer != string.Empty && (ForceHair || EquipedItems.Head == null))
+            GraphicLayers.Add(spriteMan.GetLayer(HairLayer, HairColor));
 
-        if (EquipedItems.Head != null)
-            GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
+       if (EquipedItems.Head != null)
+           GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
 
         if (LayersChanged != null)
             LayersChanged(this, EventArgs.Empty);

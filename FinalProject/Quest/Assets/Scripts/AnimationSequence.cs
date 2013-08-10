@@ -43,9 +43,11 @@ public class AnimationSequence
     public Dictionary<string, AnimationSet> FrameSets = new Dictionary<string, AnimationSet>();
 
     public string CurrentSequence = string.Empty;
-    public Directions CurrentDirection = Directions.None;
+    public Directions CurrentDirection = Directions.South;
     
     protected AnimationSet CurrentAnimSet = null;
+
+    protected bool forceFrame = false;
 
     public int CurrentFrame = -1;
     public float LastUpdateTime = 0;
@@ -53,11 +55,16 @@ public class AnimationSequence
     public int MidFrame = 0;
 
     public GameObject SpriteQuad = null;
+    public Mesh TheMesh;
+
+    public void SetGameObject(GameObject obj)
+    {
+        TheMesh = obj.GetComponent<MeshFilter>().mesh;
+    }
 
     protected virtual void Init()
     {
         ImageSize = new Vector2(Image.width, Image.height);
-
     }
 
     protected virtual void ComputeFrames(int xFrames, int yFrame)
@@ -73,10 +80,17 @@ public class AnimationSequence
 
                 float startX = x * xOffset;
                 float startY = y * yOffset;
-                v.Add(new Vector2(startX, startY));
-                v.Add(new Vector2(startX + xOffset, startY));
-                v.Add(new Vector2(startX + xOffset, startY + yOffset));
-                v.Add(new Vector2(startX, startY + yOffset));
+// 
+//                 v.Add(new Vector2(startX, 1 - startY));
+//                 v.Add(new Vector2(startX + xOffset, 1 - startY - yOffset));
+//                 v.Add(new Vector2(startX + xOffset, 1 - startY));
+//                 v.Add(new Vector2(startX, 1 - startY - yOffset));
+
+
+                v.Add(new Vector2(startX, 1 - startY - yOffset));
+                v.Add(new Vector2(startX + xOffset, 1 - startY));
+                v.Add(new Vector2(startX, 1 - startY));
+                v.Add(new Vector2(startX + xOffset, 1 - startY - yOffset));
 
                 FrameUVs.Add(v.ToArray());
             }
@@ -92,10 +106,11 @@ public class AnimationSequence
 
                 float startX = x * xOffset;
                 float startY = y * yOffset;
-                v.Add(new Vector2(startX + xOffset, startY));
-                v.Add(new Vector2(startX, startY));
-                v.Add(new Vector2(startX, startY + yOffset));
-                v.Add(new Vector2(startX + xOffset, startY + yOffset));
+
+                v.Add(new Vector2(startX + xOffset, 1 - startY - yOffset));
+                v.Add(new Vector2(startX, 1 - startY));
+                v.Add(new Vector2(startX + xOffset, 1 - startY));
+                v.Add(new Vector2(startX, 1 - startY - yOffset));
 
                 FrameUVs.Add(v.ToArray());
             }
@@ -119,15 +134,106 @@ public class AnimationSequence
         FrameSets[name].Looping = loop;
     }
 
+    public void SetSequence(string name)
+    {
+        LastUpdateTime = -9999;
+
+        if (FrameSets.ContainsKey(name))
+            CurrentAnimSet = FrameSets[name];
+        else if (FrameSets.ContainsKey("Idle"))
+            CurrentAnimSet = FrameSets["Idle"];
+        else
+        {
+            CurrentAnimSet = null;
+            return;
+        }
+
+        CurrentSequence = CurrentAnimSet.Name;
+
+        CurrentFrame = -1;
+    }
+
+    public void SetDirection(Directions dir)
+    {
+        CurrentDirection = dir;
+        forceFrame = true;
+    }
+
+    public AnimationFrameSet FrameSetForDir()
+    {
+        if (CurrentAnimSet.Frames.ContainsKey(CurrentDirection))
+            return CurrentAnimSet.Frames[CurrentDirection];
+
+        if (CurrentAnimSet.Frames.ContainsKey(Directions.None))
+            return CurrentAnimSet.Frames[Directions.None];
+
+        if (CurrentAnimSet.Frames.ContainsKey(Directions.South))
+            return CurrentAnimSet.Frames[Directions.South];
+
+        if (CurrentAnimSet.Frames.Count > 0)
+        {
+            foreach (AnimationFrameSet a in CurrentAnimSet.Frames.Values)
+                return a;
+        }
+        return null;
+    }
+
+    int SetFrame( bool advance )
+    {
+        if (CurrentAnimSet == null)
+            SetSequence(CurrentSequence);
+
+        if (CurrentAnimSet == null)
+            return 0;
+        else
+        {
+            if (advance)
+                CurrentFrame++;
+
+            AnimationFrameSet set = FrameSetForDir();
+
+            if (CurrentFrame >= set.Length)
+            {
+                if (CurrentAnimSet.Looping)
+                    CurrentFrame = 0;
+                else if (CurrentAnimSet.EndAnimation != string.Empty)
+                {
+                    SetSequence(CurrentAnimSet.EndAnimation);
+                    return SetFrame(advance);
+                }
+                else
+                    CurrentFrame = set.Start + set.Length;
+            }
+
+            return set.Start + CurrentFrame;
+        }
+    }
+
     public void Update()
     {
+        // see if we have to change frames
+
+        int UVIndex = -1;
+
+        if (LastUpdateTime + FrameTime < Time.time || forceFrame)
+        {
+            UVIndex = SetFrame(LastUpdateTime + FrameTime < Time.time);
+            LastUpdateTime = Time.time;
+        }
+        else
+            return;
+
+        forceFrame = false;
+
         // apply UVs to object
+        if (TheMesh != null && UVIndex >= 0)
+            TheMesh.uv = FrameUVs[UVIndex];
     }
 }
 
 public class HominidAnimation : AnimationSequence
 {
-    public HominidAnimation(Texture2D image)
+    public HominidAnimation(Texture image)
     {
         Image = image;
         Init();
@@ -172,7 +278,7 @@ public class HominidAnimation : AnimationSequence
 
 public class MonsterAnimation : AnimationSequence
 {
-    public MonsterAnimation(Texture2D image)
+    public MonsterAnimation(Texture image)
     {
         Image = image;
         Init();
