@@ -24,6 +24,8 @@ public class GameState
 
     public bool Inited = false;
 
+    public Random Rand = new Random();
+
     public void Log(string message)
     {
         if (InputMan == null)

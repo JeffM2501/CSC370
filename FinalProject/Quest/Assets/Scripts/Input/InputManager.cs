@@ -3,6 +3,8 @@ using System.Collections;
 
 public class InputManager : MonoBehaviour 
 {
+    public GameObject CharacterPrefab = null;
+
 	void Start ()
 	{
         GameState.Instance.Init(this); // fire off the manager

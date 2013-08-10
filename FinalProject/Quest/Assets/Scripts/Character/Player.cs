@@ -26,8 +26,8 @@ public class Player : Character
         MaleLayers.Add("TempSprites/Materials/body_m_base_hat");
         MaleLayers.Add("TempSprites/Materials/body_m_leather");
         MaleLayers.Add("TempSprites/Materials/body_m_leather_hat");
-        MaleLayers.Add("TempSprites/Materials/body_m_plate");
-        MaleLayers.Add("TempSprites/Materials/body_m_plate_helm");
+        MaleLayers.Add("TempSprites/Materials/body_m_chain");
+        MaleLayers.Add("TempSprites/Materials/body_m_chain_hat");
 
         Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 2));
         Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
