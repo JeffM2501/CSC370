@@ -21,6 +21,9 @@ public class Character
 
     public Genders Gender = Genders.Female;
 
+    public int ManaSpent = 0;
+    public int Damage = 0;
+
     public int HitPoints = 0;
     public int MagicPower = 0;
     public float PerceptionRange = 0;
@@ -85,6 +88,7 @@ public class Character
 
     public Dictionary<Attribute.AttributeTypes, AttributeInstance> Attributes = new Dictionary<Attribute.AttributeTypes, AttributeInstance>();
     public List<SkillInstance> Skills = new List<SkillInstance>();
+    public List<SpellInstance> Spells = new List<SpellInstance>();
 
     protected bool UseLayers = true;
     protected bool ForceHair = false;
@@ -309,5 +313,60 @@ public class Character
     public virtual List<SpriteManager.SpriteLayer> GetSpriteLayers()
     {
         return GraphicLayers;
+    }
+
+    public virtual void Die()
+    {
+    }
+
+    public virtual int GetHealth()
+    {
+        return HitPoints - Damage;
+    }
+
+    public virtual int GetMana()
+    {
+        return MagicPower - ManaSpent;
+    }
+
+    public virtual void Heal(int amount)
+    {
+        Damage -= amount;
+        if (Damage < 0)
+            Damage = 0;
+    }
+
+    public virtual void TakeDamage(int amount)
+    {
+        Damage += amount;
+        if (Damage >= HitPoints)
+            Die();
+    }
+
+    public virtual void SpendMana(int amount)
+    {
+        ManaSpent += amount;
+    }
+
+    public virtual bool SetTarget(Character target)
+    {
+        Target = target;
+
+        return true;
+    }
+
+    public virtual bool BasicAttack()
+    {
+        return true;
+    }
+
+    public virtual bool ActivateSkill(SkillInstance skill)
+    {
+        return true;
+    }
+
+    public virtual bool CastSpell(SpellInstance skill)
+    {
+        return true;
     }
 }

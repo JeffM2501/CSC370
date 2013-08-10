@@ -20,12 +20,32 @@ public class SpellFeactory
                 );
 
         AddSpell("Fireball", "Creates a ball of fire on and around a target that does 5 points of damage per level",
-                10, 3, 250, 500, true, 3,
+                10, 5, 250, 500, true, 3,
                 FireBall
                 );
 
         AddSpell("Shield", "Creates a ball of fire on and around a target that does 5 points of damage per level",
-                10, 3, 250, 500, true, 3,
+                10, 3, 100, 500, true, 4,
+                Shield
+                );
+
+        AddSpell("Bless", "Adds 5% dodge to the target per level",
+               2, 0, 0, 100, false, 1,
+               Bless
+               );
+
+        AddSpell("Heal", "Adds 5% dodge to the target per level",
+               3, 10, 100, 500, false, 2,
+               Heal
+               );
+
+        AddSpell("Divine Light", "Does 6 points of damage to a target per level",
+               4, 6, 100, 500, false, 4,
+               DivineLight
+               );
+
+        AddSpell("Ring of Protection", "Creates an area on the ground that provides +6 armor per level",
+                6, 3, 100, 500, true, 3,
                 Shield
                 );
     }
@@ -48,8 +68,33 @@ public class SpellFeactory
         if (target == null)
             target = caster;
 
-        caster.AddBuff(Character.BuffTypes.Defense, 3 * level, 30 * level);
+        target.AddBuff(Character.BuffTypes.Defense, damage, 30 * level);
         return 0;
+    }
+
+    static int Bless(int damage, int level, Spell spell, Character caster)
+    {
+        Character target = caster.Target;
+        if (target == null)
+            target = caster;
+
+        target.AddBuff(Character.BuffTypes.Dodge, 0.05f * level, 15 * level);
+        return 0;
+    }
+
+    static int Heal(int damage, int level, Spell spell, Character caster)
+    {
+        Character target = caster.Target;
+        if (target == null)
+            target = caster;
+
+        target.Heal(damage);
+        return 0;
+    }
+
+    static int DivineLight(int damage, int level, Spell spell, Character caster)
+    {
+        return damage;
     }
 
     protected static Spell AddSpell(   string name, string description, int mana, 

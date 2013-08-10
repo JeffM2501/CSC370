@@ -31,6 +31,8 @@ public class Skill
     public int Upgrade = 0;
     public List<string> Requirements = new List<String>();
 
+    public float Range = 1;
+
     public List<string> AdditionalSkillsGranted = new List<string>();
 
     public virtual bool CharacterHasRequirements(Character character)

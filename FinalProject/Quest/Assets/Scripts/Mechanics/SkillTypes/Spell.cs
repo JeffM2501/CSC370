@@ -42,7 +42,7 @@ public class SpellInstance : SkillInstance
         int Damage = BaseSpell.Damage * Level;
 
         if (BaseSpell.CastSpell != null)
-            BaseSpell.CastSpell(Damage, Level, BaseSpell);
+            BaseSpell.CastSpell(Damage, Level, BaseSpell,character);
 
         // tell the combat system to damage the target
     }
