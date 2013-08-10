@@ -31,7 +31,7 @@ public class Player : Character
 
         Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 2));
         Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
-        Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 4));
+        Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
 
         Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 2));
         Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 1));

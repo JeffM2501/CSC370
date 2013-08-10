@@ -24,8 +24,6 @@ public class GameState
 
     public bool Inited = false;
 
-    public Random Rand = new Random();
-
     public void Log(string message)
     {
         if (InputMan == null)
@@ -69,6 +67,12 @@ public class GameState
         PlayerObject.PlayerMovemnt = player.GetComponent("Movement") as Movement;
 
         PlayerObject.Init();
+
+
+        MonsterFactory.NewOrc(player.transform.position + new Vector3(0, 0, -2));
+        MonsterFactory.NewSkellymans(player.transform.position + new Vector3(0, 0, -4));
+
+        MonsterFactory.NewBandit(player.transform.position + new Vector3(0, 0, -6));
     }
 
     public void Update()

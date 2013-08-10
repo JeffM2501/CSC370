@@ -111,6 +111,8 @@ public class Character
     public Color EyeColor = Color.white;
     public string EyeLayer = string.Empty;
 
+    protected Texture AnimTexture = null;
+
     protected List<SpriteManager.SpriteLayer> GraphicLayers = new List<SpriteManager.SpriteLayer>();
 
     public event GameState.EventCallback LayersChanged;
@@ -180,15 +182,16 @@ public class Character
 
     public virtual void Init()
     {
-        Material mat = Resources.Load(BaseLayer) as Material;
+        if (AnimTexture == null)
+            RebuildEquipment();
 
         if (IsHominid)
         {
-            Anims = new HominidAnimation(mat.mainTexture);
+            Anims = new HominidAnimation(AnimTexture);
         }
         else
         {
-            Anims = new MonsterAnimation(mat.mainTexture);
+            Anims = new MonsterAnimation(AnimTexture);
             UseLayers = false;
         }
 
@@ -369,6 +372,8 @@ public class Character
             GraphicLayers.Add(spriteMan.GetLayer(GetFixedSpriteImage(MaleLayers), Color.white));
         else
             GraphicLayers.Add(spriteMan.GetLayer(BaseLayer, Color.white));
+
+        AnimTexture = GraphicLayers[0].LayerImage;
 
         if (!UseLayers)
             return;

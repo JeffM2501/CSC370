@@ -11,10 +11,10 @@ public class MonsterFactory
         Monster orc = new Monster();
         orc.Name = "Orc";
 
-        if (GameState.Instance.Rand.NextDouble() > 0.5)
-            orc.MaleLayers.Add("TempSprites/Materials/body_o_base");
+        if (UnityEngine.Random.value > 0.5)
+            orc.MaleLayers.Add("TempSprites/Materials/ork");
         else
-            orc.MaleLayers.Add("TempSprites/Materials/body_o_leather");
+            orc.MaleLayers.Add("TempSprites/Materials/orc2");
 
         orc.FemaleLayers = orc.MaleLayers;
         SetStats(orc, 3, 1, 2,25);
@@ -23,12 +23,13 @@ public class MonsterFactory
         orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 2));
         orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
 
-        orc.InventoryItems.GoldCoins = 10 + GameState.Instance.Rand.Next(10);
+        orc.InventoryItems.GoldCoins = (int)UnityEngine.Random.Range(10,20);
 
         orc.EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
+        orc.EquipItem(ItemFactory.FindItemByName("Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
         orc.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
 
-        return AttachToGame(orc, location);
+        return AttachToGame(orc, location,1.45f);
     }
 
     public static Character NewBandit(Vector3 location)
@@ -36,7 +37,7 @@ public class MonsterFactory
         Monster mon = new Monster();
         mon.Name = "Bandit";
 
-        if (GameState.Instance.Rand.NextDouble() > 0.125)
+        if (UnityEngine.Random.value > 0.125)
             mon.MaleLayers.Add("TempSprites/Materials/bandit");
         else
         {
@@ -45,18 +46,50 @@ public class MonsterFactory
         }
 
         mon.FemaleLayers = mon.MaleLayers;
-        SetStats(mon, 3, 1, 2, 25);
+        SetStats(mon, 2, 2, 2, 25);
 
         mon.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 3));
 
-        mon.InventoryItems.GoldCoins = 20 + GameState.Instance.Rand.Next(100);
+        mon.InventoryItems.GoldCoins = (int)UnityEngine.Random.Range(20, 120);
 
         mon.EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
-        EquipItem(ItemFactory.FindItemByName("Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
+        mon.EquipItem(ItemFactory.FindItemByName("Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
         mon.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
 
-        return AttachToGame(mon, location);
+        return AttachToGame(mon, location,1.25f);
     }
+
+    public static Character NewSkellymans(Vector3 location)
+    {
+        Monster mon = new Monster();
+        mon.Name = "Skellyman";
+
+        bool isFancy = UnityEngine.Random.value < 0.25;
+        if (!isFancy)
+            mon.MaleLayers.Add("TempSprites/Materials/skeleton");
+        else
+        {
+            mon.MaleLayers.Add("TempSprites/Materials/skeleton_chain");
+            mon.Name = "Dire " + mon.Name;
+        }
+
+        mon.FemaleLayers = mon.MaleLayers;
+        if (isFancy)
+            SetStats(mon, 2, 1, 1, 25);
+        else
+            SetStats(mon, 3, 0, 2, 50);
+
+        mon.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), isFancy ? 4 : 2));
+
+        mon.InventoryItems.GoldCoins = 0;
+
+        mon.EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
+        mon.EquipItem(ItemFactory.FindItemByName( isFancy ? " Mail Armor" : "Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
+       // mon.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+
+        return AttachToGame(mon, location,1.25f);
+    }
+
 
     public static void SetStats(Character c, int might, int smarts, int agiligy, int xp)
     {
@@ -66,12 +99,12 @@ public class MonsterFactory
         c.XP = xp;
     }
 
-    public static Character AttachToGame(Character c, Vector3 loc)
+    public static Character AttachToGame(Character c, Vector3 loc, float scale)
     {
         GameState.Instance.ActiveCharacters.Add(c);
         c.WorldObject = MonoBehaviour.Instantiate(GameState.Instance.InputMan.CharacterPrefab) as GameObject;
         c.WorldObject.transform.position = new Vector3(loc.x,loc.y,loc.z);
-
+        c.WorldObject.transform.localScale = new Vector3(scale, scale, scale);
         c.Init();
 
         return c;
