@@ -12,7 +12,7 @@ public class SpellFeactory
         AddSpell("Magic Missile", "Fires off a magical energy blast that does 1 damage per level",
                 5, 1, 0, 100, true, 1,
                 MagicMissile
-                );
+                ).MaxLevel = 10;
 
         AddSpell("Fire burst", "Creates a beam of fire that does 3 damage per level to a target",
                 5, 3, 100, 500, true, 2,
@@ -25,9 +25,9 @@ public class SpellFeactory
                 );
 
         AddSpell("Shield", "Creates a ball of fire on and around a target that does 5 points of damage per level",
-        10, 3, 250, 500, true, 3,
-        FireBall
-        );
+                10, 3, 250, 500, true, 3,
+                Shield
+                );
     }
 
     static int MagicMissile(int damage, int level, Spell spell)
@@ -37,6 +37,12 @@ public class SpellFeactory
     }
 
     static int FireBall(int damage, int level, Spell spell)
+    {
+        // fire off spell effect
+        return damage;
+    }
+
+    static int Shield(int damage, int level, Spell spell)
     {
         // fire off spell effect
         return damage;
@@ -55,6 +61,7 @@ public class SpellFeactory
         spell.CastSpell = effector;
         spell.Purchase = purchase;
         spell.Upgrade = upgrade;
+        spell.MaxLevel = 5;
         spell.Requirements.Add((arcane ? "Arcane" : "Divine") + requirement.ToString());
 
         Spells.Add(spell.Name, spell);

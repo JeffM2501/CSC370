@@ -37,12 +37,36 @@ public class Character
     public int DefenseBonus = 0;
 
     public float DodgeBonus = 0;
+
     public float CritBonus = 0;
 
     public int HealthBonus = 0;
     public int MagicBonus = 0;
 
     public float SpeedBonus = 0;
+
+    public enum BuffTypes
+    {
+        Unknown,
+        Attack,
+        Defense,
+        Crit,
+        Dodge,
+        Health,
+        Magic,
+        Speed,
+    }
+
+    public class Buff
+    {
+        public BuffTypes BuffType = BuffTypes.Unknown;
+        public float Value = 0;
+
+        public float StarTime = 0;
+        public float Durration = 0;
+    }
+
+    public List<Buff> Buffs = new List<Buff>();
 
     public int SkillSlots = 3;
 
@@ -62,6 +86,52 @@ public class Character
     protected List<SpriteManager.SpriteLayer> GraphicLayers = new List<SpriteManager.SpriteLayer>();
 
     public event GameState.EventCallback LayersChanged;
+
+    public delegate bool TimedEventCallback (Character sender, object tag);
+
+    public class TimedEvent
+    {
+        public float Interval = 0;
+        public object Tag = null;
+        public int Repeats = 0;
+        public TimedEventCallback Callback;
+        public float LastUpdate = 0;
+        public int Count = 0;
+    }
+
+    public List<TimedEvent> TimedEvents = new List<TimedEvent>();
+
+    public virtual void AddTimedEvent(float interval, int repeats, TimedEventCallback callback, object tag)
+    {
+        TimedEvent evt = new TimedEvent();
+        evt.Interval = interval;
+        evt.Repeats = repeats;
+        evt.Callback = callback;
+        evt.LastUpdate = Time.time;
+
+        TimedEvents.Add(evt);
+    }
+
+    public virtual void Update()
+    {
+        List<TimedEvent> toKill = new List<TimedEvent>();
+        foreach (TimedEvent evt in TimedEvents)
+        {
+            if (evt.LastUpdate + evt.Interval < Time.time)
+            {
+                if (evt.Callback(this, evt.Tag) || evt.Count >= evt.Repeats)
+                    toKill.Add(evt);
+                else
+                {
+                    evt.Count++;
+                    evt.LastUpdate = Time.time;
+                }
+            }
+        }
+
+        foreach (TimedEvent evt in toKill)
+            TimedEvents.Remove(evt);
+    }
 
     public virtual void Init()
     {

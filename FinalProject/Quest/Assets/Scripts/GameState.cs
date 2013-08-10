@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class GameState
@@ -13,7 +14,7 @@ public class GameState
 
     public Player PlayerObject;
 
-    int CurrentRoom = -1;
+    public List<Character> ActiveCharacters = new List<Character>();
 
     Level LevelMap = new Level();
 
@@ -70,6 +71,12 @@ public class GameState
 
     public void Update()
     {
+        if (PlayerObject != null)
+            PlayerObject.Update();
+
+        foreach (Character c in ActiveCharacters)
+            c.Update();
+
         if (Input.GetKeyDown(KeyCode.I))
             GUI.ToggleInventory();
     }
@@ -80,11 +87,6 @@ public class GameState
             return;
 
         PlayerObject.PlayerMovemnt.Move(vec * (PlayerObject.Speed * Time.deltaTime));
-    }
-
-    public void PlayerMoveRoom(RoomInstnace room, GameObject player)
-    {
-        CurrentRoom = room.RoomID;
     }
 
     public void RoomStartup(RoomInstnace room)

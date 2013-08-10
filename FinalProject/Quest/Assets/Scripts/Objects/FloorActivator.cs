@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 public class FloorActivator : MonoBehaviour
 {
-    RoomInstnace Room = null;
+   // RoomInstnace Room = null;
 	void Start ()
 	{
-        Room = transform.parent.gameObject.GetComponent<RoomInstnace>();
+    //    Room = transform.parent.gameObject.GetComponent<RoomInstnace>();
 	}
 
 	void Update ()
@@ -21,6 +21,6 @@ public class FloorActivator : MonoBehaviour
         if (col.gameObject.tag != "Player")
             return;
 
-        GameState.Instance.PlayerMoveRoom(Room, col.gameObject);
+     //   GameState.Instance.PlayerMoveRoom(Room, col.gameObject);
     }
 }

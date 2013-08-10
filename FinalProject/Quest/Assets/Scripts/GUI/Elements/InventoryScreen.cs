@@ -104,10 +104,6 @@ public class InventoryScreen : GUIPanel
             element.BackgroundImage = null;
         else
             element.BackgroundImage = item.InventoryIcon;
-
-        string icon = "NULL";
-        if (element.BackgroundImage != null)
-            icon = element.ToString();
     }
 
     public void SetInventoryItems()
