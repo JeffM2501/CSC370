@@ -12,6 +12,8 @@ public class Character
     public UInt64 ID = UInt64.MinValue;
 
     public string Name = string.Empty;
+
+    public int XP = 0;
    
     public enum Genders
     {

@@ -57,6 +57,11 @@ public class GUIPanel : IDisposable
 
     }
 
+    protected void Close(object sender, EventArgs args)
+    {
+        Enabled = false;
+    }
+
     public void Init()
     {
         Pannels.Add(this);
@@ -153,6 +158,22 @@ public class GUIPanel : IDisposable
         return element;
     }
 
+    public GUIElement NewImageButton(Alignments hAlign, float x, Alignments vAlign, float y, Texture image, EventHandler handler)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, image.width, image.height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Button;
+
+        element.Clicked += handler;
+
+        Elements.Add(element);
+        return element;
+    }
+
     public GUIElement NewImage(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture image)
     {
         GUIElement element = new GUIElement();
@@ -194,11 +215,43 @@ public class GUIPanel : IDisposable
         Elements.Add(element);
         return element;
     }
+
+    public GUIElement NewFrame(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.ElementType = GUIElement.ElementTypes.Frame;
+        Elements.Add(element);
+        return element;
+    }
+
+    public GUIElement NewScrollView(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Rect innerSize, bool horizontal)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.ElementType = horizontal ? GUIElement.ElementTypes.HorizontalScrollFrame : GUIElement.ElementTypes.VerticalScrollFrame;
+        element.InnerSize = innerSize;
+        Elements.Add(element);
+        return element;
+    }
 }
 
 [System.Serializable]
 public class GUIElement
 {
+    protected Vector2 ScrollPoition = Vector2.zero;
+
+    public int FontSize = -1;
+    public Color FontColor = Color.clear;
+
+    public GUIStyle TextStyle = null;
+
     public int ID = 0;
 
     public bool Enabled = true;
@@ -208,8 +261,12 @@ public class GUIElement
 
     protected Rect EfectiveBounds = new Rect();
 
+    public Rect InnerSize = new Rect();
+
     public GUIPanel.Alignments HAlignement = GUIPanel.Alignments.Absolute;
     public GUIPanel.Alignments VAlignement = GUIPanel.Alignments.Absolute;
+
+    public object Tag = null;
 
     [System.Serializable]
     public enum ElementTypes
@@ -217,8 +274,9 @@ public class GUIElement
         Label,
         Frame,
         Button,
-        ImageButton,
         Image,
+        VerticalScrollFrame,
+        HorizontalScrollFrame,
     }
 
     public ElementTypes ElementType = ElementTypes.Frame;
@@ -229,6 +287,24 @@ public class GUIElement
 
     public Texture BackgroundImage = null;
     public string Name = string.Empty;
+
+    public void Clear()
+    {
+        Children.Clear();
+    }
+
+    public void SetFont(Color color, int fontSize)
+    {
+        FontColor = color;
+        FontSize = fontSize;
+    }
+
+    public void BuildFontStuff()
+    {
+        TextStyle = new GUIStyle();
+        TextStyle.fontSize = FontSize;
+        TextStyle.normal.textColor = FontColor;
+    }
 
     public virtual void Rebuild(Rect parrent)
     {
@@ -263,7 +339,16 @@ public class GUIElement
         switch (ElementType)
         {
             case ElementTypes.Label:
-                GUI.Label(EfectiveBounds, Name);
+                {
+                    if (FontColor != Color.clear && FontSize > 0 && TextStyle == null)
+                        BuildFontStuff();
+
+                    if (TextStyle != null)
+                        GUI.Label(EfectiveBounds, Name,TextStyle);
+                    else
+                        GUI.Label(EfectiveBounds, Name);
+                }
+                
                 break;
 
             case ElementTypes.Image:
@@ -285,10 +370,28 @@ public class GUIElement
                         Clicked(this, EventArgs.Empty);
                 }
                 break;
+
+            case ElementTypes.Frame:
+                GUI.BeginGroup(EfectiveBounds);
+                break;
+
+            case ElementTypes.VerticalScrollFrame:
+                ScrollPoition = GUI.BeginScrollView(EfectiveBounds, Vector2.zero, InnerSize,false,true);
+                break;
+
+            case ElementTypes.HorizontalScrollFrame:
+                ScrollPoition = GUI.BeginScrollView(EfectiveBounds, Vector2.zero, InnerSize, true, false);
+                break;
         }
 
         foreach (GUIElement element in Children)
             element.Draw();
+
+        if (ElementType == ElementTypes.Frame)
+            GUI.EndGroup();
+        else if (ElementType == ElementTypes.HorizontalScrollFrame || ElementType == ElementTypes.VerticalScrollFrame)
+            GUI.EndScrollView();
+
         GUI.depth++;
     }
 
@@ -299,6 +402,22 @@ public class GUIElement
         element.HAlignement = hAlign;
         element.VAlignement = vAlign;
         element.Bounds = new Rect(x, y, width, height);
+        element.BackgroundImage = image;
+        element.ElementType = GUIElement.ElementTypes.Button;
+
+        element.Clicked += handler;
+
+        Children.Add(element);
+        return element;
+    }
+
+    public GUIElement NewImageButton(GUIPanel.Alignments hAlign, float x, GUIPanel.Alignments vAlign, float y, Texture image, EventHandler handler)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, image.width, image.height);
         element.BackgroundImage = image;
         element.ElementType = GUIElement.ElementTypes.Button;
 

@@ -37,7 +37,7 @@ public class InventoryScreen : GUIPanel
         else
             this.Background = Resources.Load("GUI/InventoryMale") as Texture;
 
-        GameState.Instance.Log(this.Background.ToString());
+        NewImageButton(Alignments.Max, 25, Alignments.Absolute, 25, Resources.Load("GUI/CloseBox") as Texture, Close);
 
         // equipped items
         HeadSlot = NewImageButton(Alignments.Center, -3, Alignments.Absolute, 20, 86, 80, null, SlotClick);
