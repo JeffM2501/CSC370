@@ -42,6 +42,7 @@ public class BattleManager
 
         if (UnityEngine.Random.value <= defender.DodgeBonus)
         {
+            Debug.Log("Attak Dodged");
             Miss(attacker);
             return;
         }
@@ -51,8 +52,11 @@ public class BattleManager
 
         int targetNum = (int)(20 * hitChance);
 
+        Debug.Log("Hit Roll = " + hitRoll.ToString() + " vs " + targetNum.ToString());
+
         if (hitRoll < targetNum)
         {
+            Debug.Log("Miss");
             Miss(attacker);
             return;
         }
@@ -68,6 +72,7 @@ public class BattleManager
 
             float armorParam = Mathf.Min(damage / defender.ArmorValue, 1.0f);
 
+            Debug.Log("Hit Damage = Raw " + damage.ToString() + " Param " + armorParam.ToString());
             damage =  (int)(damage * armorParam);
         }
 

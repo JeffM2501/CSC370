@@ -25,6 +25,12 @@ public class CharacterObject : MonoBehaviour
     float LastHitStart = 0;
     public float HitFlashDurration = 1;
 
+    protected bool Dying = false;
+    public float DeathDurration = 4f;
+    protected float DeathTime = 0;
+    public float DieSinkSpeed = 2.0f;
+    public float DieSinkDelay = 2;
+
     public void SetCharacter(Character c)
     {
         TheCharacter = c;
@@ -61,11 +67,24 @@ public class CharacterObject : MonoBehaviour
                 Billboard.renderer.materials[0].color = OrigonalColor;
             }
         }
+
+        if (Dying && gameObject.activeSelf)
+        {
+            float delta = Time.time - DeathTime;
+
+            if (delta > DieSinkDelay)
+            {
+                transform.Translate(0,-1f * DieSinkSpeed * Time.deltaTime, 0);
+
+                if (delta > DeathDurration)
+                    gameObject.SetActive(false);
+            }
+        }
 	}
 
     public void Hit()
     {
-        if (InHit)
+        if (InHit || Dying)
             return;
         if (HitPlane != null)
             HitPlane.SetActive(true);
@@ -74,6 +93,15 @@ public class CharacterObject : MonoBehaviour
         Billboard.renderer.materials[0].color = HitFlashColor;
         InHit = true;
         LastHitStart = Time.time;
+    }
+
+    public void Die()
+    {
+        if (Dying || !gameObject.activeSelf)
+            return;
+
+        Dying = true;
+        DeathTime = Time.time;
     }
 
     public void BuildMaterialLayers()

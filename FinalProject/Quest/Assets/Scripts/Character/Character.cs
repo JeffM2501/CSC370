@@ -229,6 +229,12 @@ public class Character
         SetupWeaponAnim();
     }
 
+    public virtual void Bury()
+    {
+        if (WorldObject != null)
+            MonoBehaviour.Destroy(WorldObject);
+    }
+
     protected void AnimComplete(object sender, EventArgs args)
     {
         if (Anims.CurrentSequence == "Idle" || Anims.CurrentSequence == "Walk")
@@ -511,6 +517,12 @@ public class Character
         if (WorldObject.audio != null && DieSound != null)
             WorldObject.audio.PlayOneShot(DieSound);
         Select(false);
+
+        CharacterObject obj = WorldObject.GetComponent<CharacterObject>();
+        if (obj != null)
+            obj.Die();
+
+        GameState.Instance.DropLoot(this);
     }
 
     public virtual int GetHealth()
@@ -532,6 +544,9 @@ public class Character
 
     public virtual void TakeDamage(int amount)
     {
+        if (amount <= 0)
+            amount = 1;
+
         if (amount > 0 && WorldObject.audio != null && HitSound != null)
             WorldObject.audio.PlayOneShot(HitSound);
 
@@ -688,5 +703,11 @@ public class Character
             if (child.name.Contains("Bounce"))
                 child.gameObject.SetActive(select);
         }
+    }
+
+    public void ClearInventory()
+    {
+        InventoryItems.Clear();
+        EquipedItems.Clear();
     }
 }

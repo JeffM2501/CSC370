@@ -9,6 +9,7 @@ public class GameState
 
     public static GameState Instance = new GameState();
 
+    public static GlobalPrefabs Prefabs = null;
     public InputManager InputMan;
     public SpriteManager SpriteMan = new SpriteManager();
     public BattleManager BattleMan = new BattleManager();
@@ -85,9 +86,23 @@ public class GameState
         if (PlayerObject != null)
             PlayerObject.Update();
 
+        List<Character> newlyDead = new List<Character>();
+
         foreach (Character c in ActiveCharacters)
+        {
             c.Update();
 
+            if (!c.Alive && !c.WorldObject.gameObject.activeSelf)
+                newlyDead.Add(c);
+        }
+
+        // bring out yer dead
+        foreach (Character c in newlyDead)
+        {
+            c.Bury();
+            ActiveCharacters.Remove(c);
+        }
+       
         if (Input.GetKeyDown(KeyCode.I))
             GUI.ToggleInventory();
 
@@ -99,6 +114,10 @@ public class GameState
             GameObject nearest = null;
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
             {
+                CharacterObject c = obj.GetComponent<CharacterObject>();
+                if (!obj.gameObject.activeSelf || c == null || !c.TheCharacter.Alive)
+                    continue;
+
                 float d = Vector3.Distance(PlayerObject.WorldObject.transform.position, obj.transform.position);
 
                 if (d < PlayerObject.PerceptionRange)
@@ -132,6 +151,37 @@ public class GameState
             GUI.ProcessSkillClick(7);
         else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
             GUI.ProcessSkillClick(8);
+        else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
+            GUI.ProcessSkillClick(9);
+
+    }
+
+    protected ItemContainer GetBag(Vector3 location)
+    {
+        GameObject bag = FindGameObjectInRadius(location, "LootDrop", 2.0f);
+
+        if (bag == null)
+        {
+            bag = MonoBehaviour.Instantiate(Prefabs.DroppedBag) as GameObject;
+            bag.transform.position = new Vector3(location.x, 0.125f, location.z);
+        }
+
+        return bag.GetComponent<ItemContainer>();
+    }
+
+    public void DropLoot(Character character)
+    {
+        ItemContainer container = GetBag(character.WorldObject.transform.position);
+        
+        container.Items.AddItem(character.EquipedItems.Head);
+        container.Items.AddItem(character.EquipedItems.Torso);
+        container.Items.AddItem(character.EquipedItems.LeftHand);
+        container.Items.AddItem(character.EquipedItems.RightHand);
+
+        foreach (Item item in character.InventoryItems.GetItems())
+            container.Items.AddItem(item);
+
+        character.ClearInventory();
     }
 
     public void MovePlayer(Vector3 vec)
@@ -186,12 +236,7 @@ public class GameState
 
     public void DropItem(Item item, Vector3 location)
     {
-        GameObject nearestBag = FindGameObjectInRadius(location, "DropedBag", 2.0f);
-
-        if (nearestBag == null)
-            nearestBag = MonoBehaviour.Instantiate(GUI.DropedBagGraphic) as GameObject;
-        
-        // get the bag container and add the item
+        GetBag(location).Items.AddItem(item);
     }
 
 }
