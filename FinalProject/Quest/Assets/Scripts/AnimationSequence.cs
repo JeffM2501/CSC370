@@ -279,10 +279,15 @@ public class HominidAnimation : AnimationSequence
         AddSequence("HandAttack", Directions.South, 36, 6, true, false);
         AddSequence("HandAttack", Directions.East, 36, 6, true, false);
 
-        AddSequence("RangedAttack", Directions.North, 45, 18, false, false);
-        AddSequence("RangedAttack", Directions.West, 45, 18, false, false);
-        AddSequence("RangedAttack", Directions.South, 45, 18, true, false);
-        AddSequence("RangedAttack", Directions.East, 45, 18, true, false);
+        AddSequence("RangedAttack", Directions.North, 54, 9, false, false);
+        AddSequence("RangedAttack", Directions.West, 54, 9, false, false);
+        AddSequence("RangedAttack", Directions.South, 54, 9, true, false);
+        AddSequence("RangedAttack", Directions.East, 54, 9, true, false);
+
+        AddSequence("StaffAttack", Directions.North, 45, 9, false, false);
+        AddSequence("StaffAttack", Directions.West, 45, 9, false, false);
+        AddSequence("StaffAttack", Directions.South, 45, 9, true, false);
+        AddSequence("StaffAttack", Directions.East, 45, 9, true, false);
 
         AddSequence("Cast", Directions.North, 63, 9, false, false);
         AddSequence("Cast", Directions.West, 63, 9, false, false);
@@ -329,6 +334,11 @@ public class MonsterAnimation : AnimationSequence
         AddSequence("RangedAttack", Directions.West, 3, 3, false, true);
         AddSequence("RangedAttack", Directions.South, 6, 3, false, true);
         AddSequence("RangedAttack", Directions.East, 9, 3, false, true);
+
+        AddSequence("StaffAttack", Directions.North, 0, 3, false, true);
+        AddSequence("StaffAttack", Directions.West, 3, 3, false, true);
+        AddSequence("StaffAttack", Directions.South, 6, 3, false, true);
+        AddSequence("StaffAttack", Directions.East, 9, 3, false, true);
 
         AddSequence("Cast", Directions.North, 0, 3, false, true);
         AddSequence("Cast", Directions.West, 3, 3, false, true);

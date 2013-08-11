@@ -229,7 +229,7 @@ public class Cleave : Skill
     {
         base.OnAcivate(character,level);
         int bonus = level * 2;
-        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.25f, character.AttackBonus + bonus, Range, character.EquipedItems.WieldingMaxDamage(), character.EquipedItems.WieldingMaxDamage() * 2);
     }
 }
 
@@ -255,7 +255,7 @@ public class Headshot : Skill
     {
         base.OnAcivate(character, level);
         int bonus = level * 2;
-        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.25f, character.AttackBonus + bonus, Range, character.EquipedItems.WieldingMaxDamage(), character.EquipedItems.WieldingMaxDamage() * 2);
     }
 }
 
@@ -279,7 +279,7 @@ public class Claw : Skill
     {
         base.OnAcivate(character, level);
         int bonus = level * 3;
-        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.5f,character.AttackBonus + bonus, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
     }
 }
 

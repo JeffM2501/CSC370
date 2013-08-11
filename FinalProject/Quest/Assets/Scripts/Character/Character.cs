@@ -534,9 +534,19 @@ public class Character
         return HitPoints - Damage;
     }
 
+    public virtual float GetHealthParam()
+    {
+        return GetHealth()/(float)HitPoints;
+    }
+
     public virtual int GetMana()
     {
         return MagicPower - ManaSpent;
+    }
+
+    public virtual float GetManaParam()
+    {
+        return GetMana() / (float)MagicPower;
     }
 
     public virtual void Heal(int amount)
@@ -588,7 +598,7 @@ public class Character
             return false;
         UseSkill(BasicAttackSkill);
         Debug.Log("Basic Attack!");
-        GameState.Instance.BattleMan.PhysicalAttack(this, Target, 0.5f, BasicAttackSkill.BaseSkill.Range, EquipedItems.WieldingMinDamage(), EquipedItems.WieldingMaxDamage());
+        GameState.Instance.BattleMan.PhysicalAttack(this, Target, 0.5f, AttackBonus, BasicAttackSkill.BaseSkill.Range, EquipedItems.WieldingMinDamage(), EquipedItems.WieldingMaxDamage());
         AttackComplete();
         return true;
     }
@@ -598,6 +608,7 @@ public class Character
         if (!SkillUseable(skill))
             return false;
         UseSkill(skill);
+        skill.OnAcivate(this);
         Debug.Log("Use Skill " + skill.BaseSkill.Name);
         AttackComplete();
         return true;
@@ -608,6 +619,7 @@ public class Character
         if (!SkillUseable(spell))
             return false;
         UseSkill(spell);
+        spell.OnAcivate(this);
         Debug.Log("Cast Spell " + spell.BaseSpell.Name);
         AttackComplete();
         return true;

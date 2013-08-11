@@ -35,7 +35,7 @@ public class BattleManager
             defender.WorldObject.audio.PlayOneShot(HitSound);
     }
 
-    public void PhysicalAttack(Character attacker, Character defender, float hitChance, float attackRange, int minDamage, int maxDamage)
+    public void PhysicalAttack(Character attacker, Character defender, float hitChance, int skill, float attackRange, int minDamage, int maxDamage)
     {
         if (defender == null || Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
             return;
@@ -48,7 +48,7 @@ public class BattleManager
         }
 
         int roll = UnityEngine.Random.Range(1, 20);
-        int hitRoll = roll + attacker.AttackValue;
+        int hitRoll = roll + skill;
 
         int targetNum = (int)(20 * hitChance);
 
@@ -79,6 +79,9 @@ public class BattleManager
         }
 
         defender.TakeDamage(damage);
+
+        if (defender.Damage >= defender.HitPoints)
+            attacker.XP += defender.XP;
     }
 
     public void SpellAttack(Character attacker, Character defender, float attackRange, int damage)

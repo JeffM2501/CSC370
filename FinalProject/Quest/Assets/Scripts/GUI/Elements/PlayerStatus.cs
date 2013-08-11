@@ -39,8 +39,19 @@ public class PlayerStatus : GUIPanel
         ManaBar = StatsFrame.NewImage(Alignments.Absolute, 24, Alignments.Absolute, 26, Resources.Load("GUI/MagicStatusFill") as Texture);
         ManaBar.Name = "Mana bar";
 
-        SetMana(1f);
-        SetHealth(1f);
+        SetHealth(TheCharacter.GetHealthParam());
+        SetMana(TheCharacter.GetManaParam());
+    }
+
+    public override void PreDraw()
+    {
+        base.PreDraw();
+
+        if (TheCharacter != null)
+        {
+            SetHealth(TheCharacter.GetHealthParam());
+            SetMana(TheCharacter.GetManaParam());
+        }
     }
 
     protected static float BarWidth = 102;
