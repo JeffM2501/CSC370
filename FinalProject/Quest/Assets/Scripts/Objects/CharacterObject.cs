@@ -11,9 +11,19 @@ public class CharacterObject : MonoBehaviour
 
     public GameObject Billboard = null;
 
+    public GameObject HitPlane = null;
+
     protected bool NeedRebuild = false;
 
     protected AnimationSequence Anims = null;
+
+    protected Color OrigonalColor = Color.white;
+
+    public Color HitFlashColor = Color.red;
+
+    bool InHit = false;
+    float LastHitStart = 0;
+    public float HitFlashDurration = 1;
 
     public void SetCharacter(Character c)
     {
@@ -32,14 +42,39 @@ public class CharacterObject : MonoBehaviour
 
 	void Start ()
 	{
-	    
+        if (HitPlane != null)
+            HitPlane.SetActive(false);
 	}
 
 	void Update ()
 	{
         if (NeedRebuild && Billboard != null && TheCharacter != null)
             BuildMaterialLayers();
+
+        if (InHit)
+        {
+            if (LastHitStart + HitFlashDurration < Time.time)
+            {
+                if (HitPlane != null)
+                    HitPlane.SetActive(false);
+                InHit = false;
+                Billboard.renderer.materials[0].color = OrigonalColor;
+            }
+        }
 	}
+
+    public void Hit()
+    {
+        if (InHit)
+            return;
+        if (HitPlane != null)
+            HitPlane.SetActive(true);
+
+        OrigonalColor = Billboard.renderer.materials[0].color;
+        Billboard.renderer.materials[0].color = HitFlashColor;
+        InHit = true;
+        LastHitStart = Time.time;
+    }
 
     public void BuildMaterialLayers()
     {

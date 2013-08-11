@@ -536,8 +536,10 @@ public class Character
             WorldObject.audio.PlayOneShot(HitSound);
 
         Damage += amount;
-   //     if (Damage >= HitPoints)
-  //          Die();
+
+        CharacterObject obj = WorldObject.GetComponent<CharacterObject>();
+        if (obj != null)
+            obj.Hit();
 
         Debug.Log(Name + " Took Damage: " + amount.ToString());
     }
