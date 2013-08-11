@@ -218,8 +218,9 @@ public class Cleave : Skill
         Requirements.Add("Might 2");
         this.SkillType = Skill.SkillTypes.Active;
         MaxLevel = 10;
-        Description = "Large melee attack that hits all around";
+        Description = "Large meele attack that hits all around";
 
+        AnimType = ActiveAnimationTypes.Meele;
         Cooldown = 15;
     }
 
@@ -243,6 +244,8 @@ public class Headshot : Skill
         Description = "Ranged attack with bonus damage";
 
         Cooldown = 2;
+
+        AnimType = ActiveAnimationTypes.Ranged;
     }
 
     public override void OnAcivate(Character character, int level)
@@ -289,6 +292,10 @@ public class BasicWeaponAttack : Skill
         Name = name;
         IconImage = icon;
         SkillWeapon = wep;
+
+        AnimType = ActiveAnimationTypes.Meele;
+        if (wep == Weapon.WeaponTypes.Bow)
+            AnimType = ActiveAnimationTypes.Ranged;
     }
 
     public override void OnAcivate(Character character, int level)

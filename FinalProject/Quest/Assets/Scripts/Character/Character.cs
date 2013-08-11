@@ -19,6 +19,8 @@ public class Character
 
     public AnimationSequence Anims = null;
 
+    protected bool Animating = false;
+
     protected WeaponAnimation WeaponAnim = null;
    
     public enum Genders
@@ -203,8 +205,18 @@ public class Character
             UseLayers = false;
         }
 
+        Anims.AnimationComplete += AnimComplete;
+
         WorldObject.GetComponent<CharacterObject>().SetCharacter(this);
         SetupWeaponAnim();
+    }
+
+    protected void AnimComplete(object sender, EventArgs args)
+    {
+        if (Anims.CurrentSequence == "Idle" || Anims.CurrentSequence == "Walk")
+            return;
+
+        Animating = false;
     }
 
     protected void SetupWeaponAnim()
@@ -282,16 +294,19 @@ public class Character
 //             return;
 
         if (x < 0.0001f && y < 0.0001f)
-            Anims.SetSequence("Idle");
+        {
+            if (!Animating)
+                Anims.SetSequence("Idle");
+        }
         else
         {
-            Anims.SetSequence("Walk");
+            if (!Animating)
+                Anims.SetSequence("Walk");
             if (x > y)
                 Anims.SetDirection(vec.x < 0 ? AnimationSequence.Directions.East : AnimationSequence.Directions.West);
             else
                 Anims.SetDirection(vec.z > 0 ? AnimationSequence.Directions.North : AnimationSequence.Directions.South);
-        }
-        
+        }   
     }
 
     public void RebuildTempStats()
@@ -446,6 +461,9 @@ public class Character
 
     protected void SetWeaponSprites()
     {
+        if (WeaponAnim == null)
+            return;
+
         if (EquipedItems.WeaponType() == Weapon.WeaponTypes.Hand)
             WeaponAnim.Stop();
         else
@@ -582,6 +600,33 @@ public class Character
         }
 
         return param;
+    }
+
+    public void AnimateTo(Skill.ActiveAnimationTypes animType)
+    {
+        if (WeaponAnim == null || Animating || animType == Skill.ActiveAnimationTypes.None)
+            return;
+
+        WeaponAnim.Stop();
+
+        Animating = true;
+        switch (animType)
+        {
+            case Skill.ActiveAnimationTypes.Meele:
+                Anims.SetSequence("HandAttack");
+                break;
+
+            case Skill.ActiveAnimationTypes.Casting:
+                Anims.SetSequence("Cast");
+                break;
+
+            case Skill.ActiveAnimationTypes.Ranged:
+                Anims.SetSequence("RangedAttack");
+                break;
+        }
+
+        if (animType != Skill.ActiveAnimationTypes.Casting)
+            WeaponAnim.Play();
     }
 
     public void Select(bool select)

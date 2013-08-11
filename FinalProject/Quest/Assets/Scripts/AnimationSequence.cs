@@ -316,18 +316,15 @@ public class MonsterAnimation : AnimationSequence
         AddSequence("Idle", Directions.South, 6, 3, false, true);
         AddSequence("Idle", Directions.East, 9, 3, false, true);
 
-
         AddSequence("HandAttack", Directions.North, 0, 3, false, true);
         AddSequence("HandAttack", Directions.West, 3, 3, false, true);
         AddSequence("HandAttack", Directions.South, 6, 3, false, true);
         AddSequence("HandAttack", Directions.East, 9, 3, false, true);
 
-
         AddSequence("RangedAttack", Directions.North, 0, 3, false, true);
         AddSequence("RangedAttack", Directions.West, 3, 3, false, true);
         AddSequence("RangedAttack", Directions.South, 6, 3, false, true);
         AddSequence("RangedAttack", Directions.East, 9, 3, false, true);
-
 
         AddSequence("Cast", Directions.North, 0, 3, false, true);
         AddSequence("Cast", Directions.West, 3, 3, false, true);

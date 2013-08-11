@@ -9,6 +9,16 @@ public class Skill
     public string IconImage = string.Empty;
 
     public string Description = string.Empty;
+
+    public enum ActiveAnimationTypes
+    {
+        None,
+        Meele,
+        Ranged,
+        Casting,
+    }
+
+    public ActiveAnimationTypes AnimType = ActiveAnimationTypes.None;
     
     public enum SkillTypes
     {

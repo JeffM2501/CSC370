@@ -47,6 +47,17 @@ public class GUIMaster : MonoBehaviour
             width = Camera.main.pixelWidth;
         }
 
+        if (StatusWindow != null && ThePlayer != null)
+        {
+            if (ThePlayer.HitPoints != 0)
+                StatusWindow.SetHealth(ThePlayer.Damage / (float)ThePlayer.HitPoints);
+
+            if (ThePlayer.ManaSpent != 0)
+                StatusWindow.SetMana(ThePlayer.ManaSpent / (float)ThePlayer.MagicPower);
+            else
+                StatusWindow.SetMana(0);
+        }
+
         // check for clicks
         if (Input.GetMouseButtonDown(0))
         {

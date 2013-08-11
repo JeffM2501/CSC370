@@ -113,6 +113,8 @@ public class SpellFeactory
         spell.MaxLevel = 5;
         spell.Requirements.Add((arcane ? "Arcane" : "Divine") + requirement.ToString());
 
+        spell.AnimType = Skill.ActiveAnimationTypes.Casting;
+
         Spells.Add(spell.Name, spell);
         return spell;
     }
