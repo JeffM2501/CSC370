@@ -229,7 +229,7 @@ public class Character
             Transform child = WorldObject.transform.GetChild(i);
             if (child.name.Contains("WeaponPlane"))
             {
-                for (int j = 0; j < child.transform.childCount; i++)
+                for (int j = 0; j < child.transform.childCount; j++)
                 {
                     Transform meshChild = child.GetChild(j);
 
