@@ -53,4 +53,9 @@ public class Inventory
         Items.RemoveAt(index);
         return ret;
     }
+
+    public void Clear()
+    {
+        Items.Clear();
+    }
 }

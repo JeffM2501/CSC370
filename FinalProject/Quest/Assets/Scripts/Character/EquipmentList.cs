@@ -123,4 +123,14 @@ public class EquipmentList
             value += (Torso as Armor).ArmorValue;
         return value;
     }
+
+    public void Clear()
+    {
+        Head = null;
+        Torso = null;
+        LeftHand = null;
+        RightHand = null;
+        Ring = null;
+        Amulet = null;
+    }
 }

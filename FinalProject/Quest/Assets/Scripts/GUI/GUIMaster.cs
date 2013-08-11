@@ -73,6 +73,10 @@ public class GUIMaster : MonoBehaviour
 
                 if (hit.transform.gameObject.tag == "Mob")
                     GameState.Instance.SelectMob(hit.transform.gameObject);
+                if (hit.transform.gameObject.tag == "LootDrop")
+                {
+                    // bring up the loot dialog
+                }
             }
         }
 	}
