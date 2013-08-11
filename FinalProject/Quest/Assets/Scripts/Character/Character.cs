@@ -5,6 +5,8 @@ using System;
 
 public class Character
 {
+    public bool Alive = true;
+
     public Character Target = null;
 
     public GameObject WorldObject;
@@ -129,6 +131,8 @@ public class Character
 
     public event EventHandler EquipementChanged = null;
 
+    public event EventHandler Death;
+
     public class TimedEvent
     {
         public float Interval = 0;
@@ -154,6 +158,14 @@ public class Character
 
     public virtual void Update()
     {
+        if (Damage >= HitPoints)
+        {
+            Anims.SetSequence("Dying");
+            Alive = false;
+            if (Death != null)
+                Death(this, EventArgs.Empty);
+        }
+
         List<TimedEvent> toKill = new List<TimedEvent>();
         foreach (TimedEvent evt in TimedEvents)
         {
@@ -234,11 +246,13 @@ public class Character
                     Transform meshChild = child.GetChild(j);
 
                     WeaponAnim = meshChild.GetComponent<WeaponAnimation>();
-                    if (WeaponAnim != null)
+                    if (WeaponAnim == null)
                         return;
                 }
             }
         }
+
+        SetWeaponSprites();
     }
 
     public SkillInstance GetSkillByName(string name)
@@ -551,6 +565,8 @@ public class Character
     {
         LastSkillUse = Time.time;
         skill.LastUse = LastSkillUse;
+
+        AnimateTo(skill.BaseSkill.AnimType);
     }
 
     public bool SkillUseable( SkillInstance skill )

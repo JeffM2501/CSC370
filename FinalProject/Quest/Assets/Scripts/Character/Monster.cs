@@ -5,5 +5,5 @@ using System;
 
 public class Monster : Character
 {
-
+    public bool Activated = false;
 }

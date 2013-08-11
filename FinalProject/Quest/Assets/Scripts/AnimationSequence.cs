@@ -211,15 +211,18 @@ public class AnimationSequence
                 if (AnimationComplete != null)
                     AnimationComplete(this, EventArgs.Empty);
 
-                if (CurrentAnimSet.Looping)
-                    CurrentFrame = 0;
-                else if (CurrentAnimSet.EndAnimation != string.Empty)
+                if (CurrentAnimSet != null)
                 {
-                    SetSequence(CurrentAnimSet.EndAnimation);
-                    return SetFrame(advance);
-                }
-                else
-                    CurrentFrame = set.Start + set.Length;
+                    if (CurrentAnimSet.Looping)
+                        CurrentFrame = 0;
+                    else if (CurrentAnimSet.EndAnimation != string.Empty)
+                    {
+                        SetSequence(CurrentAnimSet.EndAnimation);
+                        return SetFrame(advance);
+                    }
+                    else
+                        CurrentFrame = set.Start + set.Length;
+                }   
             }
 
             return set.Start + CurrentFrame;
@@ -243,7 +246,7 @@ public class AnimationSequence
         forceFrame = false;
 
         // apply UVs to object
-        if (TheMesh != null && UVIndex >= 0)
+        if (TheMesh != null && UVIndex >= 0 && UVIndex < FrameUVs.Count)
             TheMesh.uv = FrameUVs[UVIndex];
     }
 }
@@ -271,10 +274,10 @@ public class HominidAnimation : AnimationSequence
         AddSequence("Idle", Directions.South, 18, 0, false, true);
         AddSequence("Idle", Directions.East, 27, 0, false, true);
 
-        AddSequence("HandAttack", Directions.North, 36, 9, false, false);
-        AddSequence("HandAttack", Directions.West, 36, 9, false, false);
-        AddSequence("HandAttack", Directions.South, 36, 9, true, false);
-        AddSequence("HandAttack", Directions.East, 36, 9, true, false);
+        AddSequence("HandAttack", Directions.North, 36, 6, false, false);
+        AddSequence("HandAttack", Directions.West, 36, 6, false, false);
+        AddSequence("HandAttack", Directions.South, 36, 6, true, false);
+        AddSequence("HandAttack", Directions.East, 36, 6, true, false);
 
         AddSequence("RangedAttack", Directions.North, 45, 18, false, false);
         AddSequence("RangedAttack", Directions.West, 45, 18, false, false);

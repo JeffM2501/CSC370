@@ -110,23 +110,23 @@ public class GameState
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
-            GUI.ProcessSkillClick(1);
+            GUI.ProcessSkillClick(0);
         else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
-            GUI.ProcessSkillClick(2);
+            GUI.ProcessSkillClick(1);
         else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
-            GUI.ProcessSkillClick(3);
+            GUI.ProcessSkillClick(2);
         else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
-            GUI.ProcessSkillClick(4);
+            GUI.ProcessSkillClick(3);
         else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
-            GUI.ProcessSkillClick(5);
+            GUI.ProcessSkillClick(4);
         else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
-            GUI.ProcessSkillClick(6);
+            GUI.ProcessSkillClick(5);
         else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
-            GUI.ProcessSkillClick(7);
+            GUI.ProcessSkillClick(6);
         else if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
-            GUI.ProcessSkillClick(8);
+            GUI.ProcessSkillClick(7);
         else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
-            GUI.ProcessSkillClick(9);
+            GUI.ProcessSkillClick(8);
     }
 
     public void MovePlayer(Vector3 vec)
