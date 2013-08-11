@@ -56,6 +56,7 @@ public class Inventory
 
     public void Clear()
     {
+        GoldCoins = 0;
         Items.Clear();
     }
 }

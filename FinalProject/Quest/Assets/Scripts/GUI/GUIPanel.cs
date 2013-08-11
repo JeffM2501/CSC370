@@ -142,6 +142,22 @@ public class GUIPanel : IDisposable
 
     }
 
+    public GUIElement NewButton(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, string text, EventHandler handler)
+    {
+        GUIElement element = new GUIElement();
+
+        element.HAlignement = hAlign;
+        element.VAlignement = vAlign;
+        element.Bounds = new Rect(x, y, width, height);
+        element.Name = text;
+        element.ElementType = GUIElement.ElementTypes.Button;
+
+        element.Clicked += handler;
+
+        Elements.Add(element);
+        return element;
+    }
+
     public GUIElement NewImageButton(Alignments hAlign, float x, Alignments vAlign, float y, float width, float height, Texture image, EventHandler handler)
     {
         GUIElement element = new GUIElement();

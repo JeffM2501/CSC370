@@ -107,31 +107,7 @@ public class GameState
             GUI.ToggleInventory();
 
         if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            // select nearest enemy in perception
-
-            float dist = float.MaxValue;
-            GameObject nearest = null;
-            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
-            {
-                CharacterObject c = obj.GetComponent<CharacterObject>();
-                if (!obj.gameObject.activeSelf || c == null || !c.TheCharacter.Alive)
-                    continue;
-
-                float d = Vector3.Distance(PlayerObject.WorldObject.transform.position, obj.transform.position);
-
-                if (d < PlayerObject.PerceptionRange)
-                {
-                    if (nearest == null || (d < dist))
-                    {
-                        nearest = obj;
-                        dist = d;
-                    }
-                }
-            }
-
-            SelectMob(nearest);
-        }
+            SelectNearestMob();
 
         if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
             GUI.ProcessSkillClick(0);
@@ -156,6 +132,31 @@ public class GameState
 
     }
 
+    public void SelectNearestMob()
+    {
+        float dist = float.MaxValue;
+        GameObject nearest = null;
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
+        {
+            CharacterObject c = obj.GetComponent<CharacterObject>();
+            if (!obj.gameObject.activeSelf || c == null || !c.TheCharacter.Alive)
+                continue;
+
+            float d = Vector3.Distance(PlayerObject.WorldObject.transform.position, obj.transform.position);
+
+            if (d < PlayerObject.PerceptionRange)
+            {
+                if (nearest == null || (d < dist))
+                {
+                    nearest = obj;
+                    dist = d;
+                }
+            }
+        }
+
+        SelectMob(nearest);
+    }
+
     protected ItemContainer GetBag(Vector3 location)
     {
         GameObject bag = FindGameObjectInRadius(location, "LootDrop", 2.0f);
@@ -163,7 +164,7 @@ public class GameState
         if (bag == null)
         {
             bag = MonoBehaviour.Instantiate(Prefabs.DroppedBag) as GameObject;
-            bag.transform.position = new Vector3(location.x, 0.125f, location.z);
+            bag.transform.position = new Vector3(location.x, 0.25f, location.z);
         }
 
         return bag.GetComponent<ItemContainer>();
@@ -180,6 +181,10 @@ public class GameState
 
         foreach (Item item in character.InventoryItems.GetItems())
             container.Items.AddItem(item);
+
+        container.Items.GoldCoins += character.InventoryItems.GoldCoins;
+
+        container.name = character.Name;
 
         character.ClearInventory();
     }

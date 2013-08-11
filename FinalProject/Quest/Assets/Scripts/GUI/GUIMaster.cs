@@ -5,9 +5,6 @@ using System.Collections.Generic;
 
 public class GUIMaster : MonoBehaviour
 {
-    public GameObject LootBag;
-    public GameObject LootBouncer;
-
     public GUISkin Skin;
 
     protected List<SkillInstance> SkillList = new List<SkillInstance>();
@@ -19,8 +16,7 @@ public class GUIMaster : MonoBehaviour
     protected InventoryScreen InventoryWindow;
     protected PlayerStatus StatusWindow;
     protected TargetSelection Selector;
-
-    public GameObject DropedBagGraphic;
+    protected LootScreen Loot;
 
     public float width = 0;
 
@@ -73,9 +69,10 @@ public class GUIMaster : MonoBehaviour
 
                 if (hit.transform.gameObject.tag == "Mob")
                     GameState.Instance.SelectMob(hit.transform.gameObject);
-                if (hit.transform.gameObject.tag == "LootDrop")
+                else if (hit.transform.gameObject.tag == "LootDrop")
                 {
-                    // bring up the loot dialog
+                    GameState.Instance.SelectMob(null);
+                    Loot.Show(hit.transform.gameObject.GetComponent<ItemContainer>());
                 }
             }
         }
@@ -83,8 +80,6 @@ public class GUIMaster : MonoBehaviour
 
     public void Load()
     {
-   //     Debug.Log("GUI Load");
-
         InventoryWindow = new InventoryScreen();
         InventoryWindow.Init();
 
@@ -94,6 +89,10 @@ public class GUIMaster : MonoBehaviour
         Selector = new TargetSelection();
         Selector.Init();
         Selector.Enabled = false;
+
+        Loot = new LootScreen();
+        Loot.Init();
+        Loot.Enabled = false;
 
         SetPlayer(GameState.Instance.PlayerObject);
     }
@@ -140,8 +139,12 @@ public class GUIMaster : MonoBehaviour
 
         if (InventoryWindow.Enabled)
             InventoryWindow.SetInventoryItems();
+    }
 
-   //     Debug.Log("Toggle Inventory to " + InventoryWindow.Enabled.ToString());
+    public void UpdateInventory()
+    {
+        if (InventoryWindow.Enabled)
+            InventoryWindow.SetInventoryItems();
     }
 
     public void SelectCharacter(Character character)
@@ -192,7 +195,8 @@ public class GUIMaster : MonoBehaviour
         if (skill == null || !skill.Useable(player))
             return;
 
-        // fire off all 
+        if (player.Target == null)
+            GameState.Instance.SelectNearestMob();
 
         if (id == 0)
             player.BasicAttack();

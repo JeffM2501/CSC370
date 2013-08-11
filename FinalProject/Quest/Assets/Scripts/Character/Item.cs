@@ -9,4 +9,8 @@ public class Item
     public Texture InventoryIcon;
     public Texture LootIcon;
 
+    public virtual bool OnActivate(Character character)
+    {
+        return false;
+    }
 }

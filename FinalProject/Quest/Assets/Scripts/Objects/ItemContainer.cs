@@ -7,6 +7,8 @@ public class ItemContainer : MonoBehaviour
  {
     public Inventory Items = new Inventory();
 
+    public string Name = "Droped Bag";
+
 	void Start ()
 	{
 	    Items.MaxItems = int.MaxValue;

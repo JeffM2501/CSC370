@@ -283,6 +283,11 @@ public class Character
             DropItem(item);
     }
 
+    public void EquipItem(Equipment item)
+    {
+        EquipItem(item, Equipment.EquipmentLocation.Weapon);
+    }
+
     public void EquipItem(Equipment item, Equipment.EquipmentLocation location)
     {
         Equipment returned = null;
@@ -457,27 +462,26 @@ public class Character
 
         AnimTexture = GraphicLayers[0].LayerImage;
 
-        if (!UseLayers)
-            return;
+        if (UseLayers)
+        {
+            // pants, everyone gets em
+            GraphicLayers.Add(spriteMan.GetLayer(ItemFactory.Pants.GetTextureForGender(Gender),Color.white));
 
-        // pants, everyone gets em
-        GraphicLayers.Add(spriteMan.GetLayer(ItemFactory.Pants.GetTextureForGender(Gender),Color.white));
+            // shirts
+            if (EquipedItems.Torso != null)
+                GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Torso.GetTextureForGender(Gender), EquipedItems.Torso.LayerColor));
 
-        // shirts
-        if (EquipedItems.Torso != null)
-            GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Torso.GetTextureForGender(Gender), EquipedItems.Torso.LayerColor));
+            // eyes
+            if (EyeLayer != string.Empty)
+                GraphicLayers.Add(spriteMan.GetLayer(EyeLayer, EyeColor));
 
-        // eyes
-        if (EyeLayer != string.Empty)
-            GraphicLayers.Add(spriteMan.GetLayer(EyeLayer, EyeColor));
+            // hair or hats
+            if (HairLayer != string.Empty && (ForceHair || EquipedItems.Head == null))
+                GraphicLayers.Add(spriteMan.GetLayer(HairLayer, HairColor));
 
-        // hair or hats
-        if (HairLayer != string.Empty && (ForceHair || EquipedItems.Head == null))
-            GraphicLayers.Add(spriteMan.GetLayer(HairLayer, HairColor));
-
-    //   if (EquipedItems.Head != null)
-   //        GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
-
+        //   if (EquipedItems.Head != null)
+       //        GraphicLayers.Add(spriteMan.GetLayer(EquipedItems.Head.GetTextureForGender(Gender), EquipedItems.Head.LayerColor));
+        }
         if (LayersChanged != null)
             LayersChanged(this, EventArgs.Empty);
 
@@ -540,6 +544,13 @@ public class Character
         Damage -= amount;
         if (Damage < 0)
             Damage = 0;
+    }
+
+    public virtual void AddMana(int amount)
+    {
+        ManaSpent -= amount;
+        if (ManaSpent < 0)
+            ManaSpent = 0;
     }
 
     public virtual void TakeDamage(int amount)

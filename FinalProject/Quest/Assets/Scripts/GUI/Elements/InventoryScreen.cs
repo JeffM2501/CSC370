@@ -99,7 +99,20 @@ public class InventoryScreen : GUIPanel
         int slotID = element.ID;
         Debug.Log("GUI item slot click " + slotID.ToString());
 
-        GameState.Instance.GUI.SelectItem(TheCharacter.InventoryItems.GetItem(slotID));
+        Item item = TheCharacter.InventoryItems.GetItem(slotID);
+
+        GameState.Instance.GUI.SelectItem(item);
+
+        Equipment equipment = item as Equipment;
+        if (equipment != null)
+            TheCharacter.EquipItem(TheCharacter.InventoryItems.RemoveItem(slotID) as Equipment);
+        else
+        {
+            if (item.OnActivate(TheCharacter))
+                TheCharacter.InventoryItems.RemoveItem(slotID);
+        }
+
+        SetInventoryItems();
     }
 
     protected void SetElementImage(GUIElement element, Item item)
@@ -126,5 +139,7 @@ public class InventoryScreen : GUIPanel
 //             Debug.Log(invItem);
             SetElementImage(InventorySlots[i], invItem);
         }
+
+        GoldText.Name = TheCharacter.InventoryItems.GoldCoins.ToString();
     }
 }

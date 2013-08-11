@@ -31,19 +31,19 @@ public class ItemFactory
 
     public static void AddItems()
     {
-        AddItem("Watermelon", "Items/Icons/I_C_Watermellon");
-        AddItem("Small Mana Potion", "Items/Icons/p_Blue02");
-        AddItem("Large Mana Potion", "Items/Icons/p_Blue01");
-        AddItem("Small Health Potion", "Items/Icons/p_Red02");
-        AddItem("Large Health Potion", "Items/Icons/p_Red01");
+        AddItem("Watermelon", "Items/Icons/I_C_Watermellon", new Potion(true,3));
+        AddItem("Small Mana Potion", "Items/Icons/p_Blue02", new Potion(false, 5));
+        AddItem("Large Mana Potion", "Items/Icons/p_Blue01", new Potion(false, 15));
+        AddItem("Small Health Potion", "Items/Icons/p_Red02", new Potion(true, 5));
+        AddItem("Large Health Potion", "Items/Icons/p_Red01", new Potion(true, 15));
     }
 
     public static void AddArmors()
     {
         AddArmor("Cloth Shirt", "Items/Icons/A_Clothing01", "Items/Armors/Materials/shirt_m", "Items/Armors/Materials/shirt_f", Equipment.EquipmentLocation.Torso, 1);
-        AddArmor("Leather Armor", "Items/Icons/A_Armor01", "Items/ArmorsMaterials//leather_m", "Items/Armors/Materials/leather_f", Equipment.EquipmentLocation.Torso, 3);
+        AddArmor("Leather Armor", "Items/Icons/A_Armour01", "Items/Armors/Materials/leather_m", "Items/Armors/Materials/leather_f", Equipment.EquipmentLocation.Torso, 3);
         AddArmor("Chain Mail Armor", "Items/Icons/A_Armor04", "Items/Armors/Materials/chain_m", "Items/Armors/Materials/chain_f", Equipment.EquipmentLocation.Torso, 7);
-        AddArmor("Plate Armor", "Items/Icons/A_Armor02", "Items/Armors/Materials/plate_m", "Items/Armors/Materials/plate_f", Equipment.EquipmentLocation.Torso, 12);
+        AddArmor("Plate Armor", "Items/Icons/A_Armour02", "Items/Armors/Materials/plate_m", "Items/Armors/Materials/plate_f", Equipment.EquipmentLocation.Torso, 12);
 
         AddArmor("Cloth Hood", "Items/Icons/C_Hat03", "Items/Armors/Materials/clothhood_m", "Items/Materials/Armors/clothhood_f", Equipment.EquipmentLocation.Head, 1);
         AddArmor("Leather Hat", "Items/Icons/C_Elm01", "Items/Armors/Materials/cap_m", "Items/Armors/Materials/cap_f", Equipment.EquipmentLocation.Head, 2);
@@ -115,6 +115,16 @@ public class ItemFactory
     public static Item AddItem(string name, string icon )
     {
         Item item = new Item();
+        item.Name = name;
+        item.InventoryIcon = Resources.Load(icon) as Texture;
+
+        Items.Add(name, item);
+
+        return item;
+    }
+
+    public static Item AddItem(string name, string icon, Item item)
+    {
         item.Name = name;
         item.InventoryIcon = Resources.Load(icon) as Texture;
 

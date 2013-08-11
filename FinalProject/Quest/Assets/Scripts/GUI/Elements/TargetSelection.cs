@@ -13,7 +13,7 @@ public class TargetSelection : GUIPanel
 
     public TargetSelection()
     {
-        Enabled = true;
+        Enabled = false;
 
         Bounds = new Rect(0, 0, 256, 96);
         HAlignement = Alignments.Max;
@@ -24,7 +24,7 @@ public class TargetSelection : GUIPanel
     {
         base.Load();
 
-        SelectedName = NewLabel(Alignments.Absolute, 2, Alignments.Absolute, 2, Bounds.width- 66, 62, string.Empty);
+        SelectedName = NewLabel(Alignments.Absolute, 2, Alignments.Absolute, 2, Bounds.width - 66, 62, string.Empty);
 
         SelectedImage = NewImage(Alignments.Max, 2, Alignments.Absolute, 2, Resources.Load("GUI/CreatureSelectionIcon") as Texture);
 

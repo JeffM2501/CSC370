@@ -37,7 +37,7 @@ public class BattleManager
 
     public void PhysicalAttack(Character attacker, Character defender, float hitChance, float attackRange, int minDamage, int maxDamage)
     {
-        if (Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
+        if (defender == null || Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
             return;
 
         if (UnityEngine.Random.value <= defender.DodgeBonus)
@@ -70,7 +70,9 @@ public class BattleManager
         {
             damage += hitRoll - targetNum;
 
-            float armorParam = Mathf.Min(damage / defender.ArmorValue, 1.0f);
+            float armorParam = 1;
+            if (defender.ArmorValue > 0)
+                armorParam = Mathf.Min(damage / defender.ArmorValue, 1.0f);
 
             Debug.Log("Hit Damage = Raw " + damage.ToString() + " Param " + armorParam.ToString());
             damage =  (int)(damage * armorParam);
@@ -81,7 +83,7 @@ public class BattleManager
 
     public void SpellAttack(Character attacker, Character defender, float attackRange, int damage)
     {
-        if (Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
+        if (defender == null || Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
             return;
 
         if (UnityEngine.Random.value <= defender.DodgeBonus)

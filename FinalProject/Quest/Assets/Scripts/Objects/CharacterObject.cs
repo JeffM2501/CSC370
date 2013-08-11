@@ -38,6 +38,13 @@ public class CharacterObject : MonoBehaviour
 
         Anims = TheCharacter.Anims;
         Anims.SetGameObject(Billboard);
+
+        c.LayersChanged += new GameState.EventCallback(Character_LayersChanged);
+    }
+
+    void Character_LayersChanged(object sender, EventArgs args)
+    {
+        NeedRebuild = true;
     }
 
     void Alive()

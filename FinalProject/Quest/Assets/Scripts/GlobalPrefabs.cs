@@ -11,9 +11,10 @@ public class GlobalPrefabs : MonoBehaviour
     {
         GameState.Prefabs = this;
     }
+
 	void Start ()
 	{
-	
+        GameState.Prefabs = this;
 	}
 
 	void Update ()
