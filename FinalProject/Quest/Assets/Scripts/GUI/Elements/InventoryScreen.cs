@@ -23,8 +23,8 @@ public class InventoryScreen : GUIPanel
         Enabled = false;
 
         Bounds = new Rect(10, 10, 512, 512);
-        HAlignement = Alignments.Max;
-        VAlignement = Alignments.Absolute;
+        HAlignement = Alignments.Absolute;
+        VAlignement = Alignments.Max;
     }
 
     protected override void Load()
@@ -86,6 +86,8 @@ public class InventoryScreen : GUIPanel
             Debug.Log("LeftSlot click");
         else if (RightSlot == sender)
             Debug.Log("RightSlot click");
+
+        GameState.Instance.GUI.SelectItem((sender as GUIElement).Tag as Item);
     }
 
     protected void InventoryClick(object sender, EventArgs args)
@@ -96,6 +98,8 @@ public class InventoryScreen : GUIPanel
 
         int slotID = element.ID;
         Debug.Log("GUI item slot click " + slotID.ToString());
+
+        GameState.Instance.GUI.SelectItem(TheCharacter.InventoryItems.GetItem(slotID));
     }
 
     protected void SetElementImage(GUIElement element, Item item)
@@ -104,6 +108,8 @@ public class InventoryScreen : GUIPanel
             element.BackgroundImage = null;
         else
             element.BackgroundImage = item.InventoryIcon;
+
+        element.Tag = item;
     }
 
     public void SetInventoryItems()

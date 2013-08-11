@@ -24,7 +24,12 @@ public class Character
     protected bool Animating = false;
 
     protected WeaponAnimation WeaponAnim = null;
-   
+
+    public AudioClip HitSound = null;
+    public AudioClip DieSound = null;
+
+    public AudioClip MoveSound = null;
+
     public enum Genders
     {
         Male,
@@ -158,10 +163,11 @@ public class Character
 
     public virtual void Update()
     {
-        if (Damage >= HitPoints)
+        if (Damage >= HitPoints && Alive)
         {
             Anims.SetSequence("Dying");
             Alive = false;
+            Die();
             if (Death != null)
                 Death(this, EventArgs.Empty);
         }
@@ -502,6 +508,9 @@ public class Character
 
     public virtual void Die()
     {
+        if (WorldObject.audio != null && DieSound != null)
+            WorldObject.audio.PlayOneShot(DieSound);
+        Select(false);
     }
 
     public virtual int GetHealth()
@@ -523,9 +532,14 @@ public class Character
 
     public virtual void TakeDamage(int amount)
     {
+        if (amount > 0 && WorldObject.audio != null && HitSound != null)
+            WorldObject.audio.PlayOneShot(HitSound);
+
         Damage += amount;
-        if (Damage >= HitPoints)
-            Die();
+   //     if (Damage >= HitPoints)
+  //          Die();
+
+        Debug.Log(Name + " Took Damage: " + amount.ToString());
     }
 
     public virtual void SpendMana(int amount)
@@ -542,22 +556,32 @@ public class Character
 
     public virtual bool BasicAttack()
     {
+        if (!SkillUseable(BasicAttackSkill))
+            return false;
         UseSkill(BasicAttackSkill);
         Debug.Log("Basic Attack!");
+        GameState.Instance.BattleMan.PhysicalAttack(this, Target, 0.5f, BasicAttackSkill.BaseSkill.Range, EquipedItems.WieldingMinDamage(), EquipedItems.WieldingMaxDamage());
+        AttackComplete();
         return true;
     }
 
     public virtual bool ActivateSkill(SkillInstance skill)
     {
+        if (!SkillUseable(skill))
+            return false;
         UseSkill(skill);
         Debug.Log("Use Skill " + skill.BaseSkill.Name);
+        AttackComplete();
         return true;
     }
 
     public virtual bool CastSpell(SpellInstance spell)
     {
+        if (!SkillUseable(spell))
+            return false;
         UseSkill(spell);
         Debug.Log("Cast Spell " + spell.BaseSpell.Name);
+        AttackComplete();
         return true;
     }
 
@@ -567,6 +591,12 @@ public class Character
         skill.LastUse = LastSkillUse;
 
         AnimateTo(skill.BaseSkill.AnimType);
+    }
+
+    protected virtual void AttackComplete()
+    {
+        if (Target == null || !Target.Alive)
+            SetTarget(null);
     }
 
     public bool SkillUseable( SkillInstance skill )

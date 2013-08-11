@@ -18,6 +18,7 @@ public class GUIMaster : MonoBehaviour
 
     protected InventoryScreen InventoryWindow;
     protected PlayerStatus StatusWindow;
+    protected TargetSelection Selector;
 
     public GameObject DropedBagGraphic;
 
@@ -86,6 +87,10 @@ public class GUIMaster : MonoBehaviour
         StatusWindow = new PlayerStatus();
         StatusWindow.Init();
 
+        Selector = new TargetSelection();
+        Selector.Init();
+        Selector.Enabled = false;
+
         SetPlayer(GameState.Instance.PlayerObject);
     }
 
@@ -133,6 +138,21 @@ public class GUIMaster : MonoBehaviour
             InventoryWindow.SetInventoryItems();
 
    //     Debug.Log("Toggle Inventory to " + InventoryWindow.Enabled.ToString());
+    }
+
+    public void SelectCharacter(Character character)
+    {
+        Selector.SelectCharacter(character);
+    }
+
+    public void SelectItem(Item item)
+    {
+        Selector.SelectItem(item);
+    }
+
+    public void ClearSelection()
+    {
+        Selector.Clear();
     }
 
     protected int GetSkillCount()

@@ -20,8 +20,8 @@ public class CharcterScreen : GUIPanel
         Enabled = false;
 
         Bounds = new Rect(10, 10, 512, 512);
-        HAlignement = Alignments.Absolute;
-        VAlignement = Alignments.Absolute;
+        HAlignement = Alignments.Max;
+        VAlignement = Alignments.Max;
     }
 
     protected override void Load()

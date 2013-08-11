@@ -81,6 +81,28 @@ public class EquipmentList
         return (LeftHand != null && LeftHand.WeaponType == weapon) || (RightHand != null && RightHand.WeaponType == weapon);
     }
 
+    public int WieldingMinDamage()
+    {
+        if (LeftHand == null && RightHand == null)
+            return 1;
+
+        if (LeftHand != null)
+            return LeftHand.MinDamage;
+
+        return RightHand.MinDamage;
+    }
+
+    public int WieldingMaxDamage()
+    {
+        if (LeftHand == null && RightHand == null)
+            return 4;
+
+        if (LeftHand != null)
+            return LeftHand.MaxDamage;
+
+        return RightHand.MaxDamage;
+    }
+
     public Weapon.WeaponTypes WeaponType()
     {
         if (LeftHand != null)

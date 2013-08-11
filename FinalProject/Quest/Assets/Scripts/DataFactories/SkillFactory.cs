@@ -213,6 +213,7 @@ public class Cleave : Skill
     public Cleave()
         : base()
     {
+        Range = 4;
         Purchase = 200;
         Upgrade = 400;
         Requirements.Add("Might 2");
@@ -227,7 +228,8 @@ public class Cleave : Skill
     public override void OnAcivate(Character character, int level)
     {
         base.OnAcivate(character,level);
-        // tell combat system to hit EVERYONE
+        int bonus = level * 2;
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
     }
 }
 
@@ -242,6 +244,7 @@ public class Headshot : Skill
         this.SkillType = Skill.SkillTypes.Active;
         MaxLevel = 10;
         Description = "Ranged attack with bonus damage";
+        Range = 15;
 
         Cooldown = 2;
 
@@ -251,7 +254,8 @@ public class Headshot : Skill
     public override void OnAcivate(Character character, int level)
     {
         base.OnAcivate(character, level);
-        // tell combat system to attack target with bonuses
+        int bonus = level * 2;
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
     }
 }
 
@@ -260,6 +264,7 @@ public class Claw : Skill
     public Claw()
         : base()
     {
+        Range = 3;
         Purchase = -1;
         Upgrade = -1;
         Requirements.Add("Might 2");
@@ -273,7 +278,8 @@ public class Claw : Skill
     public override void OnAcivate(Character character, int level)
     {
         base.OnAcivate(character, level);
-        // tell combat system to attack target with bonuses
+        int bonus = level * 3;
+        GameState.Instance.BattleMan.PhysicalAttack(character, character.Target, 0.75f, Range, character.EquipedItems.WieldingMinDamage() + bonus, character.EquipedItems.WieldingMaxDamage() + bonus);
     }
 }
 
@@ -293,9 +299,14 @@ public class BasicWeaponAttack : Skill
         IconImage = icon;
         SkillWeapon = wep;
 
+        Range = 4;
+
         AnimType = ActiveAnimationTypes.Meele;
         if (wep == Weapon.WeaponTypes.Bow)
+        {
             AnimType = ActiveAnimationTypes.Ranged;
+            Range = 10;
+        }
     }
 
     public override void OnAcivate(Character character, int level)

@@ -11,6 +11,7 @@ public class GameState
 
     public InputManager InputMan;
     public SpriteManager SpriteMan = new SpriteManager();
+    public BattleManager BattleMan = new BattleManager();
 
     public Player PlayerObject;
 
@@ -49,6 +50,7 @@ public class GameState
         {
             SkillFactory.Setup();
             ItemFactory.Setup();
+            SpellFeactory.Setup();
 
             SetPlayer(GameObject.Find("Player") as GameObject);
      
@@ -73,6 +75,9 @@ public class GameState
         MonsterFactory.NewSkellymans(player.transform.position + new Vector3(0, 0, -4));
 
         MonsterFactory.NewBandit(player.transform.position + new Vector3(0, 0, -6));
+
+
+        BattleMan.Init(PlayerObject, ActiveCharacters);
     }
 
     public void Update()
@@ -153,6 +158,8 @@ public class GameState
 
         PlayerObject.Target = targetObject.TheCharacter;
         PlayerObject.Target.Select(true);
+
+        GUI.SelectCharacter(PlayerObject.Target);
     }
 
     public void RoomStartup(RoomInstnace room)

@@ -221,7 +221,7 @@ public class AnimationSequence
                         return SetFrame(advance);
                     }
                     else
-                        CurrentFrame = set.Start + set.Length;
+                        CurrentFrame = set.Length;
                 }   
             }
 
@@ -289,10 +289,11 @@ public class HominidAnimation : AnimationSequence
         AddSequence("Cast", Directions.South, 63, 9, true, false);
         AddSequence("Cast", Directions.East, 63, 9, true, false);
 
-        AddSequence("Dying", Directions.None, 63, 9, true, false);
+        AddSequence("Dying", Directions.None, 69, 6, false, false);
         FrameSets["Dying"].EndAnimation = "Dead";
 
         AddSequence("Dead", Directions.None, 75, 0, false, false);
+        FrameSets["Dead"].EndAnimation = string.Empty;
     }
 }
 
@@ -338,6 +339,7 @@ public class MonsterAnimation : AnimationSequence
         FrameSets["Dying"].EndAnimation = "Dead";
 
         AddSequence("Dead", Directions.None, 3, 0, false, false);
+        FrameSets["Dead"].EndAnimation = string.Empty;
     }
 }
 

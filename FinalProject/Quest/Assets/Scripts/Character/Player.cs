@@ -14,6 +14,9 @@ public class Player : Character
 
     public override void Init()
     {
+        HitSound = Resources.Load("Sounds/Monsters/squirrel/squirrel-hurt1") as AudioClip;
+        DieSound = Resources.Load("Sounds/Monsters/squirrel/squirrel-die2") as AudioClip;
+
         // TODO, when unity material bug is fixed, remove these lines
         FemaleLayers.Add("TempSprites/Materials/body_f_base");
         FemaleLayers.Add("TempSprites/Materials/body_f_base_hat");
@@ -59,5 +62,13 @@ public class Player : Character
         base.Move(vec);
 
         PlayerMovemnt.Move(vec * (Speed * Time.deltaTime));
+    }
+
+    public override bool SetTarget(Character target)
+    {
+        if (Target == null || !Target.Alive)
+            GameState.Instance.GUI.ClearSelection();
+
+        return base.SetTarget(target);
     }
 }
