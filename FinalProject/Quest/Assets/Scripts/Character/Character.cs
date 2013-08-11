@@ -18,6 +18,8 @@ public class Character
     public bool IsHominid = true;
 
     public AnimationSequence Anims = null;
+
+    protected WeaponAnimation WeaponAnim = null;
    
     public enum Genders
     {
@@ -202,6 +204,29 @@ public class Character
         }
 
         WorldObject.GetComponent<CharacterObject>().SetCharacter(this);
+        SetupWeaponAnim();
+    }
+
+    protected void SetupWeaponAnim()
+    {
+         if (WorldObject == null)
+            return;
+
+        for (int i = 0; i < WorldObject.transform.childCount; i++)
+        {
+            Transform child = WorldObject.transform.GetChild(i);
+            if (child.name.Contains("WeaponPlane"))
+            {
+                for (int j = 0; j < child.transform.childCount; i++)
+                {
+                    Transform meshChild = child.GetChild(j);
+
+                    WeaponAnim = meshChild.GetComponent<WeaponAnimation>();
+                    if (WeaponAnim != null)
+                        return;
+                }
+            }
+        }
     }
 
     public SkillInstance GetSkillByName(string name)
@@ -230,13 +255,13 @@ public class Character
         {
             returned = EquipedItems.EquipWeapon(weapon, location == Equipment.EquipmentLocation.Weapon);
             BasicAttackSkill = new SkillInstance(SkillFactory.BasicAttacks[EquipedItems.WeaponType()]);
+            SetWeaponSprites();
         }
 
         if (returned != null && !InventoryItems.AddItem(returned))
             DropItem(returned);
 
         RebuildTempStats();
-
         RebuildEquipment();
     }
 
@@ -417,6 +442,25 @@ public class Character
 
         if (EquipementChanged != null)
             EquipementChanged(this, EventArgs.Empty);
+    }
+
+    protected void SetWeaponSprites()
+    {
+        if (EquipedItems.WeaponType() == Weapon.WeaponTypes.Hand)
+            WeaponAnim.Stop();
+        else
+        {
+            Material mat = Resources.Load("Items/Weapons/Materials/Sword") as Material;
+            if (EquipedItems.WeaponType() == Weapon.WeaponTypes.Bow)
+                mat = Resources.Load("Items/Weapons/Materials/Biw") as Material;
+          else if (EquipedItems.WeaponType() == Weapon.WeaponTypes.Staff)
+                mat = Resources.Load("Items/Weapons/Materials/Staff") as Material;
+
+            if (EquipedItems.WeaponType() == Weapon.WeaponTypes.Bow)
+                WeaponAnim.SetSequence(new RangedWeaponAnimation(mat.mainTexture));
+            else
+                WeaponAnim.SetSequence(new MeeleWeponAnimation(mat.mainTexture));
+        }
     }
 
     public virtual List<SpriteManager.SpriteLayer> GetSpriteLayers()

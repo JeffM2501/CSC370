@@ -57,6 +57,8 @@ public class AnimationSequence
     public GameObject SpriteQuad = null;
     public Mesh TheMesh;
 
+    public EventHandler AnimationComplete;
+
     public void SetGameObject(GameObject obj)
     {
         TheMesh = obj.GetComponent<MeshFilter>().mesh;
@@ -134,6 +136,12 @@ public class AnimationSequence
         FrameSets[name].Looping = loop;
     }
 
+    public void Clear()
+    {
+        CurrentAnimSet = null;
+        CurrentSequence = string.Empty;
+    }
+
     public void SetSequence(string name)
     {
         if (CurrentAnimSet != null && name == CurrentAnimSet.Name)
@@ -200,6 +208,9 @@ public class AnimationSequence
 
             if (CurrentFrame >= set.Length)
             {
+                if (AnimationComplete != null)
+                    AnimationComplete(this, EventArgs.Empty);
+
                 if (CurrentAnimSet.Looping)
                     CurrentFrame = 0;
                 else if (CurrentAnimSet.EndAnimation != string.Empty)
@@ -327,5 +338,45 @@ public class MonsterAnimation : AnimationSequence
         FrameSets["Dying"].EndAnimation = "Dead";
 
         AddSequence("Dead", Directions.None, 3, 0, false, false);
+    }
+}
+
+public class MeeleWeponAnimation : AnimationSequence
+{
+    public MeeleWeponAnimation(Texture image)
+    {
+        Image = image;
+        Init();
+    }
+
+    protected override void Init()
+    {
+        base.Init();
+        ComputeFrames(6, 1);
+
+        AddSequence("Attack", Directions.North, 0, 6, false, false);
+        AddSequence("Attack", Directions.West, 0, 6, false, false);
+        AddSequence("Attack", Directions.South, 0, 6, true, false);
+        AddSequence("Attack", Directions.East, 0, 6, true, false);
+    }
+}
+
+public class RangedWeaponAnimation : AnimationSequence
+{
+    public RangedWeaponAnimation(Texture image)
+    {
+        Image = image;
+        Init();
+    }
+
+    protected override void Init()
+    {
+        base.Init();
+        ComputeFrames(13, 1);
+
+        AddSequence("Attack", Directions.North, 0, 13, false, false);
+        AddSequence("Attack", Directions.West, 0, 13, false, false);
+        AddSequence("Attack", Directions.South, 0, 13, true, false);
+        AddSequence("Attack", Directions.East, 0, 13, true, false);
     }
 }
