@@ -85,6 +85,48 @@ public class GameState
 
         if (Input.GetKeyDown(KeyCode.I))
             GUI.ToggleInventory();
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            // select nearest enemy in perception
+
+            float dist = float.MaxValue;
+            GameObject nearest = null;
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
+            {
+                float d = Vector3.Distance(PlayerObject.WorldObject.transform.position, obj.transform.position);
+
+                if (d < PlayerObject.PerceptionRange)
+                {
+                    if (nearest == null || (d < dist))
+                    {
+                        nearest = obj;
+                        dist = d;
+                    }
+                }
+            }
+
+            SelectMob(nearest);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
+            GUI.ProcessSkillClick(1);
+        else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
+            GUI.ProcessSkillClick(2);
+        else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
+            GUI.ProcessSkillClick(3);
+        else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
+            GUI.ProcessSkillClick(4);
+        else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
+            GUI.ProcessSkillClick(5);
+        else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
+            GUI.ProcessSkillClick(6);
+        else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
+            GUI.ProcessSkillClick(7);
+        else if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
+            GUI.ProcessSkillClick(8);
+        else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
+            GUI.ProcessSkillClick(9);
     }
 
     public void MovePlayer(Vector3 vec)
@@ -93,6 +135,24 @@ public class GameState
             return;
 
         PlayerObject.Move(vec);
+    }
+
+    public void SelectMob(GameObject obj)
+    {
+        if (PlayerObject.Target != null)
+            PlayerObject.Target.Select(false);
+
+        PlayerObject.Target = null;
+
+        if (obj == null)
+            return;
+
+        CharacterObject targetObject  = obj.GetComponent<CharacterObject>();
+        if (targetObject == null)
+            return;
+
+        PlayerObject.Target = targetObject.TheCharacter;
+        PlayerObject.Target.Select(true);
     }
 
     public void RoomStartup(RoomInstnace room)

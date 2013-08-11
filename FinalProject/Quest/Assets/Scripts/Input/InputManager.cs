@@ -25,7 +25,6 @@ public class InputManager : MonoBehaviour
 
     public void CheckKeys()
     {
-        Debug.Log("check keys");
         if (Input.GetKeyDown(KeyCode.I))
             GameState.Instance.GUI.ToggleInventory();
     }

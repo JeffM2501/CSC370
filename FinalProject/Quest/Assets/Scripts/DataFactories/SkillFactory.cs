@@ -72,7 +72,7 @@ public static class SkillFactory
         AddSkill("Deadeye", "GUI/SkillIcons/Deadeye", new ToughAsNails());
 
         // attacks
-        AddSkill("Cleave", "GUI/SkillIcons/Cleave", new Cleave());
+        AddSkill("Cleave", "GUI/SkillIcons/Cleave", new Cleave()).Cooldown = 10;
         AddSkill("Headshot", "GUI/SkillIcons/Headshot", new Headshot());
         AddSkill("Claw", "GUI/SkillIcons/Beast", new Claw());
 
@@ -220,7 +220,7 @@ public class Cleave : Skill
         MaxLevel = 10;
         Description = "Large melee attack that hits all around";
 
-        Cooldown = 2;
+        Cooldown = 15;
     }
 
     public override void OnAcivate(Character character, int level)
@@ -283,6 +283,7 @@ public class BasicWeaponAttack : Skill
     {
         Purchase = -1;
         Upgrade = -1;
+        Cooldown = 0;
 
         this.SkillType = SkillTypes.Active;
         Name = name;

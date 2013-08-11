@@ -96,6 +96,10 @@ public class Character
     public List<SkillInstance> Skills = new List<SkillInstance>();
     public List<SpellInstance> Spells = new List<SpellInstance>();
 
+    public SkillInstance BasicAttackSkill = new SkillInstance(SkillFactory.BasicAttacks[Weapon.WeaponTypes.Hand]);
+
+    public float LastSkillUse = float.MinValue;
+
     protected bool UseLayers = false;
     protected bool ForceHair = false;
 
@@ -118,6 +122,8 @@ public class Character
     public event GameState.EventCallback LayersChanged;
 
     public delegate bool TimedEventCallback (Character sender, object tag);
+
+    public event EventHandler EquipementChanged = null;
 
     public class TimedEvent
     {
@@ -220,7 +226,11 @@ public class Character
         Weapon weapon = item as Weapon;
         if (weapon == null)
             returned = EquipedItems.EquipArmor(item);
-        returned = EquipedItems.EquipWeapon(weapon, location == Equipment.EquipmentLocation.Weapon);
+        else
+        {
+            returned = EquipedItems.EquipWeapon(weapon, location == Equipment.EquipmentLocation.Weapon);
+            BasicAttackSkill = new SkillInstance(SkillFactory.BasicAttacks[EquipedItems.WeaponType()]);
+        }
 
         if (returned != null && !InventoryItems.AddItem(returned))
             DropItem(returned);
@@ -282,7 +292,13 @@ public class Character
         if (PerceptionRange < 5)
             PerceptionRange = 5;
 
-        Initiative = (Attributes[Attribute.AttributeTypes.Smarts].Level + Attributes[Attribute.AttributeTypes.Agility].Level) / 2f;
+        Initiative = 5;
+
+        int smartAgiDiv = Attributes[Attribute.AttributeTypes.Smarts].Level + Attributes[Attribute.AttributeTypes.Agility].Level/2;
+        if (smartAgiDiv >= Initiative)
+            Initiative = Initiative/(smartAgiDiv-Initiative);
+        else
+            Initiative = Initiative/smartAgiDiv;
 
         int weaponStatValue = Attributes[Attribute.AttributeTypes.Might].Level;
         if (EquipedItems.IsWielding(Weapon.WeaponTypes.Staff))
@@ -398,6 +414,9 @@ public class Character
 
         if (LayersChanged != null)
             LayersChanged(this, EventArgs.Empty);
+
+        if (EquipementChanged != null)
+            EquipementChanged(this, EventArgs.Empty);
     }
 
     public virtual List<SpriteManager.SpriteLayer> GetSpriteLayers()
@@ -447,16 +466,90 @@ public class Character
 
     public virtual bool BasicAttack()
     {
+        UseSkill(BasicAttackSkill);
+        Debug.Log("Basic Attack!");
         return true;
     }
 
     public virtual bool ActivateSkill(SkillInstance skill)
     {
+        UseSkill(skill);
+        Debug.Log("Use Skill " + skill.BaseSkill.Name);
         return true;
     }
 
-    public virtual bool CastSpell(SpellInstance skill)
+    public virtual bool CastSpell(SpellInstance spell)
     {
+        UseSkill(spell);
+        Debug.Log("Cast Spell " + spell.BaseSpell.Name);
         return true;
+    }
+
+    protected void UseSkill(SkillInstance skill)
+    {
+        LastSkillUse = Time.time;
+        skill.LastUse = LastSkillUse;
+    }
+
+    public bool SkillUseable( SkillInstance skill )
+    {
+        if (!skill.Useable(this))
+            return false;
+
+        float timeSinceLastSkill = Time.time - LastSkillUse;
+
+        if (timeSinceLastSkill < Initiative)
+            return false;
+
+        return (Time.time - skill.LastUse) > skill.BaseSkill.Cooldown; 
+    }
+
+    public float GetSkillUseParamater(SkillInstance skill)
+    {
+        if (!skill.Useable(this))
+            return 1;
+
+        float param = 0;
+        bool inCooldown = false;
+        if (skill.BaseSkill.Cooldown > 0)
+        {
+            float timeSinceThisSkill = Time.time - skill.LastUse;
+
+            if (timeSinceThisSkill < skill.BaseSkill.Cooldown) // skill is in cooldown
+            {
+                param = timeSinceThisSkill / skill.BaseSkill.Cooldown;
+                inCooldown = true;
+            }
+        }
+
+        float timeSinceLastSkill = Time.time - LastSkillUse;
+        if (timeSinceLastSkill < Initiative)
+        {
+            float globalParam = timeSinceLastSkill / Initiative;
+            if (inCooldown)
+            {
+                float skillEnd = skill.LastUse + skill.BaseSkill.Cooldown;
+                float timerEnd = LastSkillUse + Initiative;
+                if (skillEnd < timerEnd) // the timer will end later
+                    param = globalParam;
+            }
+            else
+                param = globalParam;
+        }
+
+        return param;
+    }
+
+    public void Select(bool select)
+    {
+        if (WorldObject == null)
+            return;
+
+        for (int i = 0; i < WorldObject.transform.childCount; i++)
+        {
+            Transform child = WorldObject.transform.GetChild(i);
+            if (child.name.Contains("Bounce"))
+                child.gameObject.SetActive(select);
+        }
     }
 }

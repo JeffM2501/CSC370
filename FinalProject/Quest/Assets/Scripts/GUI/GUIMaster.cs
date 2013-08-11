@@ -25,6 +25,10 @@ public class GUIMaster : MonoBehaviour
 
     protected Player ThePlayer;
 
+    public Texture SkillCover = null;
+
+    protected float LastSkillClick;
+
     void Alive()
     {
     }
@@ -41,6 +45,23 @@ public class GUIMaster : MonoBehaviour
         {
             GUIPanel.RebuildAll();
             width = Camera.main.pixelWidth;
+        }
+
+        // check for clicks
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100) )
+            {
+            //    Debug.Log(hit.transform.gameObject);
+            //    Debug.Log(hit.transform.gameObject.tag);
+
+                if (hit.transform.gameObject.tag == "Mob")
+                    GameState.Instance.SelectMob(hit.transform.gameObject);
+            }
         }
 	}
 
@@ -69,14 +90,16 @@ public class GUIMaster : MonoBehaviour
     public void SetPlayer(Player player)
     {
         ThePlayer = player;
-        BuildSkillList();
+        BuildSkillList(ThePlayer,EventArgs.Empty);
+
+        ThePlayer.EquipementChanged += BuildSkillList;
     }
 
-    public void BuildSkillList()
+    public void BuildSkillList(object sender, EventArgs args)
     {
         SkillList.Clear();
 
-        SkillList.Add(new SkillInstance(SkillFactory.BasicAttacks[ThePlayer.EquipedItems.WeaponType()]));
+        SkillList.Add(ThePlayer.BasicAttackSkill);
 
         foreach (SkillInstance skill in ThePlayer.Skills)
         {
@@ -125,6 +148,29 @@ public class GUIMaster : MonoBehaviour
         return new Rect(0, 0, tex.width * ActionBarScale, tex.height * ActionBarScale);
     }
 
+    public void ProcessSkillClick( int id )
+    {
+        Player player = GameState.Instance.PlayerObject;
+
+        SkillInstance skill = GetSkill(id);
+
+        if (skill == null || !skill.Useable(player))
+            return;
+
+        // fire off all 
+
+        if (id == 0)
+            player.BasicAttack();
+        else
+        {
+            SpellInstance spell = skill as SpellInstance;
+            if (spell != null)
+                player.CastSpell(spell);
+            else
+                player.ActivateSkill(GetSkill(id));
+        }
+    }
+
     void ActionBar()
     {
         int SkillCount = GetSkillCount();
@@ -141,8 +187,22 @@ public class GUIMaster : MonoBehaviour
 
         for (int i = 0; i < SkillList.Count; i++ )
         {
-            if (GUI.Button(skillSize, GetSkillImage(i), ActionBarStyle))
-                GameState.Instance.SkillButtonClicked(GetSkill(i));
+            SkillInstance skill = GetSkill(i);
+
+            if (GUI.Button(skillSize, GetSkillImage(i), ActionBarStyle) && ThePlayer.SkillUseable(skill))
+                ProcessSkillClick(i);
+
+            if (!ThePlayer.SkillUseable(skill))
+            {
+                float param = ThePlayer.GetSkillUseParamater(skill);
+
+                param *= skillSize.height;
+
+                float top = skillSize.yMin + ( skillSize.height - param);
+                Rect paramBox = new Rect(skillSize.xMin,top,skillSize.width,param);
+
+                GUI.DrawTexture(paramBox, SkillCover);
+            }
 
             skillSize.x += oneWidth;
         }
