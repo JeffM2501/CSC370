@@ -99,6 +99,15 @@ public class BattleManager
         defender.TakeDamage(damage);
     }
 
+    public void ActivateMonster(Monster mob)
+    {
+        mob.Activated = true;
+        mob.Target = ThePlayer;
+        mob.AnimateTo(Skill.ActiveAnimationTypes.Casting);
+        // start the AI
+        Debug.Log("Monster " + mob.Name + " activated");
+    }
+
     public void Update()
     {
         foreach (Monster monster in Mobs)
@@ -116,17 +125,20 @@ public class BattleManager
 
                 if (dist <= monster.PerceptionRange)
                 {
-                    Ray ray = new Ray(monster.WorldObject.transform.position, monster.WorldObject.transform.position - ThePlayer.WorldObject.transform.position);
+                    Vector3 offset = new Vector3(0,0.5f,0);
+                    Vector3 dir = ThePlayer.WorldObject.transform.position - monster.WorldObject.transform.position;
+                    dir.Normalize();
+
+                    Ray ray = new Ray(monster.WorldObject.transform.position + offset, dir);
+
+                    Debug.DrawRay(ray.origin, ray.direction * monster.PerceptionRange, Color.green, 0.001f);
 
                     RaycastHit hit;
 
                     if (Physics.Raycast(ray, out hit, monster.PerceptionRange))
                     {
                         if (hit.transform.gameObject == ThePlayer.WorldObject)
-                        {
-                            monster.Activated = true;
-                            monster.Target = ThePlayer;
-                        }
+                            ActivateMonster(monster);
                     }
                 }
             }

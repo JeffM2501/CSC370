@@ -7,7 +7,7 @@ public class RoomInstnace : MonoBehaviour
 
     protected bool Enabled = true;
 
-    void Alive()
+    void Awake()
     {
         GameState.Instance.RoomStartup(this);
     }

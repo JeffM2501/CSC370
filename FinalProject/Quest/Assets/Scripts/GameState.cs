@@ -71,14 +71,9 @@ public class GameState
 
         PlayerObject.Init();
 
-
-        MonsterFactory.NewOrc(player.transform.position + new Vector3(0, 0, -2));
-        MonsterFactory.NewSkellymans(player.transform.position + new Vector3(0, 0, -4));
-
-        MonsterFactory.NewBandit(player.transform.position + new Vector3(0, 0, -6));
-
-
         BattleMan.Init(PlayerObject, ActiveCharacters);
+
+        SpawnMobsInRooms();
     }
 
     public void Update()
@@ -130,6 +125,7 @@ public class GameState
         else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
             GUI.ProcessSkillClick(9);
 
+        BattleMan.Update();
     }
 
     public void SelectNearestMob()
@@ -215,6 +211,45 @@ public class GameState
         PlayerObject.Target.Select(true);
 
         GUI.SelectCharacter(PlayerObject.Target);
+    }
+
+    public void SpawnMobsInRooms()
+    {
+        foreach (RoomInstnace room in LevelMap.Rooms)
+        {
+            // monster spawning
+
+            // pick a monster type for the room
+            // TODO, walk an enum of monster types and pick them, or let the factory decide on a weighted chance
+            bool bandits = UnityEngine.Random.Range(1, 4) == 1;
+            bool skelleys = false;
+            bool orks = false;
+
+            if (!bandits)
+            {
+                skelleys = UnityEngine.Random.Range(1, 4) == 1;
+
+                if (!skelleys)
+                    orks = true;
+            }
+
+            for (int i = 0; i < room.gameObject.transform.childCount; i++)
+            {
+                GameObject child = room.gameObject.transform.GetChild(i).gameObject;
+                if (child.tag == "MobSpawn")
+                {
+                    if (UnityEngine.Random.value <= 0.8f)
+                    {
+                        if (orks)
+                            MonsterFactory.NewOrc(child.transform.position);
+                        else if (skelleys)
+                            MonsterFactory.NewBandit(child.transform.position);
+                        else if (bandits)
+                            MonsterFactory.NewSkellymans(child.transform.position);
+                    }
+                }
+            }
+        }
     }
 
     public void RoomStartup(RoomInstnace room)

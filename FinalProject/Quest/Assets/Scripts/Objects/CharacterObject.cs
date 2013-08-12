@@ -47,10 +47,10 @@ public class CharacterObject : MonoBehaviour
         NeedRebuild = true;
     }
 
-    void Alive()
+    void Awake()
     {
-        if (RootMaterial == null)
-            RootMaterial = gameObject.renderer.materials[0];
+  //      if (RootMaterial == null)
+      //      RootMaterial = gameObject.renderer.materials[0];
     }
 
 	void Start ()

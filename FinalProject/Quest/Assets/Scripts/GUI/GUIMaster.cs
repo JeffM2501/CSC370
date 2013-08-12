@@ -26,7 +26,7 @@ public class GUIMaster : MonoBehaviour
 
     protected float LastSkillClick;
 
-    void Alive()
+    void Awake()
     {
     }
 

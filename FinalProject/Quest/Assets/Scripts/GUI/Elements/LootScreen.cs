@@ -25,7 +25,7 @@ public class LootScreen : GUIPanel
         NewImageButton(Alignments.Max, 8, Alignments.Absolute, 8, Resources.Load("GUI/CloseBox") as Texture, Close);
 
         NameLabel = NewLabel(Alignments.Absolute, 8, Alignments.Absolute, 2, Bounds.width - 24, 32, string.Empty);
-        GoldButton = NewButton(Alignments.Absolute, 86, Alignments.Absolute, 48, 100, 24, string.Empty, GoldClick);
+        GoldButton = NewButton(Alignments.Absolute, 86, Alignments.Absolute, 49, 100, 24, string.Empty, GoldClick);
 
         // inventory
         float leftBuffer = 11;

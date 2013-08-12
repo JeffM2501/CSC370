@@ -7,7 +7,7 @@ public class GlobalPrefabs : MonoBehaviour
  {
     public GameObject DroppedBag = null;
 
-    void Alive()
+    void Awake()
     {
         GameState.Prefabs = this;
     }
