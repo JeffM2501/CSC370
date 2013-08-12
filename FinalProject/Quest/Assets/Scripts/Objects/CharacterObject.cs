@@ -12,6 +12,7 @@ public class CharacterObject : MonoBehaviour
     public GameObject Billboard = null;
 
     public GameObject HitPlane = null;
+    public GameObject HitMesh = null;
 
     protected bool NeedRebuild = false;
 
@@ -20,6 +21,14 @@ public class CharacterObject : MonoBehaviour
     protected Color OrigonalColor = Color.white;
 
     public Color HitFlashColor = Color.red;
+
+    public Material DamageGraphoc = null;
+    public Material FireSpellGraphic = null;
+    public Material IceSpellGraphic = null;
+    public Material DivineSpellGraphic = null;
+    public Material GenericSpellGrpahic = null;
+
+    public Material BaseMaterial = null;
 
     bool InHit = false;
     float LastHitStart = 0;
@@ -69,7 +78,10 @@ public class CharacterObject : MonoBehaviour
             if (LastHitStart + HitFlashDurration < Time.time)
             {
                 if (HitPlane != null)
+                {
                     HitPlane.SetActive(false);
+                    HitMesh.renderer.materials[0] = BaseMaterial;
+                }
                 InHit = false;
                 Billboard.renderer.materials[0].color = OrigonalColor;
             }
@@ -89,12 +101,54 @@ public class CharacterObject : MonoBehaviour
         }
 	}
 
-    public void Hit()
+    public enum HitType
+    {
+        Physical,
+        Fire,
+        Ice,
+        Divine,
+        GenericSpell,
+    }
+
+    public void Hit(HitType hitType)
     {
         if (InHit || Dying)
             return;
+
         if (HitPlane != null)
+        {
             HitPlane.SetActive(true);
+
+            BaseMaterial = HitMesh.renderer.materials[0];
+
+            switch (hitType)
+            {
+                case HitType.Divine:
+                    if (DivineSpellGraphic != null)
+                        HitMesh.renderer.materials[0] = DivineSpellGraphic;
+                    break;
+
+                case HitType.Physical:
+                    if (DamageGraphoc != null)
+                        HitMesh.renderer.materials[0] = DamageGraphoc;
+                    break;
+
+                case HitType.Fire:
+                    if (FireSpellGraphic != null)
+                        HitMesh.renderer.materials[0] = FireSpellGraphic;
+                    break;
+
+                case HitType.Ice:
+                    if (IceSpellGraphic != null)
+                        HitMesh.renderer.materials[0] = IceSpellGraphic;
+                    break;
+
+                case HitType.GenericSpell:
+                    if (GenericSpellGrpahic != null)
+                        HitMesh.renderer.materials[0] = GenericSpellGrpahic;
+                    break;
+            }
+        }
 
         OrigonalColor = Billboard.renderer.materials[0].color;
         Billboard.renderer.materials[0].color = HitFlashColor;

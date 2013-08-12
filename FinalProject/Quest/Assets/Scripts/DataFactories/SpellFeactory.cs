@@ -17,12 +17,12 @@ public class SpellFeactory
         AddSpell("Fire burst", "Creates a beam of fire that does 3 damage per level to a target",
                 5, 3, 100, 500, true, 2,
                 FireBall
-                );
+                ).SpellEffect = CharacterObject.HitType.Fire;
 
         AddSpell("Fireball", "Creates a ball of fire on and around a target that does 5 points of damage per level",
                 10, 5, 250, 500, true, 3,
                 FireBall
-                );
+                ).SpellEffect = CharacterObject.HitType.Fire;
 
         AddSpell("Shield", "Creates a ball of fire on and around a target that does 5 points of damage per level",
                 10, 3, 100, 500, true, 4,
@@ -42,12 +42,21 @@ public class SpellFeactory
         AddSpell("Divine Light", "Does 6 points of damage to a target per level",
                4, 6, 100, 500, false, 4,
                DivineLight
-               );
+               ).SpellEffect = CharacterObject.HitType.Divine;
 
         AddSpell("Ring of Protection", "Creates an area on the ground that provides +6 armor per level",
                 6, 3, 100, 500, true, 3,
                 Shield
                 );
+    }
+
+    public static Spell FindSpellByName(string name)
+    {
+        if (Spells.ContainsKey(name))
+            return Spells[name];
+
+        Debug.Log("Spell not found " + name);
+        return null;
     }
 
     static int MagicMissile(int damage, int level, Spell spell, Character caster)

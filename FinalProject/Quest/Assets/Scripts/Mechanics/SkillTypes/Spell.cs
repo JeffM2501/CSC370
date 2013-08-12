@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class Spell : Skill 
 {
+    public CharacterObject.HitType SpellEffect = CharacterObject.HitType.Fire;
+
     public int MagicCost = 0;
 
     public int Damage = 0;
@@ -39,11 +41,12 @@ public class SpellInstance : SkillInstance
     {
         base.OnAcivate(character);
 
-        int Damage = BaseSpell.Damage * Level;
+        int damage = BaseSpell.Damage * Level;
 
         if (BaseSpell.CastSpell != null)
-            BaseSpell.CastSpell(Damage, Level, BaseSpell,character);
+            damage = BaseSpell.CastSpell(damage, Level, BaseSpell, character);
 
-        // tell the combat system to damage the target
+        if (damage > 0)
+            GameState.Instance.BattleMan.SpellAttack(character, character.Target, BaseSpell.SpellEffect, BaseSpell.Range, damage);
     }
 }

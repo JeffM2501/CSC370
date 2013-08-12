@@ -70,7 +70,7 @@ public class Character
     public float SpeedBonus = 0;
 
     protected float LastHeal = float.MinValue;
-    public float HealInterval = 1;
+    public float HealInterval = 3;
 
     public enum BuffTypes
     {
@@ -586,7 +586,12 @@ public class Character
             ManaSpent = 0;
     }
 
-    public virtual void TakeDamage(int amount)
+    public void TakeDamage(int amount)
+    {
+        TakeDamage(amount, CharacterObject.HitType.Physical);
+    }
+
+    public virtual void TakeDamage(int amount, CharacterObject.HitType hitType)
     {
         if (amount <= 0)
             amount = 1;
@@ -598,7 +603,7 @@ public class Character
 
         CharacterObject obj = WorldObject.GetComponent<CharacterObject>();
         if (obj != null)
-            obj.Hit();
+            obj.Hit(hitType);
 
         Debug.Log(Name + " Took Damage: " + amount.ToString());
     }

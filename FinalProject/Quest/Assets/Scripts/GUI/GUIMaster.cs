@@ -131,10 +131,10 @@ public class GUIMaster : MonoBehaviour
                 SkillList.Add(skill);
         }
 
-        foreach (SkillInstance skill in ThePlayer.Skills)
+        foreach (SpellInstance spell in ThePlayer.Spells)
         {
-            if (skill.BaseSkill.SkillType == Skill.SkillTypes.Spell)
-                SkillList.Add(skill);
+            if (spell.BaseSkill.SkillType == Skill.SkillTypes.Spell)
+                SkillList.Add(spell);
         }
     }
 

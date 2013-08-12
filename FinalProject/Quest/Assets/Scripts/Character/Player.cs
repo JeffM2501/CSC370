@@ -39,6 +39,9 @@ public class Player : Character
         Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
         Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Dodge"), 10));
 
+        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Arcane"), 10));
+        Spells.Add(new SpellInstance(SpellFeactory.FindSpellByName("Magic Missile"),5));
+
         BaseLayer = this.Gender == Character.Genders.Female ? "Races/Materials/body_f" : "Races/Materials/body_m";
         HairLayer = this.Gender == Character.Genders.Female ? "Races/Hair/Materials/hair0_f" : "Races/Hair/Materials/hair0_m";
         EyeLayer = this.Gender == Character.Genders.Female ? "Races/Materials/eyes_f" : "Races/Materials/eyes_m";

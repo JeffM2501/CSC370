@@ -12,11 +12,13 @@ public class PlayerStatus : GUIPanel
     public GUIElement HealthBar = null;
     public GUIElement ManaBar = null;
 
+    public GUIElement XPDisplay = null;
+
     public PlayerStatus()
     {
         Enabled = true;
 
-        Bounds = new Rect(0, 0, 204, 60+40);
+        Bounds = new Rect(0, 0, 204, 60+40+32);
         HAlignement = Alignments.Absolute;
         VAlignement = Alignments.Absolute;
     }
@@ -39,6 +41,8 @@ public class PlayerStatus : GUIPanel
         ManaBar = StatsFrame.NewImage(Alignments.Absolute, 24, Alignments.Absolute, 26, Resources.Load("GUI/MagicStatusFill") as Texture);
         ManaBar.Name = "Mana bar";
 
+        XPDisplay = NewLabel(Alignments.Absolute, 32, Alignments.Max, 0, 204,30,"XP:0");
+
         SetHealth(TheCharacter.GetHealthParam());
         SetMana(TheCharacter.GetManaParam());
     }
@@ -51,6 +55,8 @@ public class PlayerStatus : GUIPanel
         {
             SetHealth(TheCharacter.GetHealthParam());
             SetMana(TheCharacter.GetManaParam());
+
+            XPDisplay.Name = "XP:" + TheCharacter.XP.ToString();
         }
     }
 

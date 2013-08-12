@@ -84,7 +84,13 @@ public class BattleManager
             attacker.XP += defender.XP;
     }
 
+
     public void SpellAttack(Character attacker, Character defender, float attackRange, int damage)
+    {
+        SpellAttack(attacker, defender, CharacterObject.HitType.GenericSpell, attackRange, damage);
+    }
+    
+    public void SpellAttack(Character attacker, Character defender, CharacterObject.HitType hitType, float attackRange, int damage)
     {
         if (defender == null || Vector3.Distance(attacker.WorldObject.transform.position, defender.WorldObject.transform.position) > attackRange)
             return;
@@ -96,7 +102,7 @@ public class BattleManager
 
         damage = (int)(damage * armorParam);
 
-        defender.TakeDamage(damage);
+        defender.TakeDamage(damage, hitType);
 
         if (defender.Damage >= defender.HitPoints)
             attacker.XP += defender.XP;

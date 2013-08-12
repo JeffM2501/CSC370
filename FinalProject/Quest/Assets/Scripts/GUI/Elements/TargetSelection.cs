@@ -69,7 +69,11 @@ public class TargetSelection : GUIPanel
         if (SelectedCharacter.Alive)
             SelectedInfo.Name = "HP: " + (SelectedCharacter.HitPoints - SelectedCharacter.Damage).ToString() + "/" + SelectedCharacter.HitPoints.ToString();
         else
+        {
             SelectedInfo.Name = "Dead";
+            if (SelectedCharacter.WorldObject == null || !SelectedCharacter.WorldObject.activeSelf)
+                Clear();
+        }
 
         if (false)
         {

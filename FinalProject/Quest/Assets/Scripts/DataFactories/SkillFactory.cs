@@ -14,8 +14,6 @@ public static class SkillFactory
 
     public static Dictionary<string, Skill> Skills = new Dictionary<string, Skill>();
 
-    public static Dictionary<string, Spell> Spells = new Dictionary<string, Spell>();
-
     public static void Setup()
     {
         if (Skills.Count != 0)
@@ -88,7 +86,7 @@ public static class SkillFactory
         if (Skills.ContainsKey(name))
             return Skills[name];
 
-        Debug.Log("Skill count not found " + name);
+        Debug.Log("Skill not found " + name);
         return null;
     }
 
