@@ -67,13 +67,13 @@ public class GameState
         PlayerObject = new Player();
         PlayerObject.Name = "Player1";
         PlayerObject.WorldObject = player;
-        PlayerObject.PlayerMovemnt = player.GetComponent("Movement") as Movement;
 
         PlayerObject.Init();
 
         BattleMan.Init(PlayerObject, ActiveCharacters);
 
         SpawnMobsInRooms();
+        SetupTreasures();
     }
 
     public void Update()
@@ -94,37 +94,42 @@ public class GameState
         // bring out yer dead
         foreach (Character c in newlyDead)
         {
+            if (c == PlayerObject)
+                continue;
+
             c.Bury();
             ActiveCharacters.Remove(c);
         }
-       
-        if (Input.GetKeyDown(KeyCode.I))
-            GUI.ToggleInventory();
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-            SelectNearestMob();
+        if (PlayerObject.Alive)
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+                GUI.ToggleInventory();
 
-        if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
-            GUI.ProcessSkillClick(0);
-        else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
-            GUI.ProcessSkillClick(1);
-        else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
-            GUI.ProcessSkillClick(2);
-        else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
-            GUI.ProcessSkillClick(3);
-        else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
-            GUI.ProcessSkillClick(4);
-        else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
-            GUI.ProcessSkillClick(5);
-        else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
-            GUI.ProcessSkillClick(6);
-        else if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
-            GUI.ProcessSkillClick(7);
-        else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
-            GUI.ProcessSkillClick(8);
-        else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
-            GUI.ProcessSkillClick(9);
+            if (Input.GetKeyDown(KeyCode.Tab))
+                SelectNearestMob();
 
+            if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
+                GUI.ProcessSkillClick(0);
+            else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
+                GUI.ProcessSkillClick(1);
+            else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
+                GUI.ProcessSkillClick(2);
+            else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
+                GUI.ProcessSkillClick(3);
+            else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
+                GUI.ProcessSkillClick(4);
+            else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
+                GUI.ProcessSkillClick(5);
+            else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
+                GUI.ProcessSkillClick(6);
+            else if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
+                GUI.ProcessSkillClick(7);
+            else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
+                GUI.ProcessSkillClick(8);
+            else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
+                GUI.ProcessSkillClick(9);
+        }
         BattleMan.Update();
     }
 
@@ -135,7 +140,13 @@ public class GameState
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
         {
             CharacterObject c = obj.GetComponent<CharacterObject>();
-            if (!obj.gameObject.activeSelf || c == null || !c.TheCharacter.Alive)
+
+            if (c == null)
+                continue;
+
+            Character character = c.TheCharacter;
+
+            if (character == null || !character.Alive)
                 continue;
 
             float d = Vector3.Distance(PlayerObject.WorldObject.transform.position, obj.transform.position);
@@ -187,7 +198,7 @@ public class GameState
 
     public void MovePlayer(Vector3 vec)
     {
-        if (PlayerObject == null)
+        if (PlayerObject == null || !PlayerObject.Alive)
             return;
 
         PlayerObject.Move(vec);
@@ -211,6 +222,18 @@ public class GameState
         PlayerObject.Target.Select(true);
 
         GUI.SelectCharacter(PlayerObject.Target);
+    }
+
+    public void SetupTreasures()
+    {
+        foreach (GameObject chest in GameObject.FindGameObjectsWithTag("LootDrop"))
+        {
+            TreasureSpawner spawner = chest.GetComponent<TreasureSpawner>();
+            if (spawner == null)
+                continue;
+
+            spawner.Setup();
+        }
     }
 
     public void SpawnMobsInRooms()

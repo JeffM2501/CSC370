@@ -5,6 +5,8 @@ using System;
 
 public class Character
 {
+    public Movement CharacterMovemnt = null;
+
     public bool Alive = true;
 
     public Character Target = null;
@@ -66,6 +68,9 @@ public class Character
     public int MagicBonus = 0;
 
     public float SpeedBonus = 0;
+
+    protected float LastHeal = float.MinValue;
+    public float HealInterval = 1;
 
     public enum BuffTypes
     {
@@ -206,10 +211,23 @@ public class Character
 
         if (Anims != null)
             Anims.Update();
+
+        if (Alive)
+        {
+            if(Time.time - LastHeal > HealInterval)
+            {
+                LastHeal = Time.time;
+
+                Heal(Attributes[Attribute.AttributeTypes.Might].Level);
+                AddMana(Attributes[Attribute.AttributeTypes.Smarts].Level);
+            }
+        }
     }
 
     public virtual void Init()
     {
+        CharacterMovemnt = WorldObject.GetComponent("Movement") as Movement;
+
         if (AnimTexture == null)
             RebuildEquipment();
 
@@ -318,6 +336,9 @@ public class Character
 
     public virtual void Move(Vector3 vec)
     {
+        if (!Alive)
+            return;
+
         float x = Mathf.Abs(vec.x);
         float y = Mathf.Abs(vec.z);
 
@@ -337,7 +358,9 @@ public class Character
                 Anims.SetDirection(vec.x < 0 ? AnimationSequence.Directions.East : AnimationSequence.Directions.West);
             else
                 Anims.SetDirection(vec.z > 0 ? AnimationSequence.Directions.North : AnimationSequence.Directions.South);
-        }   
+        }
+
+        CharacterMovemnt.Move(vec * (Speed * Time.deltaTime));
     }
 
     public void RebuildTempStats()
@@ -536,7 +559,7 @@ public class Character
 
     public virtual float GetHealthParam()
     {
-        return GetHealth()/(float)HitPoints;
+        return Mathf.Max(0,GetHealth()/(float)HitPoints);
     }
 
     public virtual int GetMana()
@@ -546,7 +569,7 @@ public class Character
 
     public virtual float GetManaParam()
     {
-        return GetMana() / (float)MagicPower;
+        return Mathf.Max(0, GetMana() / (float)MagicPower);
     }
 
     public virtual void Heal(int amount)

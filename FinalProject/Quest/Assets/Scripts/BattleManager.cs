@@ -97,6 +97,9 @@ public class BattleManager
         damage = (int)(damage * armorParam);
 
         defender.TakeDamage(damage);
+
+        if (defender.Damage >= defender.HitPoints)
+            attacker.XP += defender.XP;
     }
 
     public void ActivateMonster(Monster mob)
@@ -106,19 +109,22 @@ public class BattleManager
         mob.AnimateTo(Skill.ActiveAnimationTypes.Casting);
         // start the AI
         Debug.Log("Monster " + mob.Name + " activated");
+
+        mob.Smarts.Activate(mob as Monster);
     }
 
     public void Update()
     {
+        if (!ThePlayer.Alive)
+            return;
+
         foreach (Monster monster in Mobs)
         {
             if (!monster.Alive)
                 continue;
 
             if (monster.Activated)
-            {
-                // run the AI
-            }
+                monster.Smarts.Update();
             else
             {
                 float dist = Vector3.Distance(monster.WorldObject.transform.position, ThePlayer.WorldObject.transform.position);

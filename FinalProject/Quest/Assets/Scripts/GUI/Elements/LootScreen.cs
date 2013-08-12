@@ -119,7 +119,8 @@ public class LootScreen : GUIPanel
     {
         if (Container.Items.ItemCount() == 0 && Container.Items.GoldCoins == 0)
         {
-            MonoBehaviour.Destroy(Container.gameObject);
+            if (!Container.NoDelete)
+                MonoBehaviour.Destroy(Container.gameObject);
             Container = null;
             Enabled = false;
         }

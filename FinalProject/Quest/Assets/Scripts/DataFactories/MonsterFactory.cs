@@ -29,6 +29,8 @@ public class MonsterFactory
         orc.EquipItem(ItemFactory.FindItemByName("Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
         orc.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
 
+        orc.Smarts = new FightOrFlight();
+
         return AttachToGame(orc, location,1.45f);
     }
 
@@ -55,6 +57,8 @@ public class MonsterFactory
         mon.EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
         mon.EquipItem(ItemFactory.FindItemByName("Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
         mon.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+
+        mon.Smarts = new FightOrFlight(0.3f,0.5f);
 
         return AttachToGame(mon, location,1.25f);
     }
@@ -86,6 +90,8 @@ public class MonsterFactory
         mon.EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
         mon.EquipItem(ItemFactory.FindItemByName( isFancy ? " Mail Armor" : "Leather Armor") as Equipment, Equipment.EquipmentLocation.Torso);
        // mon.BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+
+        mon.Smarts = new FightToDeath(0.75f);
 
         return AttachToGame(mon, location,1.25f);
     }

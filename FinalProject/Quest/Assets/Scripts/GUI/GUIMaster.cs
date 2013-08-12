@@ -62,6 +62,9 @@ public class GUIMaster : MonoBehaviour
 
             RaycastHit hit;
 
+            // turn ourselves off so we don't get us
+            ThePlayer.WorldObject.collider.enabled = false;
+
             if (Physics.Raycast(ray, out hit, 100) )
             {
             //    Debug.Log(hit.transform.gameObject);
@@ -75,6 +78,8 @@ public class GUIMaster : MonoBehaviour
                     Loot.Show(hit.transform.gameObject.GetComponent<ItemContainer>());
                 }
             }
+
+            ThePlayer.WorldObject.collider.enabled = true;
         }
 	}
 

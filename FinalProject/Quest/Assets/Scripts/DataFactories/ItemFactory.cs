@@ -29,6 +29,50 @@ public class ItemFactory
         AddItems();
     }
 
+    public static Item RandomArmor()
+    {
+        List<Item> items = new List<Item>();
+        foreach (Equipment e in Equipments.Values)
+        {
+            if (e as Armor != null)
+                items.Add(e);
+        }
+
+        if (items.Count == 0)
+            return null;
+
+        return items[UnityEngine.Random.Range(0, items.Count - 1)];
+    }
+
+    public static Item RandomWeapon()
+    {
+        List<Item> items = new List<Item>();
+        foreach (Equipment e in Equipments.Values)
+        {
+            if (e as Weapon != null)
+                items.Add(e);
+        }
+
+        if (items.Count == 0)
+            return null;
+
+        return items[UnityEngine.Random.Range(0, items.Count - 1)];
+    }
+
+    public static Item RandomItem()
+    {
+        List<Item> items = new List<Item>();
+        foreach (Item e in Items.Values)
+        {
+            items.Add(e);
+        }
+
+        if (items.Count == 0)
+            return null;
+
+        return items[UnityEngine.Random.Range(0, items.Count - 1)];
+    }
+
     public static void AddItems()
     {
         AddItem("Watermelon", "Items/Icons/I_C_Watermellon", new Potion(true,3));
