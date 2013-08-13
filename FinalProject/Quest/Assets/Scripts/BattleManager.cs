@@ -121,7 +121,7 @@ public class BattleManager
 
     public void Update()
     {
-        if (!ThePlayer.Alive)
+        if (ThePlayer == null || !ThePlayer.Alive)
             return;
 
         foreach (Monster monster in Mobs)

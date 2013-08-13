@@ -40,6 +40,11 @@ public class Movement : MonoBehaviour
             dir *= dist;
 
         this.transform.position = this.transform.position + dir;
+
+        if (this.transform.position.y > 0.125f)
+        {
+            this.transform.Translate(0, this.transform.position.y - 0.125f,0);
+        }
     }
 
 	void Update ()
