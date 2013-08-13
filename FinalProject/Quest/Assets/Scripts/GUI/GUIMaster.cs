@@ -17,6 +17,7 @@ public class GUIMaster : MonoBehaviour
     protected PlayerStatus StatusWindow;
     protected TargetSelection Selector;
     protected LootScreen Loot;
+    protected InGameMenu GameMenu;
 
     public float width = 0;
 
@@ -26,14 +27,14 @@ public class GUIMaster : MonoBehaviour
 
     protected float LastSkillClick;
 
+    public bool InMenu = false;
+
     void Awake()
     {
     }
 
 	void Start ()
 	{
-        GUIPanel.Pannels.Clear();
-
         GameState.Instance.Init(this);
         width = Camera.main.pixelWidth;
 	}
@@ -57,8 +58,22 @@ public class GUIMaster : MonoBehaviour
                 StatusWindow.SetMana(0);
         }
 
+        if (ThePlayer.Alive && Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (InMenu)
+            {
+                InMenu = false;
+                GameMenu.Enabled = false;
+            }
+            else
+            {
+                InMenu = true;
+                GameMenu.Enabled = true;
+            }
+        }
+
         // check for clicks
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !InMenu)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -87,6 +102,7 @@ public class GUIMaster : MonoBehaviour
 
     public void Load()
     {
+        GUIPanel.Pannels.Clear();
         InventoryWindow = new InventoryScreen();
         InventoryWindow.Init();
 
@@ -101,6 +117,11 @@ public class GUIMaster : MonoBehaviour
         Loot.Init();
         Loot.Enabled = false;
 
+        GameMenu = new InGameMenu();
+        GameMenu.Init();
+        GameMenu.Enabled = false;
+        InMenu = false;
+
         SetPlayer(GameState.Instance.PlayerObject);
     }
 
@@ -111,6 +132,12 @@ public class GUIMaster : MonoBehaviour
         ActionBar();
 
         GUIPanel.DrawAll();
+    }
+
+    public void CloseGameMenu()
+    {
+        InMenu = false;
+        GameMenu.Enabled = false;
     }
 
     public void SetPlayer(Player player)

@@ -26,6 +26,16 @@ public class GameState
 
     public bool Inited = false;
 
+    public void CleanUp()
+    {
+        InputMan = null;
+        ActiveCharacters.Clear();
+        LevelMap = new Level();
+        GUI = null;
+        PlayerObject = null;
+        BattleMan = new BattleManager();
+    }
+
     public void Log(string message)
     {
         if (InputMan == null)
@@ -47,6 +57,12 @@ public class GameState
 
     public void CheckInits()
     {
+        if (ActiveCharacters.Count != 0)
+            ActiveCharacters.Clear();
+
+        if (PlayerObject != null)
+            PlayerObject = null;
+
         if (InputMan != null && GUI != null)
         {
             SkillFactory.Setup();
@@ -101,7 +117,10 @@ public class GameState
             ActiveCharacters.Remove(c);
         }
 
-        if (PlayerObject.Alive)
+        if (GUI != null && GUI.InMenu)
+            return;
+
+        if (PlayerObject != null && PlayerObject.Alive)
         {
             if (Input.GetKeyDown(KeyCode.I))
                 GUI.ToggleInventory();
@@ -198,7 +217,7 @@ public class GameState
 
     public void MovePlayer(Vector3 vec)
     {
-        if (PlayerObject == null || !PlayerObject.Alive)
+        if (PlayerObject == null || !PlayerObject.Alive || GUI.InMenu)
             return;
 
         PlayerObject.Move(vec);

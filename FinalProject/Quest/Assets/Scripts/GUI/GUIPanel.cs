@@ -8,6 +8,8 @@ public class GUIPanel : IDisposable
 {
     public static List<GUIPanel> Pannels = new List<GUIPanel>();
 
+    public GUISkin Skin = null;
+
     public static void RebuildAll()
     {
         foreach(GUIPanel panel in Pannels)
@@ -129,6 +131,14 @@ public class GUIPanel : IDisposable
 
         if (NeedRebuild)
             Rebuild();
+
+        if (Skin == null)
+        {
+            if (GameState.Instance.GUI != null && GameState.Instance.GUI.Skin != null)
+                GUI.skin = GameState.Instance.GUI.Skin;
+        }
+        else
+            GUI.skin = Skin;
 
         PreDraw();
         ToolTipString = string.Empty;

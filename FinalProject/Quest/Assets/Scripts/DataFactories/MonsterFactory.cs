@@ -5,7 +5,6 @@ using System;
 
 public class MonsterFactory
 {
-
     public static Character NewOrc( Vector3 location )
     {
         Monster orc = new Monster();

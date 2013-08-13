@@ -376,7 +376,7 @@ public class Character
         foreach (SkillInstance skill in Skills)
             skill.OnApply(this);
 
-        Speed = (Attributes[Attribute.AttributeTypes.Agility].Level + SpeedBonus) * 2f;
+        Speed = ((Attributes[Attribute.AttributeTypes.Agility].Level + SpeedBonus) * 1f) + 1f;
         HitPoints = Attributes[Attribute.AttributeTypes.Might].Level * 10 + HealthBonus;
         if (HitPoints < 5)
             HitPoints = 5;

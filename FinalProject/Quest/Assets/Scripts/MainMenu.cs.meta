@@ -2,7 +2,13 @@ fileFormatVersion: 2
 guid: b2554167d934349489083fd568afa423
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - MenuSkin: {instanceID: 0}
+  - Logo: {instanceID: 0}
+  - NewGameButton: {instanceID: 0}
+  - NewGamePlusButton: {instanceID: 0}
+  - ControlsButton: {fileID: 2800000, guid: d427a1aacc2045b40ae9006771f936e6, type: 3}
+  - ExitButton: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -24,6 +24,9 @@ public class ItemFactory
 
     public static void Setup()
     {
+        Equipments.Clear();
+        Items.Clear();
+
         AddArmors();
         AddWeapons();
         AddItems();

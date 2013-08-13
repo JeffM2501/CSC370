@@ -31,10 +31,10 @@ public class InventoryScreen : GUIPanel
         ToolTipStyle.normal.textColor = Color.white;
 
         ToolTipBackgorund = Resources.Load("GUI/tooltip") as Texture;
-        ToolTipOffset = new Vector2(-ToolTipBackgorund.width / 4, -5);
+        ToolTipOffset = new Vector2(-ToolTipBackgorund.width / 4, -80);
  //       ToolTipOffset = new Vector2(-20, -60);
         ToolTipRect = new Rect(38, -50, 150, 60);
-        KeepToolTipInBounds = true;
+        KeepToolTipInBounds = false;
     }
 
     protected override void Load()

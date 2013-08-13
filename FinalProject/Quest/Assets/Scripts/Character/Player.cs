@@ -30,31 +30,52 @@ public class Player : Character
         MaleLayers.Add("TempSprites/Materials/body_m_chain");
         MaleLayers.Add("TempSprites/Materials/body_m_chain_hat");
 
-        Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 20));
-        Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
-        Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
+     
 
-        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 2));
-        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 15));
-        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
-        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Dodge"), 10));
-
-        Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Arcane"), 10));
-        Spells.Add(new SpellInstance(SpellFeactory.FindSpellByName("Magic Missile"),5));
 
         BaseLayer = this.Gender == Character.Genders.Female ? "Races/Materials/body_f" : "Races/Materials/body_m";
         HairLayer = this.Gender == Character.Genders.Female ? "Races/Hair/Materials/hair0_f" : "Races/Hair/Materials/hair0_m";
         EyeLayer = this.Gender == Character.Genders.Female ? "Races/Materials/eyes_f" : "Races/Materials/eyes_m";
 
-        EquipItem(ItemFactory.FindItemByName("Plate Armor") as Equipment, Equipment.EquipmentLocation.Torso);
-        EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
+        if (PlayerPrefs.GetInt("PlayType") == 2)
+        {
+            Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 20));
+            Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 20));
+            Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 10));
 
-        BackpackItem(ItemFactory.FindItemByName("Leather Hat"));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 10));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 15));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 5));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Dodge"), 10));
 
-        BackpackItem(ItemFactory.FindItemByName("Small Health Potion"));
-        BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+            EquipItem(ItemFactory.FindItemByName("Plate Armor") as Equipment, Equipment.EquipmentLocation.Torso);
+            EquipItem(ItemFactory.FindItemByName("Flaming Sword of Fire") as Equipment, Equipment.EquipmentLocation.Weapon);
 
-        BackpackItem(ItemFactory.FindItemByName("Large XP Potion"));
+            BackpackItem(ItemFactory.FindItemByName("Leather Hat"));
+
+            BackpackItem(ItemFactory.FindItemByName("Small Health Potion"));
+            BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+
+            BackpackItem(ItemFactory.FindItemByName("Large XP Potion"));
+        }
+        else
+        {
+            Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 2));
+            Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
+            Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
+
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 1));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 1));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 1));
+
+            EquipItem(ItemFactory.FindItemByName("Cloth Shirt") as Equipment, Equipment.EquipmentLocation.Torso);
+            EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);
+
+            BackpackItem(ItemFactory.FindItemByName("Leather Hat"));
+
+            BackpackItem(ItemFactory.FindItemByName("Small Health Potion"));
+            BackpackItem(ItemFactory.FindItemByName("Watermelon"));
+        }
 
         base.Init();
         Anims.SetSequence("Walk");

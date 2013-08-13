@@ -9,6 +9,8 @@ public class SpellFeactory
 
     public static void Setup()
     {
+        Spells.Clear();
+
         AddSpell("Magic Missile", "Fires off a magical energy blast that does 1 damage per level",
                 5, 1, 0, 100, true, 1,
                 MagicMissile
