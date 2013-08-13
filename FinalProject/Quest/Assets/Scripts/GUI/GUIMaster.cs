@@ -32,6 +32,8 @@ public class GUIMaster : MonoBehaviour
 
 	void Start ()
 	{
+        GUIPanel.Pannels.Clear();
+
         GameState.Instance.Init(this);
         width = Camera.main.pixelWidth;
 	}
