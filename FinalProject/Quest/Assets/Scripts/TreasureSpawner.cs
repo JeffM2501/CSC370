@@ -12,6 +12,8 @@ public class TreasureSpawner : MonoBehaviour
     public bool HaveWeapons = false;
     public bool HaveItems = false;
 
+    public List<string> ForcedItems = new List<string>();
+
 	void Start ()
 	{
 
@@ -38,6 +40,9 @@ public class TreasureSpawner : MonoBehaviour
                 for (int i = 0; i < count; i++)
                     container.Items.AddItem(ItemFactory.RandomItem());
             }
+
+            foreach (string item in ForcedItems)
+                container.Items.AddItem(ItemFactory.FindItemByName(item));
         }
     }
 	

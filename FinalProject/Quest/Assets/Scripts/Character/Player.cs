@@ -54,7 +54,7 @@ public class Player : Character
         BackpackItem(ItemFactory.FindItemByName("Small Health Potion"));
         BackpackItem(ItemFactory.FindItemByName("Watermelon"));
 
-        BackpackItem(ItemFactory.FindItemByName("XP Potion of Testing"));
+        BackpackItem(ItemFactory.FindItemByName("Large XP Potion"));
 
         base.Init();
         Anims.SetSequence("Walk");

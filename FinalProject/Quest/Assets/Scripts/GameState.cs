@@ -299,6 +299,9 @@ public class GameState
 
     public void DropItem(Item item, Vector3 location)
     {
+        if (item == null)
+            return;
+
         GetBag(location).Items.AddItem(item);
     }
 
