@@ -5,37 +5,72 @@ using System.Collections.Generic;
 
 public class Potion : Item 
 {
-    public bool Health = true;
+    public enum EffectedAttributes
+    {
+        Health,
+        Mana,
+        XP,
+    }
+
+    public EffectedAttributes Attribute = EffectedAttributes.Health;
     public int Amount = 0;
 
-    public Potion(bool health, int amount)
+    public Potion(EffectedAttributes attribute, int amount)
     {
-        Health = health;
+        Attribute = attribute;
         Amount = amount;
     }
 
     public override string ToString()
     {
-        string action = Health ? " Health" : " Mana";
-        return base.ToString() + " +" + Amount.ToString() + action;
+        return base.ToString() + " +" + Amount.ToString() + " " + Attribute.ToString();
     }
 
     public override bool OnActivate(Character character)
     {
         base.OnActivate(character);
-        if (Health)
+        switch (Attribute)
         {
-            if (character.Damage == 0)
-                return false;
-            character.Heal(Amount);
-        }
-        else
-        {
-            if (character.ManaSpent == 0)
-                return false;
-            character.AddMana(Amount);
+            case EffectedAttributes.Health:
+                if (character.Damage == 0)
+                    return false;
+                character.Heal(Amount);
+                break;
+
+            case EffectedAttributes.Mana:
+                if (character.ManaSpent == 0)
+                    return false;
+                character.AddMana(Amount);
+                break;
+
+
+            case EffectedAttributes.XP:
+                character.XP += Amount;
+                break;
         }
 
+        return true;
+    }
+}
+
+public class Food : Item
+{
+    public int Amount = 0;
+
+    public Food(int amount)
+    {
+        Amount = amount;
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + " +" + Amount.ToString() + " Health";
+    }
+
+    public override bool OnActivate(Character character)
+    {
+        base.OnActivate(character);
+        character.Heal(Amount);
         return true;
     }
 }

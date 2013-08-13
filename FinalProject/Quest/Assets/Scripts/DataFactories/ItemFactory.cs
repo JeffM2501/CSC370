@@ -75,11 +75,16 @@ public class ItemFactory
 
     public static void AddItems()
     {
-        AddItem("Watermelon", "Items/Icons/I_C_Watermellon", new Potion(true,3));
-        AddItem("Small Mana Potion", "Items/Icons/p_Blue02", new Potion(false, 5));
-        AddItem("Large Mana Potion", "Items/Icons/p_Blue01", new Potion(false, 15));
-        AddItem("Small Health Potion", "Items/Icons/p_Red02", new Potion(true, 5));
-        AddItem("Large Health Potion", "Items/Icons/p_Red01", new Potion(true, 15));
+        AddItem("Watermelon", "Items/Icons/I_C_Watermellon", new Food(3));
+        AddItem("Banana", "Items/Icons/I_C_Banana", new Food(4));
+        AddItem("Cheese", "Items/Icons/I_C_Cheese", new Food(2));
+        AddItem("Small Mana Potion", "Items/Icons/p_Blue02", new Potion(Potion.EffectedAttributes.Mana, 5));
+        AddItem("Large Mana Potion", "Items/Icons/p_Blue01", new Potion(Potion.EffectedAttributes.Mana, 15));
+        AddItem("Small Health Potion", "Items/Icons/p_Red02", new Potion(Potion.EffectedAttributes.Health, 5));
+        AddItem("Large Health Potion", "Items/Icons/p_Red01", new Potion(Potion.EffectedAttributes.Health, 15));
+        AddItem("Small XP Potion", "Items/Icons/P_Pink04", new Potion(Potion.EffectedAttributes.XP, 100));
+        AddItem("Large XP Potion", "Items/Icons/P_Pink03", new Potion(Potion.EffectedAttributes.XP, 500));
+        AddItem("XP Potion of Testing", "Items/Icons/P_Medicine09", new Potion(Potion.EffectedAttributes.XP, 5000));
     }
 
     public static void AddArmors()

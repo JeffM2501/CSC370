@@ -110,7 +110,7 @@ public class InventoryScreen : GUIPanel
 
         Item item = TheCharacter.InventoryItems.GetItem(slotID);
 
-        GameState.Instance.GUI.SelectItem(item);
+       // GameState.Instance.GUI.SelectItem(item);
 
         Equipment equipment = item as Equipment;
         if (equipment != null)
