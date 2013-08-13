@@ -43,6 +43,11 @@ public class Weapon : Equipment
     public int MinDamage = 0;
     public int MaxDamage = 0;
 
+    public override string ToString()
+    {
+        return base.ToString() + " Damage: " + MinDamage.ToString() + " to " + MaxDamage.ToString();
+    }
+
     public Weapon()
     {
         Location = Equipment.EquipmentLocation.Weapon;
@@ -52,6 +57,11 @@ public class Weapon : Equipment
 public class Armor : Equipment
 {
     public int ArmorValue = 0;
+
+    public override string ToString()
+    {
+        return base.ToString() + " Armor: " + ArmorValue.ToString();
+    }
 
     public Armor()
     {

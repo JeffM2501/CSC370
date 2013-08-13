@@ -14,6 +14,12 @@ public class Potion : Item
         Amount = amount;
     }
 
+    public override string ToString()
+    {
+        string action = Health ? " Health" : " Mana";
+        return base.ToString() + " +" + Amount.ToString() + action;
+    }
+
     public override bool OnActivate(Character character)
     {
         base.OnActivate(character);

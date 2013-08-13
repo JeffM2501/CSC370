@@ -25,6 +25,15 @@ public class InventoryScreen : GUIPanel
         Bounds = new Rect(10, 10, 512, 512);
         HAlignement = Alignments.Absolute;
         VAlignement = Alignments.Max;
+
+        ToolTipStyle.font = Resources.Load("GUI/MIGHZV2") as Font;
+        ToolTipStyle.fontSize = 16;
+        ToolTipStyle.normal.textColor = Color.white;
+
+        ToolTipBackgorund = Resources.Load("GUI/tooltip") as Texture;
+        ToolTipOffset = new Vector2(-ToolTipBackgorund.width / 4, -25);
+ //       ToolTipOffset = new Vector2(-20, -60);
+        ToolTopRect = new Rect(38, -50, 150, 60);
     }
 
     protected override void Load()
@@ -123,6 +132,9 @@ public class InventoryScreen : GUIPanel
             element.BackgroundImage = item.InventoryIcon;
 
         element.Tag = item;
+        element.ToolTip = string.Empty;
+        if (item != null)
+            element.ToolTip = item.ToString();
     }
 
     public void SetInventoryItems()

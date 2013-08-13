@@ -93,7 +93,10 @@ public class CharacterObject : MonoBehaviour
 
             if (delta > DieSinkDelay)
             {
-                transform.Translate(0,-1f * DieSinkSpeed * Time.deltaTime, 0);
+                float time = delta - DieSinkDelay;
+                time *= 0.1f;
+
+                transform.Translate(0, -1f * DieSinkSpeed * time, 0);
 
                 if (delta > DeathDurration)
                     gameObject.SetActive(false);

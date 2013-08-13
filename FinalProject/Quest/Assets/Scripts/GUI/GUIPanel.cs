@@ -41,6 +41,11 @@ public class GUIPanel : IDisposable
 
     public GUIStyle Style = new GUIStyle();
 
+    public GUIStyle ToolTipStyle = new GUIStyle();
+    public Texture ToolTipBackgorund = null;
+    public Rect ToolTopRect = new Rect();
+    public Vector2 ToolTipOffset = Vector2.zero;
+
     [System.Serializable]
     public enum Alignments
     {
@@ -54,7 +59,7 @@ public class GUIPanel : IDisposable
 
     public GUIPanel()
     {
-
+        ToolTipStyle.normal.textColor = Color.white;
     }
 
     protected void Close(object sender, EventArgs args)
@@ -135,6 +140,27 @@ public class GUIPanel : IDisposable
         foreach (GUIElement element in Elements)
             element.Draw();
         GUI.depth = depthSave;
+
+        if (GUI.tooltip != string.Empty)
+        {
+            float ttOffsetY = 0;
+            if (ToolTipBackgorund != null)
+                ttOffsetY = ToolTipBackgorund.height;
+            ttOffsetY += ToolTipOffset.y;
+
+            float width = ToolTopRect.width;
+
+            float x = Input.mousePosition.x - Bounds.x;
+            float y = Camera.main.pixelHeight - Input.mousePosition.y - Bounds.y;
+            if (ToolTipBackgorund != null)
+            {
+                Rect pos = new Rect(x + ToolTipOffset.x, y - ToolTipBackgorund.height + ToolTipOffset.y, ToolTipBackgorund.width, ToolTipBackgorund.height);
+                GUI.Box(pos, ToolTipBackgorund, ToolTipStyle);
+            }
+
+            Rect labelRect = new Rect(x + ToolTipOffset.x + ToolTopRect.x, y + ToolTipOffset.y + ToolTopRect.y, ToolTopRect.width, ToolTopRect.height);
+            GUI.Label(labelRect, GUI.tooltip, ToolTipStyle);
+        }
     }
 
     public virtual void PreDraw()
@@ -284,6 +310,9 @@ public class GUIElement
 
     public object Tag = null;
 
+
+    public string ToolTip = string.Empty;
+
     [System.Serializable]
     public enum ElementTypes
     {
@@ -359,10 +388,12 @@ public class GUIElement
                     if (FontColor != Color.clear && FontSize > 0 && TextStyle == null)
                         BuildFontStuff();
 
+                    GUIContent context = new GUIContent(Name, null, ToolTip);
+
                     if (TextStyle != null)
-                        GUI.Label(EfectiveBounds, Name,TextStyle);
+                        GUI.Label(EfectiveBounds, context, TextStyle);
                     else
-                        GUI.Label(EfectiveBounds, Name);
+                        GUI.Label(EfectiveBounds, context);
                 }
                 
                 break;
@@ -375,10 +406,11 @@ public class GUIElement
 
                 bool click = false;
 
-                if (BackgroundImage != null)
-                    click = GUI.Button(EfectiveBounds, BackgroundImage);
-                else
-                    click = GUI.Button(EfectiveBounds, Name);
+                GUIContent context = new GUIContent(Name, BackgroundImage, ToolTip);
+//                 if (BackgroundImage != null)
+//                     click = GUI.Button(EfectiveBounds, BackgroundImage);
+//                 else
+                click = GUI.Button(EfectiveBounds, context);
 
                 if (click)
                 {

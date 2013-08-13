@@ -9,6 +9,11 @@ public class Item
     public Texture InventoryIcon;
     public Texture LootIcon;
 
+    public override string ToString()
+    {
+        return Name;
+    }
+
     public virtual bool OnActivate(Character character)
     {
         return false;
