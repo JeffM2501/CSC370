@@ -96,6 +96,7 @@ public class Player : Character
 
     public override void Die()
     {
+        GameState.Instance.GUI.ShowDeadMenu();
         if (WorldObject.audio != null && DieSound != null)
             WorldObject.audio.PlayOneShot(DieSound);
     }

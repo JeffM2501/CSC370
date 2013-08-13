@@ -140,6 +140,14 @@ public class GUIMaster : MonoBehaviour
         GameMenu.Enabled = false;
     }
 
+    public void ShowDeadMenu()
+    {
+        CloseGameMenu();
+        InMenu = true;
+        GameMenu.SetDead();
+        GameMenu.Enabled = true;
+    }
+
     public void SetPlayer(Player player)
     {
         ThePlayer = player;

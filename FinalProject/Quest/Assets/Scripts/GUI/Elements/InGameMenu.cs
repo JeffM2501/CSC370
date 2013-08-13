@@ -10,6 +10,11 @@ public class InGameMenu : GUIPanel
     Texture Exit;
     Texture NewGame;
 
+    GUIElement ContinueButton;
+    GUIElement DeadMessage;
+
+    protected bool Dead = false;
+
     public InGameMenu()
     {
         Logo = Resources.Load("GUI/QuestMenu_logo") as Texture;
@@ -32,20 +37,37 @@ public class InGameMenu : GUIPanel
         NewImage(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, 0, Logo);
 
         NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height, NewGame, GoToMenu);
-        NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + Continue.height, Continue, ContinueClick);
-        NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + 2 * Exit.height, Exit, ExitClick);
+
+        float offset = Logo.height;
+
+        DeadMessage = NewLabel(GUIPanel.Alignments.Center, 275, GUIPanel.Alignments.Absolute, offset + Continue.height, Logo.width, 64, "Congratulations, you have died!");
+        DeadMessage.Enabled = false;
+        DeadMessage.SetFont(Color.white, 32);
+
+        ContinueButton = NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, offset + Continue.height, Continue, ContinueClick);
+        NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, offset + 2 * Exit.height, Exit, ExitClick);
+    }
+
+    public void SetDead()
+    {
+        Dead = true;
+        ContinueButton.Enabled = false;
+        DeadMessage.Enabled = true;
     }
 
     protected void GoToMenu(object sender, EventArgs args)
     {
         GameState.Instance.CleanUp();
-
         Application.LoadLevel("MainMenu");
+        Dead = false;
+        ContinueButton.Enabled = true;
+        DeadMessage.Enabled = false;
     }
 
     protected void ContinueClick(object sender, EventArgs args)
     {
-        GameState.Instance.GUI.CloseGameMenu();
+        if (!Dead)
+            GameState.Instance.GUI.CloseGameMenu();
     }
 
     protected void ExitClick(object sender, EventArgs args)
