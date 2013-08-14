@@ -128,7 +128,7 @@ public class SpellFeactory
                                 bool arcane, int requirement,
                                 Spell.CastSpellCallback effector)
     {
-        Spell spell = new Spell();
+        Spell spell = new Spell(arcane);
         spell.Name = name;
         spell.IconImage = icon;
         spell.Description = description;
@@ -141,7 +141,7 @@ public class SpellFeactory
         spell.Range = 10;
         spell.Requirements.Add((arcane ? "Arcane " : "Divine ") + requirement.ToString());
 
-        spell.SkillType = arcane ? Skill.SkillTypes.MagicArcane : Skill.SkillTypes.MagicDivine;
+        spell.SkillType = Skill.SkillTypes.Spell;
 
         spell.AnimType = Skill.ActiveAnimationTypes.Casting;
 

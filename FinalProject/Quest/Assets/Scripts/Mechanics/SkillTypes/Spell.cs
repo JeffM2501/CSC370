@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class Spell : Skill 
 {
+    public bool Arcane = false;
+
     public CharacterObject.HitType SpellEffect = CharacterObject.HitType.Fire;
 
     public int MagicCost = 0;
@@ -15,9 +17,10 @@ public class Spell : Skill
 
     public CastSpellCallback CastSpell;
 
-    public Spell()
+    public Spell(bool arcane)
     {
-        SkillType = Skill.SkillTypes.MagicArcane;
+        SkillType = Skill.SkillTypes.Spell;
+        Arcane = arcane;
     }
 
     public override bool Useable(Character character)
@@ -48,7 +51,7 @@ public class SpellInstance : SkillInstance
 
         character.ManaSpent += BaseSpell.MagicCost;
 
-        int damage = BaseSpell.Damage * Level;
+        int damage = BaseSpell.Damage * Level * (BaseSpell.Arcane ? character.ArcaneSkill : character.DivineSkill);
 
         if (BaseSpell.CastSpell != null)
             damage = BaseSpell.CastSpell(damage, Level, BaseSpell, character);

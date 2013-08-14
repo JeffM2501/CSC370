@@ -48,21 +48,23 @@ public static class SkillFactory
         AddSkill("Fist", "GUI/SkillIcons/Fist", new FistWeapon());
 
         // magics
-        Skill arcane = new Skill();
+        MagicSkill arcane = new MagicSkill(true);
         arcane.SkillType = Skill.SkillTypes.MagicArcane; 
         arcane.Requirements.Add("Smarts 2");
         arcane.AdditionalSkillsGranted.Add("Magic Missile");
         arcane.Purchase = 100;
         arcane.Upgrade = 500;
+        arcane.MaxLevel = 10;
         arcane.Description = "Enables the casting of Arcane Magics";
         AddSkill("Arcane", "GUI/SkillIcons/Arcane", arcane);
 
-        Skill divine = new Skill();
+        MagicSkill divine = new MagicSkill(false);
         divine.SkillType = Skill.SkillTypes.MagicDivine;
         divine.Requirements.Add("Smarts 2");
         divine.AdditionalSkillsGranted.Add("Bless");
         divine.Purchase = 100;
         divine.Upgrade = 500;
+        divine.MaxLevel = 10;
         divine.Description = "Enables the casting of Divine Magics";
         AddSkill("Divine", "GUI/SkillIcons/Divine", divine);
 
@@ -106,6 +108,25 @@ public static class SkillFactory
         skill.IconImage = icon;
         Skills.Add(skill.Name, skill);
         return skill;
+    }
+}
+
+public class MagicSkill : Skill
+{
+    public bool Arcane = false;
+
+    public MagicSkill(bool arcane)
+    {
+        Arcane = arcane;
+    }
+
+    public override void OnApply(Character character, int level)
+    {
+        base.OnApply(character, level);
+        if (Arcane)
+            character.ArcaneSkill += level;
+        else
+            character.DivineSkill += level;
     }
 }
 

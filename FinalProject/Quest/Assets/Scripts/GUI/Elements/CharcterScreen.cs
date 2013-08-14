@@ -18,7 +18,7 @@ public class CharcterScreen : GUIPanel
     {
         Enabled = false;
 
-        Bounds = new Rect(10, 10, 512, 512);
+        Bounds = new Rect(10, 10, 512, 512+35);
         HAlignement = Alignments.Max;
         VAlignement = Alignments.Max;
     }

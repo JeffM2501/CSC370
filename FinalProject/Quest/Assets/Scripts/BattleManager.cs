@@ -98,7 +98,9 @@ public class BattleManager
         if (UnityEngine.Random.value <= defender.DodgeBonus)
             return;
 
-        float armorParam = Mathf.Min(damage / defender.ArmorValue, 1.0f);
+        float armorParam = 1;
+        if (defender.ArmorValue > 0)
+            armorParam = Mathf.Min(damage / defender.ArmorValue, 1.0f);
 
         damage = (int)(damage * armorParam);
 

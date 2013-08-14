@@ -69,6 +69,9 @@ public class Character
 
     public float SpeedBonus = 0;
 
+    public int ArcaneSkill = 0;
+    public int DivineSkill = 0;
+
     protected float LastHeal = float.MinValue;
     public float HealInterval = 3;
 
@@ -412,8 +415,13 @@ public class Character
         DodgeBonus = 0;
         CritBonus = 0;
 
+        ArcaneSkill = 0;
+        DivineSkill = 0;
+
         foreach (SkillInstance skill in Skills)
+        {
             skill.OnApply(this);
+        }
 
         Speed = ((Attributes[Attribute.AttributeTypes.Agility].Level + SpeedBonus) * 1f) + 1f;
         HitPoints = Attributes[Attribute.AttributeTypes.Might].Level * 10 + HealthBonus;
