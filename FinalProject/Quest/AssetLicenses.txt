@@ -1,0 +1,30 @@
+Assets were taken from several open source projects and sources.
+
+Character Assets:
+Rhythos, CC by SA 3.0 https://github.com/davidmaletz/rhythos
+
+World textures and accent models:
+Nobiax, CC by SA 3.0 http://nobiax.deviantart.com/
+
+Additional 3d world accent models:
+Flare-Game, CC by SA 3.0 https://github.com/clintbellanger/flare-game
+
+World Textures, and some in game:
+
+GUI Images:
+Open Game Art - Michele Bucelli, Public Domain http://opengameart.org/content/golden-ui
+Open Game Art - Lamoot, CC by SA 3.0 http://opengameart.org/content/rpg-gui-construction-kit-v10
+
+Skill Icons:
+Hale,  http://sourceforge.net/p/hale/code/1705/tree/trunk/core/images/
+
+Sounds:
+The Mana World: GNU GENERAL PUBLIC LICENSE Version 2 https://github.com/themanaworld/tmwa-client-data/tree/master/sfx
+Rhythos, CC by SA 3.0 https://github.com/davidmaletz/rhythos
+
+Additional Logo Art:
+The Battle for Wesnoth: GNU GENERAL PUBLIC LICENSE Version 2 http://gna.org/projects/wesnoth/
+
+Music:
+Five Armies Kevin MacLeod (incompetech.com) 
+Our Story Begins Kevin MacLeod (incompetech.com)
