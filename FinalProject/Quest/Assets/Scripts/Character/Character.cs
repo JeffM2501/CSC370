@@ -292,6 +292,13 @@ public class Character
             if (skill.BaseSkill.Name == name)
                 return skill;
         }
+
+        foreach (SkillInstance spell in Spells)
+        {
+            if (spell.BaseSkill.Name == name)
+                return spell;
+        }
+
         return null;
     }
 

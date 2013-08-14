@@ -23,12 +23,6 @@ public class InputManager : MonoBehaviour
         GameState.Instance.Update();
 	}
 
-    public void CheckKeys()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-            GameState.Instance.GUI.ToggleInventory();
-    }
-
     public void ConsolePrint(string message)
     {
         Debug.Log(message);

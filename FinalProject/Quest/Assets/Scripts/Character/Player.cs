@@ -30,15 +30,13 @@ public class Player : Character
         MaleLayers.Add("TempSprites/Materials/body_m_chain");
         MaleLayers.Add("TempSprites/Materials/body_m_chain_hat");
 
-     
-
-
         BaseLayer = this.Gender == Character.Genders.Female ? "Races/Materials/body_f" : "Races/Materials/body_m";
         HairLayer = this.Gender == Character.Genders.Female ? "Races/Hair/Materials/hair0_f" : "Races/Hair/Materials/hair0_m";
         EyeLayer = this.Gender == Character.Genders.Female ? "Races/Materials/eyes_f" : "Races/Materials/eyes_m";
 
         if (PlayerPrefs.GetInt("PlayType") == 2)
         {
+            XP = 5000;
             Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 20));
             Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 20));
             Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 10));

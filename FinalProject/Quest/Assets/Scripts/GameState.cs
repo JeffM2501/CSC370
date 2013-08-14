@@ -125,6 +125,9 @@ public class GameState
             if (Input.GetKeyDown(KeyCode.I))
                 GUI.ToggleInventory();
 
+            if (Input.GetKeyDown(KeyCode.C))
+                GUI.ToggleSkills();
+
             if (Input.GetKeyDown(KeyCode.Tab))
                 SelectNearestMob();
 

@@ -38,10 +38,10 @@ public class AI
 
         Vector3 toTarget = TheCharacter.Target.WorldObject.transform.position - TheCharacter.WorldObject.transform.position;
 
-        float totalDist = Vector3.Magnitude(toTarget);
+    //    float totalDist = Vector3.Magnitude(toTarget);
         toTarget.Normalize();
 
-        float maxDist = TheCharacter.Speed * Time.deltaTime;
+  //      float maxDist = TheCharacter.Speed * Time.deltaTime;
 
         TheCharacter.Move(toTarget);  
     }
@@ -53,10 +53,10 @@ public class AI
 
         Vector3 toTarget = TheCharacter.WorldObject.transform.position - TheCharacter.Target.WorldObject.transform.position;
 
-        float totalDist = Vector3.Magnitude(toTarget);
+  //      float totalDist = Vector3.Magnitude(toTarget);
         toTarget.Normalize();
 
-        float maxDist = TheCharacter.Speed * Time.deltaTime;
+     //   float maxDist = TheCharacter.Speed * Time.deltaTime;
 
         TheCharacter.Move(toTarget);
     }

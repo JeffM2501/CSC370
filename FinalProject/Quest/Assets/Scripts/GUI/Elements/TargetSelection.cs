@@ -75,11 +75,11 @@ public class TargetSelection : GUIPanel
                 Clear();
         }
 
-        if (false)
-        {
-            float dist = Vector3.Distance(GameState.Instance.PlayerObject.WorldObject.transform.position, SelectedCharacter.WorldObject.transform.position);
-            SelectedInfo.Name = dist.ToString();
-        } 
+       // if (false)
+//         {
+//             float dist = Vector3.Distance(GameState.Instance.PlayerObject.WorldObject.transform.position, SelectedCharacter.WorldObject.transform.position);
+//             SelectedInfo.Name = dist.ToString();
+//         } 
     }
 
     public void Clear()

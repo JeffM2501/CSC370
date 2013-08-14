@@ -23,17 +23,17 @@ public class Attribute : Skill
     }
 }
 
-public class AttributeInstance
+public class AttributeInstance : SkillInstance
 {
     public Attribute BaseAttribute = null;
-    public int Level = 0;
 
-    public AttributeInstance(Attribute s)
+    public AttributeInstance(Attribute s) : base(s)
     {
         BaseAttribute = s;
     }
 
     public AttributeInstance(Attribute s, int level)
+        : base(s,level)
     {
         BaseAttribute = s;
         Level = level;

@@ -194,7 +194,7 @@ public class GUIPanel : IDisposable
                     ttOffsetY = ToolTipBackgorund.height;
                 ttOffsetY += ToolTipOffset.y;
 
-                float width = ToolTipRect.width;
+             //   float width = ToolTipRect.width;
 
                 float x = Input.mousePosition.x - Bounds.x;
                 float y = Camera.main.pixelHeight - Input.mousePosition.y - Bounds.y;
@@ -236,7 +236,7 @@ public class GUIPanel : IDisposable
             ttOffsetY = ToolTipBackgorund.height;
         ttOffsetY += ToolTipOffset.y;
 
-        float width = ToolTipRect.width;
+      //  float width = ToolTipRect.width;
 
         float x = Input.mousePosition.x - Bounds.x;
         float y = Camera.main.pixelHeight - Input.mousePosition.y - Bounds.y;
@@ -459,8 +459,17 @@ public class GUIElement
     //    Debug.Log("Parrent " + parrent.ToString()); 
      //   Debug.Log("Bounds " + EfectiveBounds.ToString());
 
-        foreach (GUIElement elemment in Children)
-            elemment.Rebuild(EfectiveBounds);
+        if (ElementType == ElementTypes.HorizontalScrollFrame || ElementType == ElementTypes.VerticalScrollFrame)
+        {
+            foreach (GUIElement elemment in Children)
+                elemment.Rebuild(Bounds);
+        }
+        else
+        {
+            foreach (GUIElement elemment in Children)
+                elemment.Rebuild(EfectiveBounds);
+        }
+        
     }
 
     public void Draw()

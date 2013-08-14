@@ -19,7 +19,9 @@ public class GUIMaster : MonoBehaviour
     protected LootScreen Loot;
     protected InGameMenu GameMenu;
 
-    public float width = 0;
+    protected CharcterScreen SkillScreen;
+
+    public Vector2 ScreenSize = Vector2.zero;
 
     protected Player ThePlayer;
 
@@ -36,15 +38,15 @@ public class GUIMaster : MonoBehaviour
 	void Start ()
 	{
         GameState.Instance.Init(this);
-        width = Camera.main.pixelWidth;
+        ScreenSize = new Vector2(Camera.main.pixelWidth,Camera.main.pixelHeight);
 	}
 
 	void Update ()
 	{
-        if (width != Camera.main.pixelWidth)
+        if (ScreenSize.x != Camera.main.pixelWidth || ScreenSize.y != Camera.main.pixelHeight)
         {
             GUIPanel.RebuildAll();
-            width = Camera.main.pixelWidth;
+            ScreenSize = new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight);
         }
 
         if (StatusWindow != null && ThePlayer != null)
@@ -58,7 +60,7 @@ public class GUIMaster : MonoBehaviour
                 StatusWindow.SetMana(0);
         }
 
-        if (ThePlayer.Alive && Input.GetKeyDown(KeyCode.Escape))
+        if (ThePlayer != null && ThePlayer.Alive && Input.GetKeyDown(KeyCode.Escape))
         {
             if (InMenu)
             {
@@ -98,13 +100,20 @@ public class GUIMaster : MonoBehaviour
 
             ThePlayer.WorldObject.collider.enabled = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            SkillScreen.BuildSkills();
 	}
 
     public void Load()
     {
         GUIPanel.Pannels.Clear();
+
         InventoryWindow = new InventoryScreen();
         InventoryWindow.Init();
+
+        SkillScreen = new CharcterScreen();
+        SkillScreen.Init();
 
         StatusWindow = new PlayerStatus();
         StatusWindow.Init();
@@ -187,6 +196,20 @@ public class GUIMaster : MonoBehaviour
     {
         if (InventoryWindow.Enabled)
             InventoryWindow.SetInventoryItems();
+    }
+
+    public void ToggleSkills()
+    {
+        SkillScreen.Enabled = !SkillScreen.Enabled;
+
+        if (SkillScreen.Enabled)
+            SkillScreen.SetPlayerData();
+    }
+
+    public void UpdateSkills()
+    {
+        if (SkillScreen.Enabled)
+            SkillScreen.SetPlayerData();
     }
 
     public void SelectCharacter(Character character)

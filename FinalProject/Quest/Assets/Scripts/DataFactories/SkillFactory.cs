@@ -43,7 +43,7 @@ public static class SkillFactory
 
         // weapon skills
         AddWeaponSkill("Swords", "GUI/SkillIcons/Sword", Weapon.WeaponTypes.Sword).Requirements.Add("Might 1");
-        AddWeaponSkill("Bows", "GUI/SkillIcons/Bow", Weapon.WeaponTypes.Bow).Requirements.Add("Agility 1");
+        AddWeaponSkill("Bows", "GUI/SkillIcons/Bows", Weapon.WeaponTypes.Bow).Requirements.Add("Agility 1");
         AddWeaponSkill("Staves", "GUI/SkillIcons/Staves", Weapon.WeaponTypes.Staff).Requirements.Add("Smarts 1");
         AddSkill("Fist", "GUI/SkillIcons/Fist", new FistWeapon());
 
@@ -78,7 +78,7 @@ public static class SkillFactory
         BasicAttacks.Add(Weapon.WeaponTypes.Hand, new BasicWeaponAttack("Punch", "GUI/SkillIcons/Fist", Weapon.WeaponTypes.Hand));
         BasicAttacks.Add(Weapon.WeaponTypes.Sword, new BasicWeaponAttack("Slash", "GUI/SkillIcons/Sword", Weapon.WeaponTypes.Sword));
         BasicAttacks.Add(Weapon.WeaponTypes.Staff, new BasicWeaponAttack("Whack", "GUI/SkillIcons/Staves", Weapon.WeaponTypes.Staff));
-        BasicAttacks.Add(Weapon.WeaponTypes.Bow, new BasicWeaponAttack("Shoot", "GUI/SkillIcons/Bow", Weapon.WeaponTypes.Bow));
+        BasicAttacks.Add(Weapon.WeaponTypes.Bow, new BasicWeaponAttack("Shoot", "GUI/SkillIcons/Bows", Weapon.WeaponTypes.Bow));
     }
 
     public static Skill FindSkillByName(string name)
