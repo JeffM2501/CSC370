@@ -63,7 +63,7 @@ public class MainMenu : MonoBehaviour
         ControlsPanel.VAlignement = GUIPanel.Alignments.Absolute;
         ControlsPanel.Skin = MenuSkin;
 
-        ControlsPanel.NewImageButton(GUIPanel.Alignments.Absolute, 12, GUIPanel.Alignments.Max, 12, BackButton, ControlBack);
+        ControlsPanel.NewImageButton(GUIPanel.Alignments.Absolute, 12, GUIPanel.Alignments.Max, 6, BackButton, ControlBack);
 	}
 
     protected void NewGameClick(object sender, EventArgs args)

@@ -31,6 +31,7 @@ public class AI
 
     }
 
+    // TODO, hook up the nodes in the rooms and AStar the path
     protected virtual void MoveToTarget()
     {
         if (TheCharacter.Target == null)
@@ -98,10 +99,10 @@ public class FightToDeath : AI
         else
         {
             float aliveTime = Time.time - SpawnTime;
-            if (aliveTime < TheCharacter.Initiative)
-                return;
-            if (TheCharacter.SkillUseable(TheCharacter.BasicAttackSkill) && UnityEngine.Random.value < Fercocity)
+            if (aliveTime > TheCharacter.Initiative && TheCharacter.SkillUseable(TheCharacter.BasicAttackSkill) && UnityEngine.Random.value < Fercocity)
                 TheCharacter.BasicAttack();
+            else
+                TheCharacter.Move(Vector3.zero);
         }
     }
 }
@@ -137,10 +138,10 @@ public class FightOrFlight : AI
             else
             {
                 float aliveTime = Time.time - SpawnTime;
-                if (aliveTime < TheCharacter.Initiative)
-                    return;
-                if (TheCharacter.SkillUseable(TheCharacter.BasicAttackSkill) && UnityEngine.Random.value < Fercocity)
+                if (aliveTime > TheCharacter.Initiative && TheCharacter.SkillUseable(TheCharacter.BasicAttackSkill) && UnityEngine.Random.value < Fercocity)
                     TheCharacter.BasicAttack();
+                else
+                    TheCharacter.Move(Vector3.zero);
             }
         }
     }
