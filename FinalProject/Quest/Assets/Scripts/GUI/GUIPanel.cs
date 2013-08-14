@@ -71,7 +71,7 @@ public class GUIPanel : IDisposable
         ToolTipStyle.normal.textColor = Color.white;
     }
 
-    protected void Close(object sender, EventArgs args)
+    protected virtual void Close(object sender, EventArgs args)
     {
         Enabled = false;
     }

@@ -31,6 +31,8 @@ public class GUIMaster : MonoBehaviour
 
     public bool InMenu = false;
 
+    public float LootAutoCloseDistance = 3;
+
     void Awake()
     {
     }
@@ -93,8 +95,11 @@ public class GUIMaster : MonoBehaviour
                     GameState.Instance.SelectMob(hit.transform.gameObject);
                 else if (hit.transform.gameObject.tag == "LootDrop")
                 {
-                    GameState.Instance.SelectMob(null);
-                    Loot.Show(hit.transform.gameObject.GetComponent<ItemContainer>());
+                    if (Vector3.Distance(hit.transform.gameObject.transform.position, ThePlayer.WorldObject.transform.position) < LootAutoCloseDistance)
+                    {
+                        GameState.Instance.SelectMob(null);
+                        Loot.Show(hit.transform.gameObject.GetComponent<ItemContainer>());
+                    }
                 }
             }
 
@@ -103,6 +108,12 @@ public class GUIMaster : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             SkillScreen.BuildSkills();
+
+        if (Loot != null && Loot.Container != null)
+        {
+            if (Vector3.Distance(Loot.Container.gameObject.transform.position, ThePlayer.WorldObject.transform.position) > LootAutoCloseDistance)
+                Loot.Show(null);
+        }
 	}
 
     public void Load()

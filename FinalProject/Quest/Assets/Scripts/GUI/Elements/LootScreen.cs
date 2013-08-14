@@ -53,6 +53,12 @@ public class LootScreen : GUIPanel
         }
     }
 
+    protected override void Close(object sender, EventArgs args)
+    {
+        base.Close(sender, args);
+        Container = null;
+    }
+
     public void Show(ItemContainer container)
     {
         if (container == null)
