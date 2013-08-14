@@ -22,7 +22,7 @@ public class InventoryScreen : GUIPanel
     {
         Enabled = false;
 
-        Bounds = new Rect(50, 10, 512, 512);
+        Bounds = new Rect(50, 10, 512, 512+15);
         HAlignement = Alignments.Absolute;
         VAlignement = Alignments.Max;
 
@@ -30,11 +30,16 @@ public class InventoryScreen : GUIPanel
         ToolTipStyle.fontSize = 12;
         ToolTipStyle.normal.textColor = Color.white;
 
-        ToolTipBackgorund = Resources.Load("GUI/tooltip") as Texture;
-        ToolTipOffset = new Vector2(-ToolTipBackgorund.width / 4, -180);
- //       ToolTipOffset = new Vector2(-20, -60);
-        ToolTipRect = new Rect(38, -50, 150, 60);
-        KeepToolTipInBounds = false;
+        ToolTipElement = NewImage(Alignments.Absolute, 0, Alignments.Max, 0, Resources.Load("GUI/WideToolTip") as Texture);
+        ToolTipTextElement = ToolTipElement.NewLabel(Alignments.Absolute, 35, Alignments.Absolute, 15, 450, 32, "Blerg");
+
+        ToolTipElement.Enabled = false;
+
+//         ToolTipBackgorund = Resources.Load("GUI/tooltip") as Texture;
+//         ToolTipOffset = new Vector2(-ToolTipBackgorund.width / 4, -180);
+//  //       ToolTipOffset = new Vector2(-20, -60);
+//         ToolTipRect = new Rect(38, -50, 150, 60);
+//         KeepToolTipInBounds = false;
     }
 
     protected override void Load()

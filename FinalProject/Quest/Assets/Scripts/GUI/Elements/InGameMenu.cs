@@ -29,7 +29,7 @@ public class InGameMenu : GUIPanel
         HAlignement = GUIPanel.Alignments.Center;
         VAlignement = GUIPanel.Alignments.Absolute;
 
-        Skin = Resources.Load("MenuSkin") as GUISkin;
+        Skin = Resources.Load("GUI/UI Skin") as GUISkin;
     }
 
     protected override void Load()

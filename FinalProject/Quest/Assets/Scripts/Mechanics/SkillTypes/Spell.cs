@@ -15,6 +15,11 @@ public class Spell : Skill
 
     public CastSpellCallback CastSpell;
 
+    public Spell()
+    {
+        SkillType = Skill.SkillTypes.MagicArcane;
+    }
+
     public override bool Useable(Character character)
     {
         return base.Useable(character);
@@ -40,6 +45,8 @@ public class SpellInstance : SkillInstance
     public override void OnAcivate(Character character)
     {
         base.OnAcivate(character);
+
+        character.ManaSpent += BaseSpell.MagicCost;
 
         int damage = BaseSpell.Damage * Level;
 

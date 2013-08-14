@@ -54,6 +54,7 @@ public static class SkillFactory
         arcane.AdditionalSkillsGranted.Add("Magic Missile");
         arcane.Purchase = 100;
         arcane.Upgrade = 500;
+        arcane.Description = "Enables the casting of Arcane Magics";
         AddSkill("Arcane", "GUI/SkillIcons/Arcane", arcane);
 
         Skill divine = new Skill();
@@ -62,6 +63,7 @@ public static class SkillFactory
         divine.AdditionalSkillsGranted.Add("Bless");
         divine.Purchase = 100;
         divine.Upgrade = 500;
+        divine.Description = "Enables the casting of Divine Magics";
         AddSkill("Divine", "GUI/SkillIcons/Divine", divine);
 
         // bonuses

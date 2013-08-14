@@ -52,6 +52,9 @@ public class GUIPanel : IDisposable
 
     public bool KeepToolTipInBounds = false;
 
+    public GUIElement ToolTipElement;
+    public GUIElement ToolTipTextElement;
+
     [System.Serializable]
     public enum Alignments
     {
@@ -122,6 +125,9 @@ public class GUIPanel : IDisposable
         Rect relativeBounds = new Rect(0, 0, Bounds.width, Bounds.height);
         foreach (GUIElement element in Elements)
             element.Rebuild(relativeBounds);
+
+        if (ToolTipElement != null)
+            ToolTipElement.Rebuild(relativeBounds);
     }
 
     public void Draw()
@@ -174,6 +180,19 @@ public class GUIPanel : IDisposable
         GUI.Label(labelRect, GUI.tooltip, ToolTipStyle);
     }
 
+    public void DrawFixedToolTip()
+    {
+        if (ToolTipTextElement != null)
+            ToolTipTextElement.Name = ToolTipString;
+        else
+            ToolTipElement.Name = ToolTipString;
+
+        ToolTipElement.Enabled = true;
+        ToolTipElement.Draw();
+
+        ToolTipElement.Enabled = false;
+    }
+
     public void Update(int id)
     {
         int depthSave = GUI.depth;
@@ -189,42 +208,47 @@ public class GUIPanel : IDisposable
         {
             if (GUI.tooltip != string.Empty)
             {
-                float ttOffsetY = 0;
-                if (ToolTipBackgorund != null)
-                    ttOffsetY = ToolTipBackgorund.height;
-                ttOffsetY += ToolTipOffset.y;
-
-             //   float width = ToolTipRect.width;
-
-                float x = Input.mousePosition.x - Bounds.x;
-                float y = Camera.main.pixelHeight - Input.mousePosition.y - Bounds.y;
-
-                Vector2 ttBounds = new Vector2(ToolTipRect.width, ToolTipRect.height);
-                if (ToolTipBackgorund != null)
-                    ttBounds = new Vector2(ToolTipBackgorund.width, ToolTipBackgorund.height);
-
-                if (KeepToolTipInBounds)
+                if (ToolTipElement != null)
+                    DrawFixedToolTip();
+                else
                 {
-                    if (x < 0)
-                        x = 1;
-                    if (y < 0)
-                        y = 1;
+                    float ttOffsetY = 0;
+                    if (ToolTipBackgorund != null)
+                        ttOffsetY = ToolTipBackgorund.height;
+                    ttOffsetY += ToolTipOffset.y;
 
-                    if (x + ttBounds.x > Bounds.width)
-                        x -= (x + ttBounds.x) - Bounds.width;
+                 //   float width = ToolTipRect.width;
 
-                    if (y + ttBounds.y > Bounds.height)
-                        y -= (y + ttBounds.y) - Bounds.height;
+                    float x = Input.mousePosition.x - Bounds.x;
+                    float y = Camera.main.pixelHeight - Input.mousePosition.y - Bounds.y;
+
+                    Vector2 ttBounds = new Vector2(ToolTipRect.width, ToolTipRect.height);
+                    if (ToolTipBackgorund != null)
+                        ttBounds = new Vector2(ToolTipBackgorund.width, ToolTipBackgorund.height);
+
+                    if (KeepToolTipInBounds)
+                    {
+                        if (x < 0)
+                            x = 1;
+                        if (y < 0)
+                            y = 1;
+
+                        if (x + ttBounds.x > Bounds.width)
+                            x -= (x + ttBounds.x) - Bounds.width;
+
+                        if (y + ttBounds.y > Bounds.height)
+                            y -= (y + ttBounds.y) - Bounds.height;
+                    }
+
+                    if (ToolTipBackgorund != null)
+                    {
+                        Rect pos = new Rect(x + ToolTipOffset.x, y - ToolTipBackgorund.height + ToolTipOffset.y, ToolTipBackgorund.width, ToolTipBackgorund.height);
+                        GUI.Box(pos, ToolTipBackgorund, ToolTipStyle);
+                    }
+
+                    Rect labelRect = new Rect(x + ToolTipOffset.x + ToolTipRect.x, y + ToolTipOffset.y + ToolTipRect.y, ToolTipRect.width, ToolTipRect.height);
+                    GUI.Label(labelRect, GUI.tooltip, ToolTipStyle);
                 }
-
-                if (ToolTipBackgorund != null)
-                {
-                    Rect pos = new Rect(x + ToolTipOffset.x, y - ToolTipBackgorund.height + ToolTipOffset.y, ToolTipBackgorund.width, ToolTipBackgorund.height);
-                    GUI.Box(pos, ToolTipBackgorund, ToolTipStyle);
-                }
-
-                Rect labelRect = new Rect(x + ToolTipOffset.x + ToolTipRect.x, y + ToolTipOffset.y + ToolTipRect.y, ToolTipRect.width, ToolTipRect.height);
-                GUI.Label(labelRect, GUI.tooltip, ToolTipStyle);
             }
         }
     }
@@ -398,6 +422,7 @@ public class GUIElement
 
     public object Tag = null;
 
+    protected Rect LastParentRect = new Rect();
 
     public string ToolTip = string.Empty;
 
@@ -439,8 +464,14 @@ public class GUIElement
         TextStyle.normal.textColor = FontColor;
     }
 
+    public void ForceRebuild()
+    {
+        Rebuild(LastParentRect);
+    }
+
     public virtual void Rebuild(Rect parrent)
     {
+        LastParentRect = parrent;
         float x = parrent.xMin + Bounds.xMin;
         if (HAlignement == GUIPanel.Alignments.Max)
             x = parrent.xMax - Bounds.width - Bounds.xMin;
@@ -478,7 +509,7 @@ public class GUIElement
             return;
 
         GUI.depth--;
-        GUIContent context = null;
+        GUIContent context = new GUIContent(Name, BackgroundImage, ToolTip);
         switch (ElementType)
         {
             case ElementTypes.Label:
@@ -497,14 +528,17 @@ public class GUIElement
                 break;
 
             case ElementTypes.Image:
-                GUI.DrawTexture(EfectiveBounds, BackgroundImage);
+                if (ToolTip != string.Empty)
+                    GUI.Button(EfectiveBounds, context);
+                else
+                    GUI.DrawTexture(EfectiveBounds, BackgroundImage);
                 break;
 
             case ElementTypes.Button:
 
                 bool click = false;
 
-                context = new GUIContent(Name, BackgroundImage, ToolTip);
+                
 //                 if (BackgroundImage != null)
 //                     click = GUI.Button(EfectiveBounds, BackgroundImage);
 //                 else

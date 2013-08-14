@@ -43,7 +43,7 @@ public class Movement : MonoBehaviour
 
         if (this.transform.position.y > 0.125f)
         {
-            this.transform.Translate(0, this.transform.position.y - 0.125f,0);
+            this.transform.Translate(0, 0.125f - this.transform.position.y,0);
         }
     }
 

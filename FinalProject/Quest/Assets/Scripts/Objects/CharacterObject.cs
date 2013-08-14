@@ -128,33 +128,33 @@ public class CharacterObject : MonoBehaviour
             {
                 case HitType.Divine:
                     if (DivineSpellGraphic != null)
-                        HitMesh.renderer.materials[0] = DivineSpellGraphic;
+                        HitMesh.renderer.material = DivineSpellGraphic;
                     break;
 
                 case HitType.Physical:
                     if (DamageGraphoc != null)
-                        HitMesh.renderer.materials[0] = DamageGraphoc;
+                        HitMesh.renderer.material = DamageGraphoc;
                     break;
 
                 case HitType.Fire:
                     if (FireSpellGraphic != null)
-                        HitMesh.renderer.materials[0] = FireSpellGraphic;
+                        HitMesh.renderer.material = FireSpellGraphic;
                     break;
 
                 case HitType.Ice:
                     if (IceSpellGraphic != null)
-                        HitMesh.renderer.materials[0] = IceSpellGraphic;
+                        HitMesh.renderer.material = IceSpellGraphic;
                     break;
 
                 case HitType.GenericSpell:
                     if (GenericSpellGrpahic != null)
-                        HitMesh.renderer.materials[0] = GenericSpellGrpahic;
+                        HitMesh.renderer.material = GenericSpellGrpahic;
                     break;
             }
         }
 
-        OrigonalColor = Billboard.renderer.materials[0].color;
-        Billboard.renderer.materials[0].color = HitFlashColor;
+      //  OrigonalColor = Billboard.renderer.materials[0].color;
+      //  Billboard.renderer.materials[0].color = HitFlashColor;
         InHit = true;
         LastHitStart = Time.time;
     }

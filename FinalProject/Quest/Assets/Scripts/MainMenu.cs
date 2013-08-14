@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
 
 	void Start ()
     {
-        MenuSkin = Resources.Load("MenuSkin") as GUISkin;
+        MenuSkin = Resources.Load("GUI/UI Skin") as GUISkin;
 
         Exit = false;
         Load = false;

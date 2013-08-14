@@ -18,9 +18,9 @@ public class MonsterFactory
         orc.FemaleLayers = orc.MaleLayers;
         SetStats(orc, 3, 1, 2,25);
 
-        orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 1));
-        orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 2));
-        orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
+        orc.AddSkill(SkillFactory.FindSkillByName("Swords"), 1);
+        orc.AddSkill(SkillFactory.FindSkillByName("Tough"), 2);
+        orc.AddSkill(SkillFactory.FindSkillByName("Cleave"), 2);
 
         orc.InventoryItems.GoldCoins = (int)UnityEngine.Random.Range(10,20);
 
@@ -49,7 +49,7 @@ public class MonsterFactory
         mon.FemaleLayers = mon.MaleLayers;
         SetStats(mon, 2, 2, 2, 25);
 
-        mon.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 3));
+        mon.AddSkill(SkillFactory.FindSkillByName("Swords"), 3);
 
         mon.InventoryItems.GoldCoins = (int)UnityEngine.Random.Range(20, 120);
 
@@ -82,7 +82,7 @@ public class MonsterFactory
         else
             SetStats(mon, 3, 0, 2, 50);
 
-        mon.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), isFancy ? 4 : 2));
+        mon.AddSkill(SkillFactory.FindSkillByName("Swords"), isFancy ? 4 : 2);
 
         mon.InventoryItems.GoldCoins = 0;
 

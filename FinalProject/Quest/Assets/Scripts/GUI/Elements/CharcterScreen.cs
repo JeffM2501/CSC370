@@ -31,7 +31,7 @@ public class CharcterScreen : GUIPanel
     {
         base.Load();
 
-        Skin = Resources.Load("GUI/UI Skin No Buttons") as GUISkin;
+        Skin = Resources.Load("GUI/UI Skin") as GUISkin;
 
         UpArrow = Resources.Load("GUI/FullUpArrow") as Texture;
         DisableArrow = Resources.Load("GUI/EmptyUpArrow") as Texture;
@@ -43,6 +43,16 @@ public class CharcterScreen : GUIPanel
         NewLabel(Alignments.Absolute, Margin, Alignments.Absolute, Margin, 256, 32, TheCharacter.Name + ":Stats");
         XPLabel = NewLabel(Alignments.Absolute, Margin, Alignments.Absolute, 54, 256, 32, "XP:" + TheCharacter.XP.ToString());
         NewLabel(Alignments.Max, Margin * 5, Alignments.Absolute, Margin * 2.5f, 64, 32, "Skills").SetFont(Color.white, 24);
+
+        ToolTipElement = NewImage(Alignments.Absolute, 0, Alignments.Max, 0, Resources.Load("GUI/WideToolTip") as Texture);
+        ToolTipTextElement = ToolTipElement.NewLabel(Alignments.Absolute, 35, Alignments.Absolute, 15, 450, 32, "Blerg");
+
+        ToolTipTextElement.TextStyle = new GUIStyle();
+        ToolTipTextElement.TextStyle.font = Resources.Load("GUI/ALEAWBB_") as Font;
+        ToolTipTextElement.TextStyle.normal.textColor = Color.white;
+        ToolTipTextElement.TextStyle.fontSize = 12;
+
+        ToolTipElement.Enabled = false;
 
         SetPlayerData();
     }
@@ -79,21 +89,24 @@ public class CharcterScreen : GUIPanel
          offset = AddSkill(TheCharacter.Attributes[Attribute.AttributeTypes.Might], offset);
          offset = AddSkill(TheCharacter.Attributes[Attribute.AttributeTypes.Smarts], offset);
          offset = AddSkill(TheCharacter.Attributes[Attribute.AttributeTypes.Agility], offset);
- 
+
          foreach (SkillInstance skill in TheCharacter.Skills)
-             offset = AddSkill(skill, offset);
+         {
+             if (skill.Level > 0)
+                offset = AddSkill(skill, offset);
+         }
          foreach (SpellInstance spell in TheCharacter.Spells)
              offset = AddSkill(spell, offset);
  
          foreach (Skill skill in SkillFactory.Skills.Values)
          {
-             if (skill.Purchase > 0 && TheCharacter.GetSkillByName(skill.Name) == null)
+             if (skill.CharacterHasRequirements(TheCharacter) && skill.Purchase > 0 && TheCharacter.GetSkillByName(skill.Name) == null)
                   offset = AddSkill(skill, offset);
          }
 
          foreach (Spell spell in SpellFeactory.Spells.Values)
          {
-             if (spell.Purchase > 0 && TheCharacter.GetSkillByName(spell.Name) == null)
+             if (spell.CharacterHasRequirements(TheCharacter) && spell.Purchase > 0 && TheCharacter.GetSkillByName(spell.Name) == null)
                  offset = AddSkill(spell, offset);
          }
     }
@@ -123,7 +136,7 @@ public class CharcterScreen : GUIPanel
                 if (TheCharacter.XP >= newSkill.Purchase)
                 {
                     TheCharacter.XP -= newSkill.Purchase;
-                    TheCharacter.Skills.Add(new SkillInstance(newSkill, 1));
+                    TheCharacter.AddSkill(newSkill, 1);
                     ForceReload = true;
                     TheCharacter.RebuildEquipment();
                 }
@@ -159,7 +172,9 @@ public class CharcterScreen : GUIPanel
         lab.SetFont(Color.white, 16);
         SkillElements.Add(lab);
 
-        SkillElements.Add(NewImage(GUIPanel.Alignments.Absolute, offset.x, GUIPanel.Alignments.Absolute, offset.y + 18, icon));
+        lab = NewImage(GUIPanel.Alignments.Absolute, offset.x, GUIPanel.Alignments.Absolute, offset.y + 18, icon);
+        lab.ToolTip = skill.Description;
+        SkillElements.Add(lab);
 
         int cost = skill.Upgrade;
         if (level == 0)
@@ -183,9 +198,15 @@ public class CharcterScreen : GUIPanel
 
         GUIElement upgrade = NewImageButton(GUIPanel.Alignments.Absolute, offset.x + 50, GUIPanel.Alignments.Absolute, offset.y + 38, upgradeable ? UpArrow : DisableArrow, UpgradeSkill);
         if (upgradeable)
+        {
+            upgrade.ToolTip = "Upgrade the skill by one level, costs " + cost.ToString();
             upgrade.Tag = tag;
+        }
         else
+        {
+            upgrade.ToolTip = "Need " + cost.ToString() + " XP to Upgrade";
             upgrade.Tag = null;
+        }
 
         SkillElements.Add(upgrade);
 

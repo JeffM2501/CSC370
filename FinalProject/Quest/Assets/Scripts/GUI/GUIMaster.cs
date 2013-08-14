@@ -179,8 +179,7 @@ public class GUIMaster : MonoBehaviour
 
         foreach (SpellInstance spell in ThePlayer.Spells)
         {
-            if (spell.BaseSkill.SkillType == Skill.SkillTypes.Spell)
-                SkillList.Add(spell);
+            SkillList.Add(spell);
         }
     }
 

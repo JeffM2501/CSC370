@@ -42,10 +42,12 @@ public class Player : Character
             Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 20));
             Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 10));
 
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 10));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 15));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 5));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Dodge"), 10));
+            AddSkill(SkillFactory.FindSkillByName("Swords"), 10);
+            AddSkill(SkillFactory.FindSkillByName("Tough"), 15);
+            AddSkill(SkillFactory.FindSkillByName("Cleave"), 5);
+            AddSkill(SkillFactory.FindSkillByName("Dodge"), 10);
+
+            AddSkill(SkillFactory.FindSkillByName("Arcane"), 10);
 
             EquipItem(ItemFactory.FindItemByName("Plate Armor") as Equipment, Equipment.EquipmentLocation.Torso);
             EquipItem(ItemFactory.FindItemByName("Flaming Sword of Fire") as Equipment, Equipment.EquipmentLocation.Weapon);
@@ -65,9 +67,9 @@ public class Player : Character
             Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
             Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
 
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 1));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 1));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 1));
+            AddSkill(SkillFactory.FindSkillByName("Swords"), 1);
+            AddSkill(SkillFactory.FindSkillByName("Tough"), 1);
+            AddSkill(SkillFactory.FindSkillByName("Cleave"), 1);
 
             EquipItem(ItemFactory.FindItemByName("Cloth Shirt") as Equipment, Equipment.EquipmentLocation.Torso);
             EquipItem(ItemFactory.FindItemByName("Sword") as Equipment, Equipment.EquipmentLocation.Weapon);

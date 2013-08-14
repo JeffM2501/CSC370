@@ -308,6 +308,31 @@ public class Character
             DropItem(item);
     }
 
+    public void AddSkill(Skill skill, int level)
+    {
+        if (skill == null || !skill.CharacterHasRequirements(this))
+            return;
+
+        Spell spell = skill as Spell;
+
+        if (spell == null)
+            Skills.Add(new SkillInstance(skill, level));
+        else
+            Spells.Add(new SpellInstance(spell, level));
+
+        foreach (string subskill in skill.AdditionalSkillsGranted)
+        {
+            if(subskill != skill.Name)
+            {
+                Skill newSkill = SkillFactory.FindSkillByName(subskill);
+                if (newSkill != null)
+                    AddSkill(newSkill, 1);
+                else
+                    AddSkill(SpellFeactory.FindSpellByName(subskill), 1);
+            }
+        }
+    }
+
     public void EquipItem(Equipment item)
     {
         EquipItem(item, Equipment.EquipmentLocation.Weapon);

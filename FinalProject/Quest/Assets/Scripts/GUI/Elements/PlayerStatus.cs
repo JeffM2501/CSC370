@@ -66,12 +66,12 @@ public class PlayerStatus : GUIPanel
     public void SetMana(float param)
     {
         ManaBar.Bounds.width = BarOffset + (BarWidth * param);
-        this.NeedRebuild = true;
+        ManaBar.ForceRebuild();
     }
 
     public void SetHealth(float param)
     {
         HealthBar.Bounds.width = BarOffset + (BarWidth * param);
-        this.NeedRebuild = true;
+        HealthBar.ForceRebuild();
     }
 }
