@@ -72,12 +72,14 @@ public class SpellFeactory
     static int MagicMissile(int damage, int level, Spell spell, Character caster)
     {
         // fire off spell effect
+        caster.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_spike") as AudioClip);
         return damage;
     }
 
     static int FireBall(int damage, int level, Spell spell, Character caster)
     {
         // fire off spell effect
+        caster.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_fire") as AudioClip);
         return damage;
     }
 
@@ -86,6 +88,8 @@ public class SpellFeactory
         Character target = caster.Target;
         if (target == null)
             target = caster;
+
+        target.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_defend") as AudioClip);
 
         target.AddBuff(Character.BuffTypes.Defense, damage, 30 * level);
         return 0;
@@ -97,6 +101,7 @@ public class SpellFeactory
         if (target == null)
             target = caster;
 
+        target.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_defend") as AudioClip);
         target.AddBuff(Character.BuffTypes.Dodge, 0.05f * level, 15 * level);
         return 0;
     }
@@ -107,12 +112,14 @@ public class SpellFeactory
         if (target == null)
             target = caster;
 
+        target.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_heal") as AudioClip);
         target.Heal(damage);
         return 0;
     }
 
     static int DivineLight(int damage, int level, Spell spell, Character caster)
     {
+        caster.WorldObject.audio.PlayOneShot(Resources.Load("Sounds/sfx_spell_lightning") as AudioClip);
         return damage;
     }
 

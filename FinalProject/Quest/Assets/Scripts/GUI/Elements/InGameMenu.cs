@@ -57,6 +57,8 @@ public class InGameMenu : GUIPanel
 
     protected void GoToMenu(object sender, EventArgs args)
     {
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip); 
+        
         GameState.Instance.CleanUp();
         Application.LoadLevel("MainMenu");
         Dead = false;
@@ -66,12 +68,15 @@ public class InGameMenu : GUIPanel
 
     protected void ContinueClick(object sender, EventArgs args)
     {
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
+
         if (!Dead)
             GameState.Instance.GUI.CloseGameMenu();
     }
 
     protected void ExitClick(object sender, EventArgs args)
     {
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         Application.Quit();
     }
 }

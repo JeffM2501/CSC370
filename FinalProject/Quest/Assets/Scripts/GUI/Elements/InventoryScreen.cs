@@ -91,18 +91,25 @@ public class InventoryScreen : GUIPanel
         SetInventoryItems();
     }
 
+    Equipment Doff(Equipment eqip)
+    {
+        return TheCharacter.TryBackpackItem(eqip) as Equipment;
+    }
+
     protected void SlotClick(object sender, EventArgs args)
     {
-        if (HeadSlot == sender)
-            Debug.Log("HeadSlot click");
-        else if (BodySlot == sender)
-            Debug.Log("BodySlot click");
-        else if (LeftSlot == sender)
-            Debug.Log("LeftSlot click");
-        else if (RightSlot == sender)
-            Debug.Log("RightSlot click");
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
 
-        GameState.Instance.GUI.SelectItem((sender as GUIElement).Tag as Item);
+        if (HeadSlot == sender)
+            TheCharacter.EquipedItems.Head = Doff(TheCharacter.EquipedItems.Head);
+        else if (BodySlot == sender)
+            TheCharacter.EquipedItems.Torso = Doff(TheCharacter.EquipedItems.Torso);
+        else if (LeftSlot == sender)
+            TheCharacter.EquipedItems.LeftHand = Doff(TheCharacter.EquipedItems.LeftHand) as Weapon;
+        else if (RightSlot == sender)
+            TheCharacter.EquipedItems.RightHand = Doff(TheCharacter.EquipedItems.RightHand) as Weapon;
+
+        SetInventoryItems();
     }
 
     protected void InventoryClick(object sender, EventArgs args)
@@ -110,6 +117,8 @@ public class InventoryScreen : GUIPanel
         GUIElement element = sender as GUIElement;
         if (element == null)
             return;
+
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
 
         int slotID = element.ID;
         Debug.Log("GUI item slot click " + slotID.ToString());

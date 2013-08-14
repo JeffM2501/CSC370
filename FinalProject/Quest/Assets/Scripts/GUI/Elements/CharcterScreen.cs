@@ -113,6 +113,7 @@ public class CharcterScreen : GUIPanel
 
     protected void UpgradeSkill(object sender, EventArgs args)
     {
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_achievement") as AudioClip);
         GUIElement element = sender as GUIElement;
         if (element == null || element.Tag == null)
             return;

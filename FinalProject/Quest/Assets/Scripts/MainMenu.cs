@@ -68,6 +68,7 @@ public class MainMenu : MonoBehaviour
 
     protected void NewGameClick(object sender, EventArgs args)
     {
+        audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         Debug.Log("New Game");
         PlayerPrefs.SetInt("PlayType", 1);
         Load = true;
@@ -75,6 +76,7 @@ public class MainMenu : MonoBehaviour
 
     protected void NewGame2Click(object sender, EventArgs args)
     {
+        audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         Debug.Log("New Game Plus");
         PlayerPrefs.SetInt("PlayType", 2);
         Load = true;
@@ -82,6 +84,7 @@ public class MainMenu : MonoBehaviour
 
     protected void ControlsClick(object sender, EventArgs args)
     {
+        audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         Debug.Log("Controls Click");
         ControlsPanel.Enabled = true;
         MenuPanel.Enabled = false;
@@ -89,11 +92,13 @@ public class MainMenu : MonoBehaviour
 
     protected void ExitClick(object sender, EventArgs args)
     {
+        audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         Exit = true;
     }
 
     protected void ControlBack(object sender, EventArgs args)
     {
+        audio.PlayOneShot(Resources.Load("Sounds/sfx_click") as AudioClip);
         ControlsPanel.Enabled = false;
         MenuPanel.Enabled = true;
     }

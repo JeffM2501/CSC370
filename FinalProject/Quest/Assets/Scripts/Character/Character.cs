@@ -308,6 +308,13 @@ public class Character
             DropItem(item);
     }
 
+    public Item TryBackpackItem(Item item)
+    {
+        if (!InventoryItems.AddItem(item))
+            return item;
+        return null;
+    }
+
     public void AddSkill(Skill skill, int level)
     {
         if (skill == null || !skill.CharacterHasRequirements(this))

@@ -88,6 +88,8 @@ public class LootScreen : GUIPanel
         if (element == null)
             return;
 
+        GameState.Prefabs.audio.PlayOneShot(Resources.Load("Sounds/sfx_select") as AudioClip);
+
         int slotID = element.ID;
         Debug.Log("GUI item slot click " + slotID.ToString());
 
