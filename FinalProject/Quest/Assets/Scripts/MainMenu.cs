@@ -50,7 +50,9 @@ public class MainMenu : MonoBehaviour
         MenuPanel.NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height, NewGameButton, NewGameClick);
         MenuPanel.NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + NewGameButton.height, NewGamePlusButton, NewGame2Click);
         MenuPanel.NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + 2 * NewGameButton.height, ControlsButton, ControlsClick);
-        MenuPanel.NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + 3 * NewGameButton.height, ExitButton, ExitClick);
+        
+        if (Application.platform != RuntimePlatform.OSXWebPlayer && Application.platform != RuntimePlatform.WindowsWebPlayer)
+            MenuPanel.NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, Logo.height + 3 * NewGameButton.height, ExitButton, ExitClick);
 
         MenuPanel.Skin = MenuSkin;
 

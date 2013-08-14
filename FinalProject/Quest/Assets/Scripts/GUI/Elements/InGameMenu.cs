@@ -45,7 +45,8 @@ public class InGameMenu : GUIPanel
         DeadMessage.SetFont(Color.white, 32);
 
         ContinueButton = NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, offset + Continue.height, Continue, ContinueClick);
-        NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, offset + 2 * Exit.height, Exit, ExitClick);
+        if (Application.platform != RuntimePlatform.OSXWebPlayer && Application.platform != RuntimePlatform.WindowsWebPlayer)
+            NewImageButton(GUIPanel.Alignments.Center, 0, GUIPanel.Alignments.Absolute, offset + 2 * Exit.height, Exit, ExitClick);
     }
 
     public void SetDead()
