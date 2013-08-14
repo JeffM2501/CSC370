@@ -39,12 +39,10 @@ public class CharcterScreen : GUIPanel
         TheCharacter = GameState.Instance.PlayerObject;
         this.Background = Resources.Load("GUI/PlainBackground") as Texture;
 
-
-
         NewImageButton(Alignments.Max, Margin, Alignments.Absolute, Margin, Resources.Load("GUI/CloseBox") as Texture, Close);
         NewLabel(Alignments.Absolute, Margin, Alignments.Absolute, Margin, 256, 32, TheCharacter.Name + ":Stats");
         XPLabel = NewLabel(Alignments.Absolute, Margin, Alignments.Absolute, 54, 256, 32, "XP:" + TheCharacter.XP.ToString());
-        NewLabel(Alignments.Center, 0, Alignments.Absolute, 128, 256, 32, "Skills").SetFont(Color.white, 18);
+        NewLabel(Alignments.Max, Margin * 5, Alignments.Absolute, Margin * 2.5f, 64, 32, "Skills").SetFont(Color.white, 24);
 
         SetPlayerData();
     }
@@ -153,7 +151,7 @@ public class CharcterScreen : GUIPanel
         }
 
         // add the name
-        Rect size = new Rect(0, 0, 100, 60);
+        Rect size = new Rect(0, 0, 100, 55);
 
         //    SkillElements.Add(NewImage(GUIPanel.Alignments.Absolute, offset.x, GUIPanel.Alignments.Absolute, offset.y, Resources.Load(skill.BaseSkill.IconImage) as Texture));
 

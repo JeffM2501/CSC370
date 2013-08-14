@@ -66,7 +66,7 @@ public static class SkillFactory
 
         // bonuses
         AddSkill("Dodge", "GUI/SkillIcons/Dodge", new Dodge());
-        AddSkill("Tough As Nails", "GUI/SkillIcons/Tough", new ToughAsNails());
+        AddSkill("Tough", "GUI/SkillIcons/Tough", new ToughAsNails());
         AddSkill("Deadeye", "GUI/SkillIcons/Deadeye", new ToughAsNails());
 
         // attacks

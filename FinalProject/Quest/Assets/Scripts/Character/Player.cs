@@ -36,13 +36,14 @@ public class Player : Character
 
         if (PlayerPrefs.GetInt("PlayType") == 2)
         {
+            Name = "Joan";
             XP = 5000;
             Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 20));
             Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 20));
             Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 10));
 
             Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 10));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 15));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 15));
             Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 5));
             Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Dodge"), 10));
 
@@ -58,12 +59,14 @@ public class Player : Character
         }
         else
         {
+            Name = "Tina";
+
             Attributes.Add(Attribute.AttributeTypes.Might, new AttributeInstance(SkillFactory.Might, 2));
             Attributes.Add(Attribute.AttributeTypes.Smarts, new AttributeInstance(SkillFactory.Smarts, 1));
             Attributes.Add(Attribute.AttributeTypes.Agility, new AttributeInstance(SkillFactory.Agility, 2));
 
             Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 1));
-            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 1));
+            Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 1));
             Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 1));
 
             EquipItem(ItemFactory.FindItemByName("Cloth Shirt") as Equipment, Equipment.EquipmentLocation.Torso);

@@ -19,7 +19,7 @@ public class MonsterFactory
         SetStats(orc, 3, 1, 2,25);
 
         orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Swords"), 1));
-        orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough As Nails"), 2));
+        orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Tough"), 2));
         orc.Skills.Add(new SkillInstance(SkillFactory.FindSkillByName("Cleave"), 2));
 
         orc.InventoryItems.GoldCoins = (int)UnityEngine.Random.Range(10,20);
